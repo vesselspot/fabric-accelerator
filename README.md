@@ -1,2 +1,2 @@
 # fabric-dataplatform
-Fabric Modern Data Platform implemented using ELT Framework
+Modern Data Platform on Microsoft Fabric implemented using ELT Framework
