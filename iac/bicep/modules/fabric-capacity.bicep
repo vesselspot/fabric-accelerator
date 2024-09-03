@@ -39,7 +39,7 @@ param adminUsers array
 
 // Variables
 var suffix = uniqueString(resourceGroup().id)
-var fabric_uniquename = '${fabric_name}-${suffix}'
+var fabric_uniquename = '${fabric_name}${suffix}'
 
 // Resource: Microsoft Fabric Capacity
 resource fabricCapacity 'Microsoft.Fabric/capacities@2023-11-01' = {
