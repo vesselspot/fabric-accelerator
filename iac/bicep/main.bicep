@@ -138,6 +138,6 @@ module fabric_capacity './modules/fabric-capacity.bicep' = {
     cost_centre_tag: cost_centre_tag
     owner_tag: owner_tag
     sme_tag: sme_tag
-    adminUsers: ['0c6febd6-6427-4c92-96d9-3de3feff0b95']
+    adminUsers: ['bennyaustin@microsoft.com']
   }
 }
