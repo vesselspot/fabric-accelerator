@@ -1,10 +1,10 @@
 ﻿CREATE PROCEDURE [ELT].[GetTransformDefinition_L2] 
 		@IngestID int, 
-		@DeltaDate datetime = null,
+		@DeltaDate datetime2 = null,
 		@InputType varchar(15) = '%'
 AS
 	--declare @IngestID int
-	DECLARE @localdate datetime	= CONVERT(datetime,CONVERT(datetimeoffset, getdate()) at time zone 'AUS Eastern Standard Time')
+	DECLARE @localdate datetime2	= CONVERT(datetime2,CONVERT(datetimeoffset, getdate()) at time zone 'AUS Eastern Standard Time')
 
 	--Should be using L2DeltaTransformDate, if null then LocalDate
 		SELECT

@@ -13,7 +13,7 @@ RETURNS varchar(MAX)
 BEGIN
 	Declare @Query varchar(MAX)
 	DECLARE @MappingExists INT
-	DECLARE @Columns NVARCHAR(MAX)
+	DECLARE @Columns varchar(MAX)
 	Declare @From datetime2
 	DECLARE @FromStr varchar(27), @ToStr varchar(27)
 
@@ -22,7 +22,7 @@ BEGIN
 					ELSE @FromDate
 				END)
 
-	--Datetime Strings
+	--datetime2 Strings
 	SET @ToStr = FORMAT(CAST((
 								CASE 
 									WHEN @ToDate IS NOT NULL 
@@ -36,11 +36,11 @@ BEGIN
 								ELSE GETDATE()
 								END
 							) 
-								as datetime), 'yyyy-MM-ddTHH:mm:ssZ')
+								as datetime2), 'yyyy-MM-ddTHH:mm:ssZ')
 
 	SET @FromStr = (CASE 
 					WHEN @FromDate is NULL THEN '1900-01-01T00:00:00Z'
-					ELSE FORMAT(CAST(@FromDate as datetime), 'yyyy-MM-ddTHH:mm:ssZ')
+					ELSE FORMAT(CAST(@FromDate as datetime2), 'yyyy-MM-ddTHH:mm:ssZ')
 				END)
 
 	--Set Columns
@@ -84,12 +84,12 @@ BEGIN
 							WHEN @DeltaName IS NOT NULL 
 								THEN 'SELECT MIN('+@DeltaName+') AS DataFromTimestamp,' + ' MAX('+@DeltaName+') AS DataToTimestamp,'+ 'COUNT(*) AS SourceCount' 
 							WHEN @DeltaName IS NULL
-								THEN 'SELECT ''1900-01-01T00:00:00Z'' AS DataFromTimestamp, '''+FORMAT(CAST(GETDATE() as datetime), 'yyyy-MM-ddTHH:mm:ssZ')+''' AS DataToTimestamp,  COUNT(*) AS SourceCount '
+								THEN 'SELECT ''1900-01-01T00:00:00Z'' AS DataFromTimestamp, '''+FORMAT(CAST(GETDATE() as datetime2), 'yyyy-MM-ddTHH:mm:ssZ')+''' AS DataToTimestamp,  COUNT(*) AS SourceCount '
 							END
 							+ ' FROM ' + @EntityName 
 							+ CASE 
 								WHEN @DeltaName IS NOT NULL
-									THEN ' WHERE ' + @DeltaName + ' > ' + '''' + FORMAT(CAST(@FromStr as datetime), 'yyyy-MM-dd HH:mm:ss') + '''' +  ' AND ' + @DeltaName + ' <= ' + '''' + FORMAT(CAST(@ToStr as datetime), 'yyyy-MM-dd HH:mm:ss') + ''''
+									THEN ' WHERE ' + @DeltaName + ' > ' + '''' + FORMAT(CAST(@FromStr as datetime2), 'yyyy-MM-dd HH:mm:ss') + '''' +  ' AND ' + @DeltaName + ' <= ' + '''' + FORMAT(CAST(@ToStr as datetime2), 'yyyy-MM-dd HH:mm:ss') + ''''
 								ELSE ''
 							END
 						END

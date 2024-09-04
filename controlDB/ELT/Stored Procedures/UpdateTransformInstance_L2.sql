@@ -12,7 +12,7 @@
 AS
 BEGIN
 
-	DECLARE @localdate datetime	= CONVERT(datetime,CONVERT(datetimeoffset, getdate()) at time zone 'AUS Eastern Standard Time')
+	DECLARE @localdate datetime2	= CONVERT(datetime2,CONVERT(datetimeoffset, getdate()) at time zone 'AUS Eastern Standard Time')
 
 		Update 
 			[ELT].[L2TransformInstance]

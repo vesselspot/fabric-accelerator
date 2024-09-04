@@ -6,7 +6,7 @@
 	)
 RETURNS varchar(max)
 AS BEGIN
-	DECLARE @mapping NVARCHAR(MAX)
+	DECLARE @mapping varchar(MAX)
 		BEGIN
 			WITH 
 				cte

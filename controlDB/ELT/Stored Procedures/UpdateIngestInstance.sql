@@ -11,7 +11,7 @@
 AS
 BEGIN
 
-		DECLARE @localdate as datetime	= CONVERT(datetime,CONVERT(datetimeoffset, getdate()) at time zone 'AUS Eastern Standard Time')
+		DECLARE @localdate as datetime2	= CONVERT(datetime2,CONVERT(datetimeoffset, getdate()) at time zone 'AUS Eastern Standard Time')
 
 	Update 
 		[ELT].[IngestInstance]

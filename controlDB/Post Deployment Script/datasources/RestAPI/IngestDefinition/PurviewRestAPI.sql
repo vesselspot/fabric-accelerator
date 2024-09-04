@@ -292,7 +292,7 @@ SELECT 'Purview' AS	[SourceSystemName],
             },
             "sink": {
                 "name": "createdAt",
-                "type": "DateTime"
+                "type": "datetime2"
             }
         },
         {
@@ -310,7 +310,7 @@ SELECT 'Purview' AS	[SourceSystemName],
             },
             "sink": {
                 "name": "lastModifiedAt",
-                "type": "DateTime"
+                "type": "datetime2"
             }
         },
         {

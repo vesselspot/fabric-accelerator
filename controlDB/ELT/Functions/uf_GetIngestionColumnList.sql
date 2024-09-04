@@ -5,7 +5,7 @@
 	
 RETURNS varchar(max)
 AS BEGIN
-	DECLARE @Columns NVARCHAR(MAX)
+	DECLARE @Columns varchar(MAX)
 
 	--Columns
 	SET @Columns = (

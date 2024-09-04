@@ -1,3 +1,3 @@
 ﻿ALTER TABLE [ELT].[IngestDefinition]
 	ADD CONSTRAINT [PK_IngestDefinition]
-	PRIMARY KEY ([IngestID])
+	PRIMARY KEY NONCLUSTERED([IngestID]) NOT ENFORCED

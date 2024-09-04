@@ -24,16 +24,16 @@
 	[OutputDWTableWriteMode] varchar(20) null,
 	[IngestCount] int null,
 	[L1TransformCount] int null,
-	[L1TransformStartTimestamp] datetime null,
-	[L1TransformEndTimestamp] datetime null,
+	[L1TransformStartTimestamp] datetime2 null,
+	[L1TransformEndTimestamp] datetime2 null,
 	[L1TransformStatus] varchar(20) null,
 	[RetryCount] int null,
 	[ActiveFlag] bit not null,
 	[ReRunL1TransformFlag] bit null,
 	[IngestADFPipelineRunID] uniqueidentifier null,
 	[L1TransformADFPipelineRunID] uniqueidentifier null,
-	[CreatedBy] nvarchar(128) not null,
-	[CreatedTimestamp] datetime not null,
-	[ModifiedBy] nvarchar(128) null,
-	[ModifiedTimestamp] datetime null
+	[CreatedBy] varchar(128) not null,
+	[CreatedTimestamp] datetime2 not null,
+	[ModifiedBy] varchar(128) null,
+	[ModifiedTimestamp] datetime2 null
 )

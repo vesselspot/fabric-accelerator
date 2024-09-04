@@ -32,8 +32,8 @@
 	[OutputDWTableWriteMode] varchar(20) null,
 	[ActiveFlag] bit not null,
 	[RunSequence] int not null,
-	[CreatedBy] nvarchar(128) not null,
-	[CreatedTimestamp] datetime not null,
-	[ModifiedBy] nvarchar(128) null,
-	[ModifiedTimestamp] datetime null
+	[CreatedBy] varchar(128) not null,
+	[CreatedTimestamp] datetime2 not null,
+	[ModifiedBy] varchar(128) null,
+	[ModifiedTimestamp] datetime2 null
 )

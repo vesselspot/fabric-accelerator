@@ -6,7 +6,7 @@
 AS
 BEGIN
 	
-		DECLARE @localdate as datetime	= CONVERT(datetime,CONVERT(datetimeoffset, getdate()) at time zone 'AUS Eastern Standard Time');
+		DECLARE @localdate as datetime2	= CONVERT(datetime2,CONVERT(datetimeoffset, getdate()) at time zone 'AUS Eastern Standard Time');
 
 with 
 	cte
@@ -26,7 +26,7 @@ as
 				,[DataFromTimestamp] = 
 								CASE 
 									WHEN ([EntityName] IS NOT NULL AND [LastDeltaDate] IS NOT NULL) THEN [LastDeltaDate]
-									ELSE CAST('1900-01-01' AS DateTime)
+									ELSE CAST('1900-01-01' AS datetime2)
 								END
 				,[DataToTimestamp] = 
 							CASE 

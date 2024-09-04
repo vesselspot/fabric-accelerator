@@ -1,10 +1,10 @@
 ﻿CREATE PROCEDURE [ELT].[GetTransformDefinition_L1] 
 		@IngestID int, 
-		@DeltaDate datetime = null 			
+		@DeltaDate datetime2 = null 			
 AS
 	--declare @IngestID int 
-	DECLARE @localdate datetime	= CONVERT(datetime,CONVERT(datetimeoffset, getdate()) AT TIME ZONE 'AUS Eastern Standard Time')
-	DECLARE @CuratedDate datetime
+	DECLARE @localdate datetime2	= CONVERT(datetime2,CONVERT(datetimeoffset, getdate()) AT TIME ZONE 'AUS Eastern Standard Time')
+	DECLARE @CuratedDate datetime2
 	SET @CuratedDate = COALESCE(@DeltaDate,@localdate)
 
 

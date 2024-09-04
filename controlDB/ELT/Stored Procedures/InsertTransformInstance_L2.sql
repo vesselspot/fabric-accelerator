@@ -25,7 +25,7 @@
 	@DataToTimestamp Datetime2 =null,
 	@DataFromNumber int =null,
 	@DataToNumber int =null,
-	@LastDeltaDate datetime = null,
+	@LastDeltaDate datetime2 = null,
 	@LastDeltaNumber int = null,
 
 
@@ -54,7 +54,7 @@
 AS
 BEGIN
 
-DECLARE @localdate as datetime	= CONVERT(datetime,CONVERT(datetimeoffset, getdate()) at time zone 'AUS Eastern Standard Time')
+DECLARE @localdate as datetime2	= CONVERT(datetime2,CONVERT(datetimeoffset, getdate()) at time zone 'AUS Eastern Standard Time')
 
 	--Check if Transformation records already exists for the input file for same transformation e.g it's a reload
 		IF NOT EXISTS 
