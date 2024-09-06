@@ -41,6 +41,7 @@ var fabric_deployment_name = 'fabric_dataplatform_deployment_${deployment_suffix
 var purview_deployment_name = 'purview_deployment_${deployment_suffix}'
 var keyvault_deployment_name = 'keyvault_deployment_${deployment_suffix}'
 var audit_deployment_name = 'audit_deployment_${deployment_suffix}'
+var controldb_deployment_name = 'controldb_deployment_${deployment_suffix}'
 
 // Create data platform resource group
 resource fabric_rg  'Microsoft.Resources/resourceGroups@2024-03-01' = {
@@ -138,6 +139,30 @@ module fabric_capacity './modules/fabric-capacity.bicep' = {
     cost_centre_tag: cost_centre_tag
     owner_tag: owner_tag
     sme_tag: sme_tag
-    adminUsers: ['admin@MngEnvMCAP411596.onmicrosoft.com']
+    adminUsers: kv_ref.getSecret('fabric-capacity-admin-username')
+  }
+}
+
+//Deploy SQL control DB 
+module controldb './modules/sqldb.bicep' = {
+  name: controldb_deployment_name
+  scope: fabric_rg
+  params:{
+     sqlserver_name: 'ba-sql01'
+     database_name: 'controlDB' 
+     location: fabric_rg.location
+     cost_centre_tag: cost_centre_tag
+     owner_tag: owner_tag
+     sme_tag: sme_tag
+     sql_admin_username: kv_ref.getSecret('sqlserver-admin-username')
+     sql_admin_password: kv_ref.getSecret('sqlserver-admin-password')
+     ad_admin_username:  kv_ref.getSecret('sqlserver-ad-admin-username')
+     ad_admin_sid:  kv_ref.getSecret('sqlserver-ad-admin-sid')  
+     auto_pause_duration: 60
+     database_sku_name: 'GP_S_Gen5_1' 
+     enable_purview: enable_purview
+     purview_resource: purview.outputs.purview_resource
+     audit_storage_name: audit_integration.outputs.audit_storage_uniquename
+     auditrg: audit_rg.name
   }
 }

@@ -34,7 +34,8 @@ param skuName string = 'F64'
 param skuTier string = 'Fabric'
 
 @description('The list of administrators for the Fabric Capacity instance.')
-param adminUsers array
+@secure()
+param adminUsers string
 
 
 // Variables
