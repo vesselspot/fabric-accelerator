@@ -485,16 +485,16 @@
                     },
                     "type": "String"
                   },
-                  "NotebookName": {
+                  "ComputeName": {
                     "value": {
-                      "value": "@item().NotebookName",
+                      "value": "@item().ComputeName",
                       "type": "Expression"
                     },
                     "type": "String"
                   },
-                  "NotebookPath": {
+                  "ComputePath": {
                     "value": {
-                      "value": "@item().NotebookPath",
+                      "value": "@item().ComputePath",
                       "type": "Expression"
                     },
                     "type": "String"
@@ -687,9 +687,9 @@
                     },
                     "type": "DateTime"
                   },
-                  "DeltaName": {
+                  "WatermarkColName": {
                     "value": {
-                      "value": "@item().DeltaName",
+                      "value": "@item().WatermarkColName",
                       "type": "Expression"
                     },
                     "type": "String"
@@ -945,28 +945,35 @@
     ],
     "parameters": {
       "IngestID": {
-        "type": "int"
+        "type": "int",
+        "defaultValue": 41
       },
       "SourceSystemName": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "WWI"
       },
       "StreamName": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "BuyingGroups"
       },
       "EntityName": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "Sales.BuyingGroups"
       },
       "DeltaName": {
         "type": "string"
       },
       "LastDeltaDate": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "1900-01-01 00:00:00.0000000"
       },
       "DataFromTimestamp": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "1900-01-01 00:00:00.0000000"
       },
       "DataToTimestamp": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "2024-10-03 18:57:36.0000000"
       },
       "LastDeltaNumber": {
         "type": "int"
@@ -993,43 +1000,56 @@
         "type": "string"
       },
       "RunSequence": {
-        "type": "int"
+        "type": "int",
+        "defaultValue": 100
       },
       "ActiveFlag": {
-        "type": "bool"
+        "type": "bool",
+        "defaultValue": true
       },
       "L1TransformationReqdFlag": {
-        "type": "bool"
+        "type": "bool",
+        "defaultValue": true
       },
       "L2TransformationReqdFlag": {
-        "type": "bool"
+        "type": "bool",
+        "defaultValue": true
       },
       "DelayL1TransformationFlag": {
-        "type": "bool"
+        "type": "bool",
+        "defaultValue": false
       },
       "DelayL2TransformationFlag": {
-        "type": "bool"
+        "type": "bool",
+        "defaultValue": true
       },
       "DestinationRawFileSystem": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "Files"
       },
       "DestinationRawFolder": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "raw-bronze/wwi/Sales/BuyingGroups/1900-01"
       },
       "DestinationRawFile": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "Sales_BuyingGroups_1900-01-01_000000.parquet"
       },
       "SourceSQL": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "SELECT * FROM Sales.BuyingGroups"
       },
       "StatSQL": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "SELECT '1900-01-01 00:00:00' AS DataFromTimestamp, '2024-10-03 18:57:36' AS DataToTimestamp,  COUNT(*) AS SourceCount FROM Sales.BuyingGroups"
       },
       "ReloadFlag": {
-        "type": "bool"
+        "type": "bool",
+        "defaultValue": false
       },
       "ADFPipelineRunID": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "TEST"
       }
     },
     "variables": {
