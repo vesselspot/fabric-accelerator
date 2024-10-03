@@ -169,12 +169,13 @@ if OutputDWTableWriteMode == 'append' and LookupColumns is not None:
     numSourceRows = output["numSourceRows"]
     numTargetRowsInserted = output["numTargetRowsInserted"]
     numTargetRowsUpdated = output["numTargetRowsUpdated"]
-
+    numTargetRowsDeleted = output["numTargetRowsDeleted"]
 else:
     output = insertDelta (df, OutputDWTable, OutputDWTableWriteMode)
     numSourceRows = ingestCount
     numTargetRowsInserted = output["numOutputRows"]
     numTargetRowsUpdated ="0"
+    numTargetRowsDeleted ="0"
 
 # METADATA ********************
 
@@ -190,10 +191,11 @@ else:
 # CELL ********************
 
 import json
-mssparkutils.notebook.exit(json.dumps({
+notebookutils.notebook.exit(json.dumps({
   "numSourceRows": numSourceRows,
   "numTargetRowsInserted": numTargetRowsInserted,
-  "numTargetRowsUpdated": numTargetRowsUpdated
+  "numTargetRowsUpdated": numTargetRowsUpdated,
+  "numTargetRowsDeleted": numTargetRowsDeleted
 }))
 
 # METADATA ********************

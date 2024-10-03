@@ -116,21 +116,23 @@ def insertDelta (df, tableName, writeMode="append"):
     validMode =[ "append", "overwrite"]
     assert writeMode in validMode, "Invalid mode specified"
 
+    # Creating a delta table with schema name not supported at the time of writing this code, so replacing schema name with "_". To be commented out when this
+    #feature is available
+    tableName = tableName.replace(".","_")
+    
     #Get delta table reference
     DeltaTable.createIfNotExists(spark).tableName(tableName).addColumns(df.schema).execute()
     deltaTable = DeltaTable.forName(spark,tableName)
     tableName =deltaTable.detail()
-    print(tableName)
-    # tableName =deltaTable.detail().select("location").first()[0].split("/")[-1] #get last "/" substring from location attribute of delta table
-    # assert tableName is not None, "Delta table does not exist"
+    tableName =deltaTable.detail().select("location").first()[0].split("/")[-1] #get last "/" substring from location attribute of delta table
+    assert tableName is not None, "Delta table does not exist"
     
-    # df.write.format("delta").mode(writeMode).saveAsTable(tableName)
+    df.write.format("delta").mode(writeMode).saveAsTable(tableName)
     
-    # stats = deltaTable.history(1).select("OperationMetrics").first()[0]
-    # print(stats)
+    stats = deltaTable.history(1).select("OperationMetrics").first()[0]
+    print(stats)
 
-    # return stats
-    return
+    return stats
 
 # METADATA ********************
 
@@ -164,6 +166,10 @@ def upsertDelta(df,tableName,keyColumns,watermarkColumn=None):
   #      'numTargetRowsCopied': '0', 'rewriteTimeMs': '921', 'numTargetRowsUpdated': '4432', 'numTargetRowsDeleted': '0',
   #      'scanTimeMs': '1615', 'numSourceRows': '4432', 'numTargetChangeFilesAdded': '0'}
   # ##########################################################################################################################################   
+
+    # Creating a delta table with schema name not supported at the time of writing this code, so replacing schema name with "_". To be commented out when this
+    #feature is available
+    tableName = tableName.replace(".","_")
 
     #Get target table reference
     DeltaTable.createIfNotExists(spark).tableName(tableName).addColumns(df.schema).execute()
@@ -236,6 +242,10 @@ def optimizeDelta(tableName):
   # Returns:
   # None
   # ##########################################################################################################################################   
+    # Creating a delta table with schema name not supported at the time of writing this code, so replacing schema name with "_". To be commented out when this
+    #feature is available
+    tableName = tableName.replace(".","_")
+
     deltaTable = DeltaTable.forName(spark,tableName)
     assert deltaTable is not None, "Delta lake table does not exist"
     deltaTable.optimize().executeCompaction()
