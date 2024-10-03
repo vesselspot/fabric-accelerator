@@ -8,14 +8,8 @@
 # META   },
 # META   "dependencies": {
 # META     "lakehouse": {
-# META       "default_lakehouse": "b62f993f-3750-4dfe-94c7-fa742bf96481",
-# META       "default_lakehouse_name": "ba_wwi_lakehouse",
-# META       "default_lakehouse_workspace_id": "7c4738e4-9ef8-4a07-87f2-9edc35a45584",
-# META       "known_lakehouses": [
-# META         {
-# META           "id": "b62f993f-3750-4dfe-94c7-fa742bf96481"
-# META         }
-# META       ]
+# META       "default_lakehouse_name": "",
+# META       "default_lakehouse_workspace_id": ""
 # META     }
 # META   }
 # META }
@@ -39,6 +33,13 @@ spark.conf.set('spark.ms.autotune.queryTuning.enabled', 'true')
 
 #Low shuffle for untouched rows during MERGE
 spark.conf.set("spark.microsoft.delta.merge.lowShuffle.enabled", "true")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # MARKDOWN ********************
 
@@ -83,6 +84,13 @@ def readFile(container, folder, file, colSeparator=None, headerFlag=None):
     df =df.dropDuplicates()
     return df
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # MARKDOWN ********************
 
 # # insertDelta()
@@ -108,9 +116,14 @@ def insertDelta (df, tableName, writeMode="append"):
     validMode =[ "append", "overwrite"]
     assert writeMode in validMode, "Invalid mode specified"
 
+    # Creating a delta table with schema name not supported at the time of writing this code, so replacing schema name with "_". To be commented out when this
+    #feature is available
+    tableName = tableName.replace(".","_")
+    
     #Get delta table reference
     DeltaTable.createIfNotExists(spark).tableName(tableName).addColumns(df.schema).execute()
     deltaTable = DeltaTable.forName(spark,tableName)
+    tableName =deltaTable.detail()
     tableName =deltaTable.detail().select("location").first()[0].split("/")[-1] #get last "/" substring from location attribute of delta table
     assert tableName is not None, "Delta table does not exist"
     
@@ -123,7 +136,10 @@ def insertDelta (df, tableName, writeMode="append"):
 
 # METADATA ********************
 
-# META {}
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # MARKDOWN ********************
 
@@ -150,6 +166,10 @@ def upsertDelta(df,tableName,keyColumns,watermarkColumn=None):
   #      'numTargetRowsCopied': '0', 'rewriteTimeMs': '921', 'numTargetRowsUpdated': '4432', 'numTargetRowsDeleted': '0',
   #      'scanTimeMs': '1615', 'numSourceRows': '4432', 'numTargetChangeFilesAdded': '0'}
   # ##########################################################################################################################################   
+
+    # Creating a delta table with schema name not supported at the time of writing this code, so replacing schema name with "_". To be commented out when this
+    #feature is available
+    tableName = tableName.replace(".","_")
 
     #Get target table reference
     DeltaTable.createIfNotExists(spark).tableName(tableName).addColumns(df.schema).execute()
@@ -196,6 +216,13 @@ def upsertDelta(df,tableName,keyColumns,watermarkColumn=None):
 
     return stats
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # MARKDOWN ********************
 
 # # optimizeDelta()
@@ -215,25 +242,64 @@ def optimizeDelta(tableName):
   # Returns:
   # None
   # ##########################################################################################################################################   
+    # Creating a delta table with schema name not supported at the time of writing this code, so replacing schema name with "_". To be commented out when this
+    #feature is available
+    tableName = tableName.replace(".","_")
+
     deltaTable = DeltaTable.forName(spark,tableName)
     assert deltaTable is not None, "Delta lake table does not exist"
     deltaTable.optimize().executeCompaction()
     deltaTable.vacuum()
     return
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # df = readFile("Files","raw-bronze/wwi/Sales/Orders/2013-01","Sales_Orders_2013-01-01_000000.parquet")
 # display(df)
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # upsertDelta(df,"sales_orders","OrderID|CustomerID","LastEditedWhen")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
 # insertDelta (df, "sales_orders", "append")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 # optimizeDelta("silver_sales_customertransactions")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
