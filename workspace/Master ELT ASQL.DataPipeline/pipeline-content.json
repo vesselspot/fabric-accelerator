@@ -86,8 +86,8 @@
                     "value": "@item().EntityName",
                     "type": "Expression"
                   },
-                  "DeltaName": {
-                    "value": "@item().DeltaName",
+                  "WatermarkColName": {
+                    "value": "@item().WatermarkColName",
                     "type": "Expression"
                   },
                   "LastDeltaDate": {
@@ -292,7 +292,7 @@
       },
       "DelayTransformation": {
         "type": "int",
-        "defaultValue": 0
+        "defaultValue": 1
       }
     }
   }

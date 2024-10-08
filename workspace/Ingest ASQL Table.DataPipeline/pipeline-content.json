@@ -946,7 +946,7 @@
     "parameters": {
       "IngestID": {
         "type": "int",
-        "defaultValue": 21
+        "defaultValue": 41
       },
       "SourceSystemName": {
         "type": "string",
@@ -954,27 +954,26 @@
       },
       "StreamName": {
         "type": "string",
-        "defaultValue": "Orders"
+        "defaultValue": "BuyingGroups"
       },
       "EntityName": {
         "type": "string",
-        "defaultValue": "Sales.Orders"
+        "defaultValue": "Sales.BuyingGroups"
       },
-      "DeltaName": {
-        "type": "string",
-        "defaultValue": "LastEditedWhen"
+      "WatermarkColName": {
+        "type": "string"
       },
       "LastDeltaDate": {
         "type": "string",
-        "defaultValue": "2013-01-01 00:00:00.0000000"
+        "defaultValue": "1900-01-01 00:00:00.0000000"
       },
       "DataFromTimestamp": {
         "type": "string",
-        "defaultValue": "2013-01-01 00:00:00.0000000"
+        "defaultValue": "1900-01-01 00:00:00.0000000"
       },
       "DataToTimestamp": {
         "type": "string",
-        "defaultValue": "2013-04-01 00:00:00.0000000"
+        "defaultValue": "2024-10-03 18:57:36.0000000"
       },
       "LastDeltaNumber": {
         "type": "int"
@@ -992,8 +991,7 @@
         "type": "string"
       },
       "MaxIntervalMinutes": {
-        "type": "int",
-        "defaultValue": 129600
+        "type": "int"
       },
       "MaxIntervalNumber": {
         "type": "int"
@@ -1003,7 +1001,7 @@
       },
       "RunSequence": {
         "type": "int",
-        "defaultValue": 1
+        "defaultValue": 100
       },
       "ActiveFlag": {
         "type": "bool",
@@ -1019,7 +1017,7 @@
       },
       "DelayL1TransformationFlag": {
         "type": "bool",
-        "defaultValue": true
+        "defaultValue": false
       },
       "DelayL2TransformationFlag": {
         "type": "bool",
@@ -1031,19 +1029,19 @@
       },
       "DestinationRawFolder": {
         "type": "string",
-        "defaultValue": "raw-bronze/wwi/Sales/Orders/2013-01"
+        "defaultValue": "raw-bronze/wwi/Sales/BuyingGroups/1900-01"
       },
       "DestinationRawFile": {
         "type": "string",
-        "defaultValue": "Sales_Orders_2013-01-01_000000.parquet"
+        "defaultValue": "Sales_BuyingGroups_1900-01-01_000000.parquet"
       },
       "SourceSQL": {
         "type": "string",
-        "defaultValue": "SELECT * FROM Sales.Orders WHERE LastEditedWhen > '2013-01-01 00:00:00.0000000' AND LastEditedWhen<='2013-04-01 00:00:00.0000000'"
+        "defaultValue": "SELECT * FROM Sales.BuyingGroups"
       },
       "StatSQL": {
         "type": "string",
-        "defaultValue": "SELECT MIN(LastEditedWhen) AS DataFromTimestamp, MAX(LastEditedWhen) AS DataToTimestamp, count(1) as SourceCount FROM Sales.Orders WHERE LastEditedWhen > '2013-01-01 00:00:00.0000000' AND LastEditedWhen <= '2013-04-01 00:00:00.0000000'"
+        "defaultValue": "SELECT '1900-01-01 00:00:00' AS DataFromTimestamp, '2024-10-03 18:57:36' AS DataToTimestamp,  COUNT(*) AS SourceCount FROM Sales.BuyingGroups"
       },
       "ReloadFlag": {
         "type": "bool",
@@ -1051,7 +1049,7 @@
       },
       "ADFPipelineRunID": {
         "type": "string",
-        "defaultValue": "UNIT TEST"
+        "defaultValue": "TEST"
       }
     },
     "variables": {
