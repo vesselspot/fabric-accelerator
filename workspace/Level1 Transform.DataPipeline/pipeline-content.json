@@ -2,26 +2,42 @@
   "properties": {
     "activities": [
       {
+        "name": "Set RunID",
         "type": "SetVariable",
+        "dependsOn": [],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
           "variableName": "RunID",
           "value": {
             "value": "@pipeline().RunId",
             "type": "Expression"
           }
-        },
-        "policy": {
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Set RunID",
-        "dependsOn": []
+        }
       },
       {
+        "name": "Level1 Transform RUNNING",
         "type": "SqlServerStoredProcedure",
+        "dependsOn": [
+          {
+            "activity": "Set RunID",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
-          "database": "controlDB",
           "storedProcedureName": "[ELT].[UpdateTransformInstance_L1]",
+          "database": "controlDB",
           "storedProcedureParameters": {
             "L1TransformADFPipelineRunID": {
               "value": {
@@ -52,29 +68,32 @@
         },
         "externalReferences": {
           "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
-        },
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Level1 Transform RUNNING",
+        }
+      },
+      {
+        "name": "Level 1 Transform Notebook",
+        "type": "TridentNotebook",
         "dependsOn": [
           {
-            "activity": "Set RunID",
+            "activity": "Level1 Transform RUNNING",
             "dependencyConditions": [
               "Succeeded"
             ]
           }
-        ]
-      },
-      {
-        "type": "TridentNotebook",
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
-          "notebookId": "e3432c41-c712-4d7b-8868-a94bcc540915",
-          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "notebookId": {
+            "value": "@pipeline().parameters.ComputeName",
+            "type": "Expression"
+          },
+          "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
           "parameters": {
             "L1TransformInstanceID": {
               "value": {
@@ -218,35 +237,40 @@
             },
             "DeltaName": {
               "value": {
-                "value": "@pipeline().parameters.DeltaName",
+                "value": "@pipeline().parameters.WatermarkColName",
                 "type": "Expression"
               },
               "type": "string"
             }
-          }
-        },
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Level 1 Transform Notebook",
+          },
+          "sessionTag": {
+            "value": "@pipeline().parameters.ComputeName",
+            "type": "Expression"
+          },
+          "capacityId": "e4eb626a-4082-4143-983d-6fc9284b74cd"
+        }
+      },
+      {
+        "name": "Level 1 Transform SUCCESS",
+        "type": "SqlServerStoredProcedure",
         "dependsOn": [
           {
-            "activity": "Level1 Transform RUNNING",
+            "activity": "ForEach Level 2 Config",
             "dependencyConditions": [
               "Succeeded"
             ]
           }
-        ]
-      },
-      {
-        "type": "SqlServerStoredProcedure",
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
-          "database": "controlDB",
           "storedProcedureName": "[ELT].[UpdateTransformInstance_L1]",
+          "database": "controlDB",
           "storedProcedureParameters": {
             "IngestCount": {
               "value": {
@@ -262,9 +286,9 @@
               },
               "type": "Guid"
             },
-            "L1TransformCount": {
+            "L1TransformInsertCount": {
               "value": {
-                "value": "@add(int(variables('numTargetRowsInserted')), int(variables('numTargetRowsUpdated')))",
+                "value": "@variables('numTargetRowsInserted')",
                 "type": "Expression"
               },
               "type": "Int32"
@@ -286,43 +310,53 @@
                 "type": "Expression"
               },
               "type": "Int32"
+            },
+            "L1TransformUpdateCount": {
+              "value": {
+                "value": "@variables('numTargetRowsUpdated')",
+                "type": "Expression"
+              },
+              "type": "Int32"
+            },
+            "L1TransformDeleteCount": {
+              "value": {
+                "value": "@variables('numTargetRowsDeleted')",
+                "type": "Expression"
+              },
+              "type": "Int32"
             }
           }
         },
         "externalReferences": {
           "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
-        },
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Level 1 Transform SUCCESS",
+        }
+      },
+      {
+        "name": "Set numTargetRowsInserted",
+        "type": "SetVariable",
         "dependsOn": [
           {
-            "activity": "ForEach Level 2 Config",
+            "activity": "Level 1 Transform Notebook",
             "dependencyConditions": [
               "Succeeded"
             ]
           }
-        ]
-      },
-      {
-        "type": "SetVariable",
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
           "variableName": "numTargetRowsInserted",
           "value": {
             "value": "@string(json(activity('Level 1 Transform Notebook').output.result.exitValue).numTargetRowsInserted)",
             "type": "Expression"
           }
-        },
-        "policy": {
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Set numTargetRowsInserted",
+        }
+      },
+      {
+        "name": "Set numSourceRows",
+        "type": "SetVariable",
         "dependsOn": [
           {
             "activity": "Level 1 Transform Notebook",
@@ -330,22 +364,22 @@
               "Succeeded"
             ]
           }
-        ]
-      },
-      {
-        "type": "SetVariable",
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
           "variableName": "numSourceRows",
           "value": {
             "value": "@string(json(activity('Level 1 Transform Notebook').output.result.exitValue).numSourceRows)",
             "type": "Expression"
           }
-        },
-        "policy": {
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Set numSourceRows",
+        }
+      },
+      {
+        "name": "Set numTargetRowsUpdated",
+        "type": "SetVariable",
         "dependsOn": [
           {
             "activity": "Level 1 Transform Notebook",
@@ -353,70 +387,22 @@
               "Succeeded"
             ]
           }
-        ]
-      },
-      {
-        "type": "SetVariable",
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
           "variableName": "numTargetRowsUpdated",
           "value": {
             "value": "@string(json(activity('Level 1 Transform Notebook').output.result.exitValue).numTargetRowsUpdated)",
             "type": "Expression"
           }
-        },
-        "policy": {
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Set numTargetRowsUpdated",
-        "dependsOn": [
-          {
-            "activity": "Level 1 Transform Notebook",
-            "dependencyConditions": [
-              "Succeeded"
-            ]
-          }
-        ]
+        }
       },
       {
-        "type": "Lookup",
-        "typeProperties": {
-          "source": {
-            "type": "AzureSqlSource",
-            "sqlReaderStoredProcedureName": "[ELT].[GetTransformDefinition_L2]",
-            "storedProcedureParameters": {
-              "IngestID": {
-                "type": "Int32",
-                "value": {
-                  "value": "@pipeline().parameters.IngestID",
-                  "type": "Expression"
-                }
-              }
-            },
-            "partitionOption": "None",
-            "queryTimeout": "02:00:00"
-          },
-          "datasetSettings": {
-            "type": "AzureSqlTable",
-            "typeProperties": {
-              "database": "controlDB"
-            },
-            "schema": [],
-            "externalReferences": {
-              "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
-            },
-            "annotations": []
-          },
-          "firstRowOnly": false
-        },
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureInput": false,
-          "secureOutput": false
-        },
         "name": "Get Level 2 Transform Config",
+        "type": "Lookup",
         "dependsOn": [
           {
             "activity": "Set numTargetRowsInserted",
@@ -436,22 +422,76 @@
               "Succeeded"
             ]
           }
-        ]
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "AzureSqlSource",
+            "sqlReaderStoredProcedureName": "[ELT].[GetTransformDefinition_L2]",
+            "storedProcedureParameters": {
+              "IngestID": {
+                "type": "Int32",
+                "value": {
+                  "value": "@pipeline().parameters.IngestID",
+                  "type": "Expression"
+                }
+              }
+            },
+            "queryTimeout": "02:00:00",
+            "partitionOption": "None"
+          },
+          "firstRowOnly": false,
+          "datasetSettings": {
+            "annotations": [],
+            "type": "AzureSqlTable",
+            "schema": [],
+            "typeProperties": {
+              "database": "controlDB"
+            },
+            "externalReferences": {
+              "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
+            }
+          }
+        }
       },
       {
+        "name": "ForEach Level 2 Config",
         "type": "ForEach",
+        "dependsOn": [
+          {
+            "activity": "Get Level 2 Transform Config",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
         "typeProperties": {
-          "isSequential": true,
           "items": {
             "value": "@activity('Get Level 2 Transform Config').output.value",
             "type": "Expression"
           },
+          "isSequential": true,
           "activities": [
             {
+              "name": "Instantiate Level 2 Transform",
               "type": "SqlServerStoredProcedure",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
               "typeProperties": {
-                "database": "controlDB",
                 "storedProcedureName": "[ELT].[InsertTransformInstance_L2]",
+                "database": "controlDB",
                 "storedProcedureParameters": {
                   "CustomParameters": {
                     "value": {
@@ -667,34 +707,32 @@
               },
               "externalReferences": {
                 "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
-              },
-              "policy": {
-                "timeout": "0.12:00:00",
-                "retry": 0,
-                "retryIntervalInSeconds": 30,
-                "secureInput": false,
-                "secureOutput": false
-              },
-              "name": "Instantiate Level 2 Transform",
-              "dependsOn": []
+              }
             }
           ]
-        },
-        "name": "ForEach Level 2 Config",
-        "dependsOn": [
-          {
-            "activity": "Get Level 2 Transform Config",
-            "dependencyConditions": [
-              "Succeeded"
-            ]
-          }
-        ]
+        }
       },
       {
+        "name": "Level 1 Transform FAILURE",
         "type": "SqlServerStoredProcedure",
+        "dependsOn": [
+          {
+            "activity": "Level 1 Transform Notebook",
+            "dependencyConditions": [
+              "Failed"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
-          "database": "controlDB",
           "storedProcedureName": "[ELT].[UpdateTransformInstance_L1]",
+          "database": "controlDB",
           "storedProcedureParameters": {
             "L1TransformADFPipelineRunID": {
               "value": {
@@ -725,52 +763,66 @@
         },
         "externalReferences": {
           "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
-        },
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Level 1 Transform FAILURE",
+        }
+      },
+      {
+        "name": "Set numTargetRowsDeleted",
+        "type": "SetVariable",
         "dependsOn": [
           {
             "activity": "Level 1 Transform Notebook",
             "dependencyConditions": [
-              "Failed"
+              "Succeeded"
             ]
           }
-        ]
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "variableName": "numTargetRowsDeleted",
+          "value": {
+            "value": "@string(json(activity('Level 1 Transform Notebook').output.result.exitValue).numTargetRowsDeleted)",
+            "type": "Expression"
+          }
+        }
       }
     ],
     "parameters": {
       "L1TransformInstanceID": {
-        "type": "int"
+        "type": "int",
+        "defaultValue": 2
       },
       "L1TransformID": {
-        "type": "int"
+        "type": "int",
+        "defaultValue": 21
       },
       "IngestID": {
-        "type": "int"
+        "type": "int",
+        "defaultValue": 21
       },
-      "NotebookName": {
-        "type": "string"
+      "ComputeName": {
+        "type": "string",
+        "defaultValue": "3e035f81-2c25-416b-9009-b7ba22e444ab?ctid=4e921ed2-9b1c-457c-a917-16ef468eb90a"
       },
-      "NotebookPath": {
+      "ComputePath": {
         "type": "string"
       },
       "CustomParameters": {
         "type": "string"
       },
       "InputRawFileSystem": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "Files"
       },
       "InputRawFileFolder": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "raw-bronze/wwi/Sales/Orders/2013-01"
       },
       "InputRawFile": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "Sales_Orders_2013-01-01_000000.parquet"
       },
       "InputRawFileDelimiter": {
         "type": "string"
@@ -800,22 +852,28 @@
         "type": "string"
       },
       "LookupColumns": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "OrderID"
       },
       "OutputDWTable": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "silver.sales_orders"
       },
       "OutputDWTableWriteMode": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "append"
       },
       "ReRunL1TransformFlag": {
-        "type": "bool"
+        "type": "bool",
+        "defaultValue": false
       },
       "MaxRetries": {
-        "type": "int"
+        "type": "int",
+        "defaultValue": 3
       },
-      "DeltaName": {
-        "type": "string"
+      "WatermarkColName": {
+        "type": "string",
+        "defaultValue": "LastEditedWhen"
       }
     },
     "variables": {
@@ -831,6 +889,10 @@
         "defaultValue": "0"
       },
       "numTargetRowsUpdated": {
+        "type": "String",
+        "defaultValue": "0"
+      },
+      "numTargetRowsDeleted": {
         "type": "String",
         "defaultValue": "0"
       }
