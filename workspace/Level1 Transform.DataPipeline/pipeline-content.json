@@ -244,7 +244,7 @@
             }
           },
           "sessionTag": {
-            "value": "@pipeline().parameters.ComputeName",
+            "value": "@replace(replace(pipeline().parameters.ComputeName,'-','_'),' ','')",
             "type": "Expression"
           },
           "capacityId": "e4eb626a-4082-4143-983d-6fc9284b74cd"
@@ -418,6 +418,12 @@
           },
           {
             "activity": "Set numTargetRowsUpdated",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          },
+          {
+            "activity": "Set numTargetRowsDeleted",
             "dependencyConditions": [
               "Succeeded"
             ]
@@ -804,7 +810,7 @@
       },
       "ComputeName": {
         "type": "string",
-        "defaultValue": "3e035f81-2c25-416b-9009-b7ba22e444ab?ctid=4e921ed2-9b1c-457c-a917-16ef468eb90a"
+        "defaultValue": "3e035f81-2c25-416b-9009-b7ba22e444ab"
       },
       "ComputePath": {
         "type": "string"

@@ -623,7 +623,59 @@
             }
           ]
         }
+      },
+      {
+        "name": "Update Notebook ID",
+        "type": "Script",
+        "dependsOn": [
+          {
+            "activity": "WWI_L1T_Definition",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "parameters": [
+                {
+                  "name": "L1TransformGenericFabric",
+                  "type": "String",
+                  "value": {
+                    "value": "@variables('NotebookID_L1Transform-Generic-Fabric')",
+                    "type": "Expression"
+                  },
+                  "direction": "Input"
+                }
+              ],
+              "type": "NonQuery",
+              "text": {
+                "value": "Update [ELT].[L1TransformDefinition]\nSet ComputeName = @L1TransformGenericFabric\nwhere ComputeName ='L1Transform-Generic-Fabric'",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00",
+          "database": "controlDB"
+        },
+        "externalReferences": {
+          "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
+        }
       }
-    ]
+    ],
+    "variables": {
+      "NotebookID_L1Transform-Generic-Fabric": {
+        "type": "String",
+        "defaultValue": "3e035f81-2c25-416b-9009-b7ba22e444ab"
+      }
+    }
   }
 }
