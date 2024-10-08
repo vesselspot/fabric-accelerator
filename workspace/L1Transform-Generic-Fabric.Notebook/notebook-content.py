@@ -164,16 +164,21 @@ display(df)
 
 # CELL ********************
 
-if OutputDWTableWriteMode == 'append' and LookupColumns is not None:
+if OutputDWTableWriteMode == 'append' and LookupColumns is not None and ingestCount>0:
     output = upsertDelta(df,OutputDWTable,LookupColumns,WatermarkColName)
     numSourceRows = output["numSourceRows"]
     numTargetRowsInserted = output["numTargetRowsInserted"]
     numTargetRowsUpdated = output["numTargetRowsUpdated"]
     numTargetRowsDeleted = output["numTargetRowsDeleted"]
-else:
+elif OutputDWTableWriteMode == 'overwrite' and ingestCount>0:
     output = insertDelta (df, OutputDWTable, OutputDWTableWriteMode)
     numSourceRows = ingestCount
     numTargetRowsInserted = output["numOutputRows"]
+    numTargetRowsUpdated ="0"
+    numTargetRowsDeleted ="0"
+else:
+    numSourceRows = ingestCount
+    numTargetRowsInserted = "0"
     numTargetRowsUpdated ="0"
     numTargetRowsDeleted ="0"
 
