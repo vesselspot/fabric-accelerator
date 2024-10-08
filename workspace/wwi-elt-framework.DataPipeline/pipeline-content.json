@@ -4,6 +4,8 @@
       {
         "name": "WWI_Ingest_Definition",
         "type": "Copy",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
         "dependsOn": [],
         "policy": {
           "timeout": "0.12:00:00",
@@ -267,6 +269,8 @@
       {
         "name": "WWI_L1T_Definition",
         "type": "Copy",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
             "activity": "WWI_Ingest_Definition",
@@ -605,7 +609,10 @@
                       }
                     ],
                     "type": "NonQuery",
-                    "text": "UPDATE [ELT].[L1TransformDefinition]\nSET LookupColumns = @lookupColumns\n, OutputDWTableWriteMode = @writemode\nWHERE [OutputDWTable]= @dwtable"
+                    "text": {
+                      "value": "UPDATE [ELT].[L1TransformDefinition]\nSET LookupColumns = @lookupColumns\n, OutputDWTableWriteMode = @writemode\nWHERE [OutputDWTable]= 'silver.'+ @dwtable",
+                      "type": "Expression"
+                    }
                   }
                 ],
                 "database": "controlDB"

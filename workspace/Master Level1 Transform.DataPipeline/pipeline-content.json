@@ -93,12 +93,12 @@
                     "value": "@item().IngestID",
                     "type": "Expression"
                   },
-                  "NotebookName": {
-                    "value": "@item().NotebookName",
+                  "ComputeName": {
+                    "value": "@item().ComputeName",
                     "type": "Expression"
                   },
-                  "NotebookPath": {
-                    "value": "@item().NotebookPath",
+                  "ComputePath": {
+                    "value": "@item().ComputePath",
                     "type": "Expression"
                   },
                   "CustomParameters": {
@@ -173,8 +173,8 @@
                     "value": "@item().MaxRetries",
                     "type": "Expression"
                   },
-                  "DeltaName": {
-                    "value": "@item().DeltaName",
+                  "WatermarkColName": {
+                    "value": "@item.WatermarkColName",
                     "type": "Expression"
                   }
                 },
