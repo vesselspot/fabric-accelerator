@@ -785,16 +785,16 @@
                     },
                     "type": "Int32"
                   },
-                  "NotebookName": {
+                  "ComputeName": {
                     "value": {
-                      "value": "@item().NotebookName",
+                      "value": "@item().ComputeName",
                       "type": "Expression"
                     },
                     "type": "String"
                   },
-                  "NotebookPath": {
+                  "ComputePath": {
                     "value": {
-                      "value": "@item().NotebookPath",
+                      "value": "@item().ComputePath",
                       "type": "Expression"
                     },
                     "type": "String"
