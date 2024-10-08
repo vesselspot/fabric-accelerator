@@ -56,7 +56,7 @@
       {
         "type": "ForEach",
         "typeProperties": {
-          "isSequential": true,
+          "isSequential": false,
           "items": {
             "value": "@activity('Get SQL Tables to Ingest').output.value",
             "type": "Expression"
