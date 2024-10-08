@@ -85,28 +85,28 @@ WatermarkColName = None
 
 # CELL ********************
 
-# Parameters for Testing only, should be commented off
-L1TransformInstanceID = 2
-L1TransformID = 21
-IngestID = 21
-CustomParameters = None
-InputRawFileSystem = 'Files'
-InputRawFileFolder = 'raw-bronze/wwi/Sales/Orders/2013-01'
-InputRawFile = 'Sales_Orders_2013-01-01_000000.parquet'
-InputRawFileDelimiter = None
-InputFileHeaderFlag = None
-OutputL1CurateFileSystem = None
-OutputL1CuratedFolder = None
-OutputL1CuratedFile = None
-OutputL1CuratedFileDelimiter = None
-OutputL1CuratedFileFormat = None
-OutputL1CuratedFileWriteMode = None
-OutputDWStagingTable = None
-LookupColumns = 'OrderID'
-OutputDWTable = 'silver.sales_orders'
-OutputDWTableWriteMode = 'append'
-ReRunL1TransformFlag = None
-WatermarkColName = 'LastEditedWhen'
+# # Parameters for Testing only, should be commented off
+# L1TransformInstanceID = 2
+# L1TransformID = 21
+# IngestID = 21
+# CustomParameters = None
+# InputRawFileSystem = 'Files'
+# InputRawFileFolder = 'raw-bronze/wwi/Sales/Orders/2013-01'
+# InputRawFile = 'Sales_Orders_2013-01-01_000000.parquet'
+# InputRawFileDelimiter = None
+# InputFileHeaderFlag = None
+# OutputL1CurateFileSystem = None
+# OutputL1CuratedFolder = None
+# OutputL1CuratedFile = None
+# OutputL1CuratedFileDelimiter = None
+# OutputL1CuratedFileFormat = None
+# OutputL1CuratedFileWriteMode = None
+# OutputDWStagingTable = None
+# LookupColumns = 'OrderID'
+# OutputDWTable = 'silver.sales_orders'
+# OutputDWTableWriteMode = 'append'
+# ReRunL1TransformFlag = None
+# WatermarkColName = 'LastEditedWhen'
 
 # METADATA ********************
 

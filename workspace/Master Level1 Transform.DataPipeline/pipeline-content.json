@@ -66,8 +66,7 @@
       {
         "type": "ForEach",
         "typeProperties": {
-          "isSequential": false,
-          "batchCount": 10,
+          "isSequential": true,
           "items": {
             "value": "@activity('Get Level1 Transform Instances').output.value",
             "type": "Expression"
@@ -174,7 +173,7 @@
                     "type": "Expression"
                   },
                   "WatermarkColName": {
-                    "value": "@item.WatermarkColName",
+                    "value": "@item().WatermarkColName",
                     "type": "Expression"
                   }
                 },
