@@ -96,12 +96,12 @@
                     "value": "@item().L1TransformID",
                     "type": "Expression"
                   },
-                  "NotebookPath": {
-                    "value": "@item().NotebookPath",
+                  "ComputePath": {
+                    "value": "@item().ComputePath",
                     "type": "Expression"
                   },
-                  "NotebookName": {
-                    "value": "@item().NotebookName",
+                  "ComputeName": {
+                    "value": "@item().ComputeName",
                     "type": "Expression"
                   },
                   "InputType": {
@@ -132,8 +132,8 @@
                     "value": "@item().InputDWTable",
                     "type": "Expression"
                   },
-                  "DeltaName": {
-                    "value": "@item().DeltaName",
+                  "WatermarkColName": {
+                    "value": "@item().WatermarkColName",
                     "type": "Expression"
                   },
                   "DataFromTimestamp": {
@@ -240,7 +240,7 @@
       },
       "DelayL2TransformationFlag": {
         "type": "int",
-        "defaultValue": 0
+        "defaultValue": 1
       }
     }
   }

@@ -11,7 +11,7 @@ CREATE     PROC [gold].[create_purchaseorders_monthly_snapshot]
 	, @InputFileDelimiter CHAR(1)  NULL = NULL
 	, @InputFileHeaderFlag BIT NULL = NULL
 	, @InputDWTable VARCHAR(200) NULL = NULL
-	, @DeltaName VARCHAR(50) NULL = NULL
+	, @WatermarkColName VARCHAR(50) NULL = NULL
 	, @DataFromTimestamp DATETIME NULL = NULL
 	, @DataToTimestamp DATETIME NULL = NULL
 	, @DataFromNumber INT NULL = NULL

@@ -11,6 +11,91 @@
     },
     "defaultPowerBIDataSourceVersion": "powerBI_V3",
     "sourceQueryCulture": "en-US",
+    "tables": [
+      {
+        "name": "orders_monthly_snapshot",
+        "sourceLineageTag": "[gold].[orders_monthly_snapshot]",
+        "columns": [
+          {
+            "name": "SalespersonPersonID",
+            "dataType": "int64",
+            "sourceColumn": "SalespersonPersonID",
+            "formatString": "0",
+            "sourceProviderType": "int",
+            "sourceLineageTag": "SalespersonPersonID",
+            "summarizeBy": "sum",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "FullName",
+            "dataType": "string",
+            "sourceColumn": "FullName",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "FullName",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "OrderMonth",
+            "dataType": "dateTime",
+            "sourceColumn": "OrderMonth",
+            "formatString": "General Date",
+            "sourceProviderType": "date",
+            "sourceLineageTag": "OrderMonth",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "OrderCount",
+            "dataType": "int64",
+            "sourceColumn": "OrderCount",
+            "formatString": "0",
+            "sourceProviderType": "int",
+            "sourceLineageTag": "OrderCount",
+            "summarizeBy": "sum",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "{{Partition_Name}}",
+            "mode": "directLake",
+            "source": {
+              "type": "entity",
+              "entityName": "orders_monthly_snapshot",
+              "expressionSource": "DatabaseQuery",
+              "schemaName": "gold"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "IsTableInBiModel",
+            "value": "False"
+          }
+        ]
+      }
+    ],
     "expressions": [
       {
         "name": "DatabaseQuery",
