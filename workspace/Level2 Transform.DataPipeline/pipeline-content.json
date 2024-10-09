@@ -74,9 +74,9 @@
               },
               "type": "DateTime"
             },
-            "DeltaName": {
+            "WatermarkColName": {
               "value": {
-                "value": "@pipeline().parameters.DeltaName",
+                "value": "@pipeline().parameters.WatermarkColName",
                 "type": "Expression"
               },
               "type": "String"
@@ -172,16 +172,16 @@
               },
               "type": "Int32"
             },
-            "NotebookName": {
+            "ComputeName": {
               "value": {
-                "value": "@pipeline().parameters.NotebookName",
+                "value": "@pipeline().parameters.ComputeName",
                 "type": "Expression"
               },
               "type": "String"
             },
-            "NotebookPath": {
+            "ComputePath": {
               "value": {
-                "value": "@pipeline().parameters.NotebookPath",
+                "value": "@pipeline().parameters.ComputePath",
                 "type": "Expression"
               },
               "type": "String"
@@ -275,7 +275,7 @@
         },
         "typeProperties": {
           "storedProcedureName": {
-            "value": "@pipeline().parameters.NotebookName",
+            "value": "@pipeline().parameters.ComputeName",
             "type": "Expression"
           },
           "storedProcedureParameters": {
@@ -363,9 +363,9 @@
               },
               "type": "String"
             },
-            "DeltaName": {
+            "WatermarkColName": {
               "value": {
-                "value": "@pipeline().parameters.DeltaName",
+                "value": "@pipeline().parameters.WatermarkColName",
                 "type": "Expression"
               },
               "type": "String"
@@ -545,8 +545,8 @@
               },
               "type": "Guid"
             },
-            "L2TransformCount": {
-              "value": "0",
+            "L2TransformInsertCount": {
+              "value": null,
               "type": "Int32"
             },
             "L2TransformInstanceId": {
@@ -565,6 +565,14 @@
                 "value": "@pipeline().parameters.MaxRetries",
                 "type": "Expression"
               },
+              "type": "Int32"
+            },
+            "L2TransformUpdateCount": {
+              "value": null,
+              "type": "Int32"
+            },
+            "L2TransformDeleteCount": {
+              "value": null,
               "type": "Int32"
             }
           }
@@ -657,31 +665,39 @@
     ],
     "parameters": {
       "L2TransformInstanceID": {
-        "type": "int"
+        "type": "int",
+        "defaultValue": 1
       },
       "L2TransformID": {
-        "type": "int"
+        "type": "int",
+        "defaultValue": 3
       },
       "IngestID": {
-        "type": "int"
+        "type": "int",
+        "defaultValue": 21
       },
       "L1TransformID": {
-        "type": "int"
+        "type": "int",
+        "defaultValue": 21
       },
-      "NotebookPath": {
+      "ComputePath": {
         "type": "string"
       },
-      "NotebookName": {
-        "type": "string"
+      "ComputeName": {
+        "type": "string",
+        "defaultValue": "[gold].[create_orders_monthly_snapshot]"
       },
       "InputType": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "Curated"
       },
       "InputFileSystem": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "Tables"
       },
       "InputFileFolder": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "silver.sales_orders"
       },
       "InputFile": {
         "type": "string"
@@ -693,10 +709,12 @@
         "type": "int"
       },
       "InputDWTable": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "silver.sales_orders"
       },
-      "DeltaName": {
-        "type": "string"
+      "WatermarkColName": {
+        "type": "string",
+        "defaultValue": "LastEditedWhen"
       },
       "DataFromTimestamp": {
         "type": "string"
@@ -711,13 +729,16 @@
         "type": "int"
       },
       "OutputL2CurateFileSystem": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "Tables"
       },
       "OutputL2CuratedFolder": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "gold"
       },
       "OutputL2CuratedFile": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "orders_monthly_snapshot"
       },
       "OutputL2CuratedFileDelimiter": {
         "type": "string"
@@ -735,16 +756,19 @@
         "type": "string"
       },
       "OutputDWTable": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "[gold].[orders_monthly_snapshot]"
       },
       "OutputDWTableWriteMode": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "append"
       },
       "ReRunL2TransformFlag": {
         "type": "int"
       },
       "MaxRetries": {
-        "type": "int"
+        "type": "int",
+        "defaultValue": 3
       },
       "CustomParameters": {
         "type": "string"
