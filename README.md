@@ -10,14 +10,20 @@ Welcome to the fabric-accelerator repository! This project is an acclerator to b
 - Real-time Insights of batch jobs.
 - Infrastructure as Code (IaC) Bicep for provisioning cloud resources.
 
-Getting Started
+## Getting Started
 To get started with Project Name, follow these steps:
 
 Clone the repository: git clone https://github.com/yourusername/projectname.git
 Install dependencies: npm install or pip install -r requirements.txt
 Run the project: Provide instructions on how to run the project.
-Contributing
-We welcome contributions! Please read our An external link was removed to protect your privacy. for guidelines on how to contribute to this project.
+
+## Contributing
+We welcome contributions! You can contribute in various ways, including:
+- Pull Requests
+- Enriching Wiki documentation
+- Raising issues when you spot one
+- Answering questions in the discussion forum
+Please email the repository owner to be added as a contributor.
 
 License
 This project is licensed under the An external link was removed to protect your privacy..
