@@ -3,7 +3,7 @@ Welcome to the fabric-accelerator repository! This project is an accelerator to 
 
 ## Features
 - Medallion architecture
-- Metadata-driven orchestraion using **[ELT Framework](https://github.com/bennyaustin/elt-framework)**
+- Metadata-driven orchestration using **[ELT Framework](https://github.com/bennyaustin/elt-framework)**
 - Resusable Data Factory Pipelines that can be readily deployed with configuration changes.
 - Reusable Spark notebooks for common transformations.
 - Automated monitoring and optimization of Lakehouses.
