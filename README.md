@@ -20,7 +20,7 @@ Run the project: Provide instructions on how to run the project.
 ## Contributing
 We welcome contributions! You can contribute in various ways, including:
 - Pull Requests
-- Enriching Wiki documentation
+- Enriching **[Wiki documentation](https://github.com/bennyaustin/fabric-accelerator/wiki)**
 - Raising issues when you spot one
 - Answering questions in the discussion forum
 Please email the repository owner to be added as a contributor.
