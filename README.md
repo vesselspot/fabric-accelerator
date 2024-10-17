@@ -22,6 +22,6 @@ We welcome contributions! You can contribute in various ways, including:
 - Enriching **[Wiki documentation](https://github.com/bennyaustin/fabric-accelerator/wiki)**
 - Raising **[issues](https://github.com/bennyaustin/fabric-accelerator/issues)** when you spot one
 - Answering questions in the **[discussion](https://github.com/bennyaustin/fabric-accelerator/discussions)** forum
-Please contact the repository owner to be added as a contributor.
+Please contact me to be added as a contributor.
 
 
