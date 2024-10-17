@@ -9,6 +9,7 @@ Welcome to the fabric-accelerator repository! This project is an accelerator to 
 - Automated monitoring and optimization of Lakehouses.
 - Real-time Insights of batch jobs.
 - Infrastructure as Code (IaC) Bicep for provisioning cloud resources.
+- Comprehensive **[documentation](https://github.com/bennyaustin/fabric-accelerator/wiki)** to assist your implementation.
 
 ## Getting Started
 To get started follow these steps:
