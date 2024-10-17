@@ -1,2 +1,2 @@
-# fabric-dataplatform
-Modern Data Platform on Microsoft Fabric implemented using **[ELT Framework](https://github.com/bennyaustin/elt-framework)**
+# fabric-accelerator
+Accelerator to build Microsoft Fabric modern data platform using **[ELT Framework](https://github.com/bennyaustin/elt-framework)**
