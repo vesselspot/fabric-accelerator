@@ -1,4 +1,4 @@
-# Microsof Fabric Accelerator
+# Microsoft Fabric Accelerator
 Welcome to the fabric-accelerator repository! This project is an accelerator to build a modern data platform on Microsoft Fabric end-to-end. Whether you're a data engineer, contributor, or just curious, this README will guide you through everything you need to know to get started.
 
 ## Features
