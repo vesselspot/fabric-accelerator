@@ -8,13 +8,13 @@ Welcome to the fabric-accelerator repository! This accelerator will help you bui
 - [Contact](#contact)
 
 ## Features
-- Medallion architecture
-- Metadata-driven orchestration using [ELT Framework](https://github.com/bennyaustin/elt-framework)
-- Resusable Data Factory Pipelines that can be readily deployed with configuration changes.
-- Reusable Spark notebooks for common transformations.
-- Automated monitoring and optimization of Lakehouses.
-- Real-time Insights of batch jobs.
-- Infrastructure as Code (IaC) Bicep for provisioning cloud resources.
+- Medallion architecture <sup>[1](https://github.com/bennyaustin/fabric-accelerator/wiki/02-Architecture)</sup>
+- Metadata-driven orchestration using [ELT Framework](https://github.com/bennyaustin/elt-framework) <sup>[2](https://github.com/bennyaustin/fabric-accelerator/wiki/03-Metadata%E2%80%90driven-Orchestration)</sup> 
+- Resusable Data Factory Pipelines that can be readily deployed with configuration changes <sup>[3](https://github.com/bennyaustin/fabric-accelerator/wiki/04-Reusable-Data-Factory-Pipelines)</sup>
+- Reusable Spark notebooks for common transformations <sup>[4](https://github.com/bennyaustin/fabric-accelerator/wiki/05-Reusable-Spark-Notebooks)</sup>
+- Automated monitoring and optimization of Lakehouses <sup>[5](https://github.com/bennyaustin/fabric-accelerator/wiki/06-Lakehouse-Optimizations)</sup>
+- Real-time Insights of batch jobs <sup>[6](https://github.com/bennyaustin/fabric-accelerator/wiki/08-ELT-Insights)</sup>
+- Infrastructure as Code (IaC) Bicep for provisioning cloud resources <sup>[7](https://github.com/bennyaustin/fabric-accelerator/wiki/07-IaC-Bicep)</sup>
 - Comprehensive [documentation](https://github.com/bennyaustin/fabric-accelerator/wiki) to assist your implementation.
 
 ## Getting Started
