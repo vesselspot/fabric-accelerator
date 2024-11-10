@@ -1,5 +1,7 @@
 # Microsoft Fabric Accelerator
-Welcome to the fabric-accelerator repository! This accelerator will help you build a modern data platform end-to-end with Microsoft Fabric. Whether you're a data engineer, contributor, or just curious, this README will guide you through everything you need to know to get started.
+Welcome to the fabric-accelerator repository!
+
+This accelerator will help you build a modern data platform end-to-end with Microsoft Fabric. Whether you're a data engineer, contributor, or just curious, this README will guide you through everything you need to know to get started.
 
 ## Table of Contents
 - [Features](#features)
