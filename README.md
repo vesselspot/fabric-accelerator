@@ -19,8 +19,8 @@ Welcome to the fabric-accelerator repository! This accelerator will help you bui
 
 ## Getting Started
 To get started follow these steps:
-- Clone the repository: git clone https://github.com/bennyaustin/fabric-accelerator.git
-- Follow the setup instructions in the [documentation](https://github.com/bennyaustin/fabric-accelerator/wiki).
+- Clone or Fork the repository: git clone https://github.com/bennyaustin/fabric-accelerator.git
+- Follow the instructions in the [set-up guide](https://github.com/bennyaustin/fabric-accelerator/wiki/01-Set%E2%80%90up).
 
 
 ## Contributing
