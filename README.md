@@ -15,7 +15,7 @@ This accelerator will help you build a modern data platform end-to-end with Micr
 - Resusable Data Factory Pipelines that can be readily deployed with configuration changes <sup>[3](https://github.com/bennyaustin/fabric-accelerator/wiki/04-Reusable-Data-Factory-Pipelines)</sup>
 - Reusable Spark notebooks for common transformations <sup>[4](https://github.com/bennyaustin/fabric-accelerator/wiki/05-Reusable-Spark-Notebooks)</sup>
 - Automated monitoring and optimization of Lakehouses <sup>[5](https://github.com/bennyaustin/fabric-accelerator/wiki/06-Lakehouse-Optimizations)</sup>
-- Real-time Insights of batch jobs <sup>[6](https://github.com/bennyaustin/fabric-accelerator/wiki/08-ELT-Insights)</sup>
+- Real-time Insights into batch jobs <sup>[6](https://github.com/bennyaustin/fabric-accelerator/wiki/08-ELT-Insights)</sup>
 - Infrastructure as Code (IaC) Bicep for provisioning cloud resources <sup>[7](https://github.com/bennyaustin/fabric-accelerator/wiki/07-IaC-Bicep)</sup>
 - Comprehensive [documentation](https://github.com/bennyaustin/fabric-accelerator/wiki) to assist your implementation.
 
