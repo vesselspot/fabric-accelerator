@@ -25,12 +25,12 @@ To get started follow these steps:
 - Follow the instructions in the [set-up guide](https://github.com/bennyaustin/fabric-accelerator/wiki/01-Set%E2%80%90up).
 
 
-## Contributing
-We welcome contributions! You can contribute in various ways, including:
+## Collaborate
+You can collaborate in various ways, including:
 - Pull Requests
-- Enriching [Wiki documentation](https://github.com/bennyaustin/fabric-accelerator/wiki)
-- Raising [issues](https://github.com/bennyaustin/fabric-accelerator/issues) when you spot one
-- Answering questions in the [discussion](https://github.com/bennyaustin/fabric-accelerator/discussions) forum
+- Update/Enrich [Wiki documentation](https://github.com/bennyaustin/fabric-accelerator/wiki)
+- Raise [issues](https://github.com/bennyaustin/fabric-accelerator/issues) when you spot one
+- Answer questions in the [discussion](https://github.com/bennyaustin/fabric-accelerator/discussions) forum
 
 Please contact me to be added as a contributor.
 
