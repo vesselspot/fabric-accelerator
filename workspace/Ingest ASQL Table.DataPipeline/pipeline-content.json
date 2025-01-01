@@ -112,12 +112,12 @@
           },
           "sink": {
             "type": "ParquetSink",
-            "storeSettings": {
-              "type": "LakehouseWriteSettings"
-            },
             "formatSettings": {
               "type": "ParquetWriteSettings",
               "enableVertiParquet": true
+            },
+            "storeSettings": {
+              "type": "LakehouseWriteSettings"
             },
             "datasetSettings": {
               "type": "Parquet",
@@ -137,6 +137,7 @@
               },
               "schema": [],
               "linkedService": {
+                "name": "lh_bronze",
                 "properties": {
                   "type": "Lakehouse",
                   "typeProperties": {
@@ -145,8 +146,7 @@
                     "rootFolder": "Files"
                   },
                   "annotations": []
-                },
-                "name": "lh_bronze"
+                }
               },
               "annotations": []
             }
