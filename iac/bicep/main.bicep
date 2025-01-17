@@ -23,6 +23,9 @@ param deployment_suffix string = utcNow()
 @description('Resource group where Purview will be deployed. Resource group will be created if it doesnt exist')
 param purviewrg string= 'rg-datagovernance'
 
+@description('Location of Purview')
+param purview_location string= 'westus2'
+
 @description('Flag to indicate whether to create a new Purview resource with this data platform deployment')
 param create_purview bool = false
 
@@ -84,9 +87,10 @@ module purview './modules/purview.bicep' = if (create_purview || enable_purview)
   scope: purview_rg
   params:{
     create_purview: create_purview
+    enable_purview: enable_purview
     purviewrg: purviewrg
     purview_name: purview_name
-    location: purview_rg.location
+    location: purview_location
     cost_centre_tag: cost_centre_tag
     owner_tag: owner_tag
     sme_tag: sme_tag
@@ -104,8 +108,9 @@ module kv './modules/keyvault.bicep' = {
      cost_centre_tag: cost_centre_tag
      owner_tag: owner_tag
      sme_tag: sme_tag
-     purview_account_name: purview.outputs.purview_account_name
-     purviewrg: purviewrg
+     purview_account_name: enable_purview ? purview.outputs.purview_account_name : ''
+     purviewrg: enable_purview ? purviewrg : ''
+     enable_purview: enable_purview
   }
 }
 
@@ -161,7 +166,7 @@ module controldb './modules/sqldb.bicep' = {
      auto_pause_duration: 60
      database_sku_name: 'GP_S_Gen5_1' 
      enable_purview: enable_purview
-     purview_resource: purview.outputs.purview_resource
+     purview_resource: enable_purview ? purview.outputs.purview_resource : {}
      audit_storage_name: audit_integration.outputs.audit_storage_uniquename
      auditrg: audit_rg.name
   }
