@@ -16,6 +16,14 @@ param owner_tag string
 @description('Subject Matter Expert (SME) tag that will be applied to all resources in this deployment')
 param sme_tag string
 
+@description('SQL Server admin user name')
+@secure()
+param sql_admin_username string
+
+@description('SQL Server admin user name')
+@secure()
+param sql_admin_password string
+
 @description('AD server admin user name')
 @secure()
 param ad_admin_username string
@@ -57,6 +65,8 @@ resource sqlserver 'Microsoft.Sql/servers@2023-08-01-preview' ={
     }
   identity:{ type: 'SystemAssigned'}
   properties: {
+    administratorLogin: sql_admin_username
+    administratorLoginPassword: sql_admin_password
     administrators:{
       administratorType: 'ActiveDirectory'
       azureADOnlyAuthentication: true
