@@ -159,8 +159,6 @@ module controldb './modules/sqldb.bicep' = {
      cost_centre_tag: cost_centre_tag
      owner_tag: owner_tag
      sme_tag: sme_tag
-     sql_admin_username: kv_ref.getSecret('sqlserver-admin-username')
-     sql_admin_password: kv_ref.getSecret('sqlserver-admin-password')
      ad_admin_username:  kv_ref.getSecret('sqlserver-ad-admin-username')
      ad_admin_sid:  kv_ref.getSecret('sqlserver-ad-admin-sid')  
      auto_pause_duration: 60
