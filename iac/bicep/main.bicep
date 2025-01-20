@@ -131,6 +131,8 @@ module audit_integration './modules/audit.bicep' = {
     audit_storage_name: 'baauditstorage01'
     audit_storage_sku: 'Standard_LRS'    
     audit_loganalytics_name: 'ba-loganalytics01'
+    // fabricrg: dprg
+    // sqlserver_name: controldb.outputs.sqlserver_name
   }
 }
 
@@ -167,18 +169,5 @@ module controldb './modules/sqldb.bicep' = {
      purview_resource: enable_purview ? purview.outputs.purview_resource : {}
      audit_storage_name: audit_integration.outputs.audit_storage_uniquename
      auditrg: audit_rg.name
-  }
-}
-
-//Role Assignmnet for audit storage account
-module audit_storage_role_assignment './modules/auditStorageRoleAssignment.bicep' = {
-  name: 'audit_storage_role_assignment'
-  scope: audit_rg
-  params:{
-    audit_storage_name: audit_integration.outputs.audit_storage_uniquename
-    auditrg: audit_rg.name
-    granted_resource: controldb.outputs.sqlserver_resource
-    grant_reader: false
-    grant_contributor: true
   }
 }

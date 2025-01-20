@@ -115,8 +115,7 @@ resource sqlserver_audit 'Microsoft.Sql/servers/auditingSettings@2023-08-01-prev
     state: 'Enabled'
     storageAccountSubscriptionId: subscription().subscriptionId
     storageEndpoint: audit_storage_account.properties.primaryEndpoints.blob
-    storageAccountAccessKey: audit_storage_account.listKeys().keys[0].value
-  }
+ }
 }
 //Role Assignment
 @description('This is the built-in Storage Blob Reader role. See https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#contributor')
