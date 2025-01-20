@@ -169,3 +169,16 @@ module controldb './modules/sqldb.bicep' = {
      auditrg: audit_rg.name
   }
 }
+
+//Role Assignmnet for audit storage account
+module audit_storage_role_assignment './modules/auditStorageRoleAssignment.bicep' = {
+  name: 'audit_storage_role_assignment'
+  scope: audit_rg
+  params:{
+    audit_storage_name: audit_integration.outputs.audit_storage_uniquename
+    auditrg: audit_rg.name
+    granted_resource: controldb.outputs.sqlserver_resource
+    grant_reader: false
+    grant_contributor: true
+  }
+}

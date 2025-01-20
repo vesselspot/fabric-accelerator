@@ -109,7 +109,7 @@ resource sqlserver_audit 'Microsoft.Sql/servers/auditingSettings@2023-08-01-prev
     auditActionsAndGroups: ['BATCH_COMPLETED_GROUP','SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP','FAILED_DATABASE_AUTHENTICATION_GROUP']
     isAzureMonitorTargetEnabled: true
     isDevopsAuditEnabled: true
-    isManagedIdentityInUse: false
+    isManagedIdentityInUse: true
     isStorageSecondaryKeyInUse: false
     retentionDays: 90
     state: 'Enabled'
@@ -119,12 +119,11 @@ resource sqlserver_audit 'Microsoft.Sql/servers/auditingSettings@2023-08-01-prev
   }
 }
 //Role Assignment
-@description('This is the built-in Reader role. See https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#contributor')
+@description('This is the built-in Storage Blob Reader role. See https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#contributor')
 resource readerRoleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
   scope: subscription()
   name: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
 }
-
 
 resource grant_purview_reader_role 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = if (enable_purview){
   name: guid(subscription().subscriptionId, sqlserver.name, readerRoleDefinition.id)
@@ -135,6 +134,7 @@ resource grant_purview_reader_role 'Microsoft.Authorization/roleAssignments@2020
     roleDefinitionId: readerRoleDefinition.id
   }
 }
-
 output sqlserver_uniquename string = sqlserver.name
 output database_name string = database.name
+output sqlserver_resource object = sqlserver
+output database_resource object = database
