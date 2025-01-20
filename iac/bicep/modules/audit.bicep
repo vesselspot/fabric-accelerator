@@ -27,8 +27,14 @@ param audit_storage_name string
 ])
 param audit_storage_sku string ='Standard_LRS'
 
-@description('Audit Storage name')
+@description('Audit Log Analytic Workspace name')
 param audit_loganalytics_name string
+
+// @description('Fabric Resource Group')
+// param fabricrg string
+
+// @description('Name of SQL Server to be audited')
+// param sqlserver_name string
 
 // Variables
 var suffix = uniqueString(resourceGroup().id)
@@ -79,6 +85,30 @@ resource loganalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
     sku: {name: 'PerGB2018'}
   }
 }
+
+// resource sqlserver 'Microsoft.Sql/servers@2023-08-01-preview' existing = {
+//   name: sqlserver_name
+//   scope: resourceGroup(fabricrg)
+// }
+
+
+// //Role Assignment
+// @description('This is the built-in Storage Blob Contributor role. See https://docs.microsoft.com/azure/role-based-access-control/built-in-roles')
+// resource sbdContributorRoleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
+//   scope: subscription()
+//   name: 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
+// }
+
+// //Grant Storage Blob Data Contributor role to SQL Server  
+// resource grant_sbdc_role 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+//   name: guid(subscription().subscriptionId, sqlserver.name, sbdContributorRoleDefinition.id)
+//   scope: storageAccount
+//   properties: {
+//     principalType: 'ServicePrincipal'
+//     principalId: storageAccount.identity.principalId
+//     roleDefinitionId: sbdContributorRoleDefinition.id
+//   }
+// }
 
 
 output audit_storage_uniquename string = audit_storage_uniquename
