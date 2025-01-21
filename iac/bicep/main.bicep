@@ -20,22 +20,25 @@ param sme_tag string ='sombrero@contoso.com'
 @description('Timestamp that will be appendedto the deployment name')
 param deployment_suffix string = utcNow()
 
-@description('Resource group where Purview will be deployed. Resource group will be created if it doesnt exist')
-param purviewrg string= 'rg-datagovernance'
-
-@description('Location of Purview')
-param purview_location string= 'westus2'
-
 @description('Flag to indicate whether to create a new Purview resource with this data platform deployment')
 param create_purview bool = false
 
 @description('Flag to indicate whether to enable integration of data platform resources with either an existing or new Purview resource')
 param enable_purview bool = true
 
+@description('Resource group where Purview will be deployed. Resource group will be created if it doesnt exist')
+param purviewrg string= 'rg-datagovernance'
+
+@description('Location of Purview')
+param purview_location string= 'westus2'
+
 @description('Resource Name of new or existing Purview Account. Specify a resource name if create_purview=true or enable_purview=true')
 param purview_name string = 'ContosoDG'
 
-@description('Resource group where audit resources will be deployed. Resource group will be created if it doesnt exist')
+@description('Flag to indicate whether auditing of data platform resources should be enabled')
+param enable_audit bool = true
+
+@description('Resource group where audit resources will be deployed if enabled. Resource group will be created if it doesnt exist')
 param auditrg string= 'rg-audit'
 
 
@@ -70,7 +73,7 @@ resource purview_rg  'Microsoft.Resources/resourceGroups@2024-03-01' = if (creat
  }
 
  // Create audit resource group
-resource audit_rg  'Microsoft.Resources/resourceGroups@2024-03-01' = {
+resource audit_rg  'Microsoft.Resources/resourceGroups@2024-03-01' = if(enable_audit) {
   name: auditrg 
   location: rglocation
   tags: {
@@ -119,7 +122,7 @@ resource kv_ref 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
 }
 
 //Enable auditing for data platform resources
-module audit_integration './modules/audit.bicep' = {
+module audit_integration './modules/audit.bicep' = if(enable_audit) {
   name: audit_deployment_name
   scope: audit_rg
   params:{
