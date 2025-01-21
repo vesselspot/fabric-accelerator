@@ -33,6 +33,9 @@ param auto_pause_duration int =60
 @description('Flag to indicate whether to enable integration of data platform resources with either an existing or new Purview resource')
 param enable_purview bool
 
+@description('Flag to indicate whether to enable audit logging of SQL Server')
+param enable_audit bool = false
+
 @description('Resource Name of new or existing Purview Account. Specify a resource name if create_purview=true or enable_purview=true')
 param purview_resource object
 
@@ -101,7 +104,7 @@ resource audit_storage_account 'Microsoft.Storage/storageAccounts@2023-01-01' ex
   scope: resourceGroup(auditrg)
 }
 
-module storage_permissions 'storage-permissions.bicep' = {
+module storage_permissions 'storage-permissions.bicep' = if(enable_audit)  {
   name: 'storage_permissions'
   scope: resourceGroup(auditrg)
   params:{
@@ -114,7 +117,7 @@ module storage_permissions 'storage-permissions.bicep' = {
 }
 
 // Deploy audit diagnostics Azure SQL Server to storage account
-resource sqlserver_audit 'Microsoft.Sql/servers/auditingSettings@2023-08-01-preview' = {
+resource sqlserver_audit 'Microsoft.Sql/servers/auditingSettings@2023-08-01-preview' = if(enable_audit)  {
   name: 'default'
   parent: sqlserver
   properties: {
