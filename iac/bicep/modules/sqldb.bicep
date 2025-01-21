@@ -101,6 +101,18 @@ resource audit_storage_account 'Microsoft.Storage/storageAccounts@2023-01-01' ex
   scope: resourceGroup(auditrg)
 }
 
+module storage_permissions 'storage-permissions.bicep' = {
+  name: 'storage_permissions'
+  scope: resourceGroup(auditrg)
+  params:{
+    storage_name: audit_storage_name
+    storage_rg: auditrg
+    principalId: sqlserver.identity.principalId
+    grant_reader: false
+    grant_contributor: true
+  }
+}
+
 // Deploy audit diagnostics Azure SQL Server to storage account
 resource sqlserver_audit 'Microsoft.Sql/servers/auditingSettings@2023-08-01-preview' = {
   name: 'default'
