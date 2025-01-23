@@ -9,13 +9,13 @@ param dprg string= 'rg-fabric'
 param rglocation string = 'australiaeast'
 
 @description('Cost Centre tag that will be applied to all resources in this deployment')
-param cost_centre_tag string = 'MCAPS'
+param cost_centre_tag string = 'Northstep Technologies'
 
 @description('System Owner tag that will be applied to all resources in this deployment')
-param owner_tag string = 'whirlpool@contoso.com'
+param owner_tag string = 'thunders@northstep.com'
 
 @description('Subject Matter EXpert (SME) tag that will be applied to all resources in this deployment')
-param sme_tag string ='sombrero@contoso.com'
+param sme_tag string ='sixers@northstep.com'
 
 @description('Timestamp that will be appendedto the deployment name')
 param deployment_suffix string = utcNow()
@@ -24,19 +24,19 @@ param deployment_suffix string = utcNow()
 param create_purview bool = false
 
 @description('Flag to indicate whether to enable integration of data platform resources with either an existing or new Purview resource')
-param enable_purview bool = true
+param enable_purview bool = false
 
 @description('Resource group where Purview will be deployed. Resource group will be created if it doesnt exist')
 param purviewrg string= 'rg-datagovernance'
 
 @description('Location of Purview')
-param purview_location string= 'westus2'
+param purview_location string= 'australiaeast'
 
 @description('Resource Name of new or existing Purview Account. Specify a resource name if create_purview=true or enable_purview=true')
-param purview_name string = 'ContosoDG'
+param purview_name string = 'NorthstepDG'
 
 @description('Flag to indicate whether auditing of data platform resources should be enabled')
-param enable_audit bool = true
+param enable_audit bool = false
 
 @description('Resource group where audit resources will be deployed if enabled. Resource group will be created if it doesnt exist')
 param auditrg string= 'rg-audit'
@@ -106,7 +106,7 @@ module kv './modules/keyvault.bicep' = {
   scope: fabric_rg
   params:{
      location: fabric_rg.location
-     keyvault_name: 'ba-kv01'
+     keyvault_name: 'nst-kv01'
      cost_centre_tag: cost_centre_tag
      owner_tag: owner_tag
      sme_tag: sme_tag
@@ -130,9 +130,9 @@ module audit_integration './modules/audit.bicep' = if(enable_audit) {
     cost_centre_tag: cost_centre_tag
     owner_tag: owner_tag
     sme_tag: sme_tag
-    audit_storage_name: 'baauditstorage01'
+    audit_storage_name: 'nststorage01'
     audit_storage_sku: 'Standard_LRS'    
-    audit_loganalytics_name: 'ba-loganalytics01'
+    audit_loganalytics_name: 'nst-loganalytics01'
   }
 }
 
@@ -141,7 +141,7 @@ module fabric_capacity './modules/fabric-capacity.bicep' = {
   name: fabric_deployment_name
   scope: fabric_rg
   params:{
-    fabric_name: 'bafabric01'
+    fabric_name: 'nstfabric01'
     location: fabric_rg.location
     cost_centre_tag: cost_centre_tag
     owner_tag: owner_tag
@@ -155,7 +155,7 @@ module controldb './modules/sqldb.bicep' = {
   name: controldb_deployment_name
   scope: fabric_rg
   params:{
-     sqlserver_name: 'ba-sql01'
+     sqlserver_name: 'nst-sql01'
      database_name: 'controlDB' 
      location: fabric_rg.location
      cost_centre_tag: cost_centre_tag
