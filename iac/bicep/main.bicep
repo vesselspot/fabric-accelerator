@@ -168,7 +168,7 @@ module controldb './modules/sqldb.bicep' = {
      enable_purview: enable_purview
      purview_resource: enable_purview ? purview.outputs.purview_resource : {}
      enable_audit: false
-     audit_storage_name: audit_integration.outputs.audit_storage_uniquename
-     auditrg: audit_rg.name
+     audit_storage_name: enable_audit?audit_integration.outputs.audit_storage_uniquename:''
+     auditrg: enable_audit?audit_rg.name:''
   }
 }
