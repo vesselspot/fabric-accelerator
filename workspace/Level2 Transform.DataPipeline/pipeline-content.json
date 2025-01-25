@@ -476,9 +476,18 @@
             "annotations": [],
             "type": "DataWarehouse",
             "typeProperties": {
-              "endpoint": "2ipjetq4tn6elkixc3xundvzbi-u4ai3dmkby5u5daorxfpvr5n5q.datawarehouse.fabric.microsoft.com",
-              "artifactId": "7e2bbf6b-43fb-498c-90e3-56199c8c3b5e",
-              "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec"
+              "endpoint": {
+                "value": "@variables('dwEndpoint')",
+                "type": "Expression"
+              },
+              "artifactId": {
+                "value": "@variables('dwObjectId')",
+                "type": "Expression"
+              },
+              "workspaceId": {
+                "value": "@pipeline().DataFactory",
+                "type": "Expression"
+              }
             }
           },
           "objectId": "7e2bbf6b-43fb-498c-90e3-56199c8c3b5e"
@@ -779,12 +788,10 @@
         "type": "String"
       },
       "dwObjectId": {
-        "type": "String",
-        "defaultValue": "7e2bbf6b-43fb-498c-90e3-56199c8c3b5e"
+        "type": "String"
       },
       "dwEndpoint": {
-        "type": "String",
-        "defaultValue": "2ipjetq4tn6elkixc3xundvzbi-u4ai3dmkby5u5daorxfpvr5n5q.datawarehouse.fabric.microsoft.com"
+        "type": "String"
       }
     }
   }
