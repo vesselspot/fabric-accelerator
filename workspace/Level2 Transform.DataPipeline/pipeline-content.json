@@ -252,7 +252,7 @@
           }
         },
         "externalReferences": {
-          "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
+          "connection": "7a7b76a4-9e97-4ea3-8152-e0265c0d03c3"
         }
       },
       {
@@ -479,7 +479,7 @@
             "typeProperties": {
               "endpoint": "2ipjetq4tn6elkixc3xundvzbi-u4ai3dmkby5u5daorxfpvr5n5q.datawarehouse.fabric.microsoft.com",
               "artifactId": "7e2bbf6b-43fb-498c-90e3-56199c8c3b5e",
-              "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec"
+              "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6"
             }
           }
         }
@@ -578,7 +578,7 @@
           }
         },
         "externalReferences": {
-          "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
+          "connection": "7a7b76a4-9e97-4ea3-8152-e0265c0d03c3"
         }
       },
       {
@@ -659,7 +659,7 @@
           }
         },
         "externalReferences": {
-          "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
+          "connection": "7a7b76a4-9e97-4ea3-8152-e0265c0d03c3"
         }
       }
     ],
