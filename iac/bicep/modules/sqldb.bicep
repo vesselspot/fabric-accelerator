@@ -100,7 +100,11 @@ resource database 'Microsoft.Sql/servers/databases@2021-11-01' ={
 
 //Get Reference to audit storage account
 <<<<<<< HEAD
+<<<<<<< HEAD
 resource audit_storage_account 'Microsoft.Storage/storageAccounts@2023-01-01' existing = if(enable_audit)  {
+=======
+resource audit_storage_account 'Microsoft.Storage/storageAccounts@2023-01-01' existing = if(enable_audit) {
+>>>>>>> e150730c14c2051c5bd6fa313a8e3deacc2461e7
 =======
 resource audit_storage_account 'Microsoft.Storage/storageAccounts@2023-01-01' existing = if(enable_audit) {
 >>>>>>> e150730c14c2051c5bd6fa313a8e3deacc2461e7
