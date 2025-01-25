@@ -472,16 +472,25 @@
         },
         "linkedService": {
           "name": "dw_gold",
-          "objectId": "7e2bbf6b-43fb-498c-90e3-56199c8c3b5e",
           "properties": {
             "annotations": [],
             "type": "DataWarehouse",
             "typeProperties": {
-              "endpoint": "2ipjetq4tn6elkixc3xundvzbi-u4ai3dmkby5u5daorxfpvr5n5q.datawarehouse.fabric.microsoft.com",
-              "artifactId": "7e2bbf6b-43fb-498c-90e3-56199c8c3b5e",
-              "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6"
+              "endpoint": {
+                "value": "@variables('dwEndpoint')",
+                "type": "Expression"
+              },
+              "artifactId": {
+                "value": "@variables('dwObjectId')",
+                "type": "Expression"
+              },
+              "workspaceId": {
+                "value": "@pipeline().DataFactory",
+                "type": "Expression"
+              }
             }
-          }
+          },
+          "objectId": "7e2bbf6b-43fb-498c-90e3-56199c8c3b5e"
         }
       },
       {
@@ -776,6 +785,12 @@
     },
     "variables": {
       "RunID": {
+        "type": "String"
+      },
+      "dwObjectId": {
+        "type": "String"
+      },
+      "dwEndpoint": {
         "type": "String"
       }
     }
