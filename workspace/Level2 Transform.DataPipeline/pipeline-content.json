@@ -788,10 +788,12 @@
         "type": "String"
       },
       "dwObjectId": {
-        "type": "String"
+        "type": "String",
+        "defaultValue": "7e2bbf6b-43fb-498c-90e3-56199c8c3b5e"
       },
       "dwEndpoint": {
-        "type": "String"
+        "type": "String",
+        "defaultValue": "2ipjetq4tn6elkixc3xundvzbi-u4ai3dmkby5u5daorxfpvr5n5q.datawarehouse.fabric.microsoft.com"
       }
     }
   }
