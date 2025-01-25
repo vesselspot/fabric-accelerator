@@ -2,10 +2,26 @@
   "properties": {
     "activities": [
       {
+        "name": "Insert Ingest Instance - RUNNING",
         "type": "SqlServerStoredProcedure",
+        "dependsOn": [
+          {
+            "activity": "Set RunID",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
-          "database": "controlDB",
           "storedProcedureName": "[ELT].[InsertIngestInstance]",
+          "database": "controlDB",
           "storedProcedureParameters": {
             "ADFPipelineRunID": {
               "value": {
@@ -53,42 +69,42 @@
         },
         "externalReferences": {
           "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
-        },
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Insert Ingest Instance - RUNNING",
-        "dependsOn": [
-          {
-            "activity": "Set RunID",
-            "dependencyConditions": [
-              "Succeeded"
-            ]
-          }
-        ]
+        }
       },
       {
+        "name": "Set RunID",
         "type": "SetVariable",
+        "dependsOn": [],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
           "variableName": "RunID",
           "value": {
             "value": "@pipeline().RunId",
             "type": "Expression"
           }
-        },
-        "policy": {
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Set RunID",
-        "dependsOn": []
+        }
       },
       {
+        "name": "Copy Source to Lakehouse",
         "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Insert Ingest Instance - RUNNING",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
           "source": {
             "type": "AzureSqlSource",
@@ -96,61 +112,66 @@
               "value": "@pipeline().parameters.SourceSQL",
               "type": "Expression"
             },
-            "partitionOption": "None",
             "queryTimeout": "02:00:00",
+            "partitionOption": "None",
             "datasetSettings": {
+              "annotations": [],
               "type": "AzureSqlTable",
+              "schema": [],
               "typeProperties": {
                 "database": "WideWorldImporters"
               },
-              "schema": [],
               "externalReferences": {
                 "connection": "a0a57e51-5032-4e46-b0f0-493c9d2f51c9"
-              },
-              "annotations": []
+              }
             }
           },
           "sink": {
-            "type": "ParquetSink",
-            "formatSettings": {
-              "type": "ParquetWriteSettings",
-              "enableVertiParquet": true
-            },
+            "type": "DelimitedTextSink",
             "storeSettings": {
               "type": "LakehouseWriteSettings"
             },
+            "formatSettings": {
+              "type": "DelimitedTextWriteSettings",
+              "quoteAllText": true,
+              "fileExtension": ".txt"
+            },
             "datasetSettings": {
-              "type": "Parquet",
+              "annotations": [],
+              "linkedService": {
+                "name": "84da5653_bc83_445d_8f44_e1371107aad4",
+                "properties": {
+                  "annotations": [],
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "workspaceId": "@pipeline().DataFactory",
+                    "artifactId": "@variables('lakehouseObjectId')",
+                    "rootFolder": "Files"
+                  }
+                }
+              },
+              "type": "DelimitedText",
               "typeProperties": {
                 "location": {
                   "type": "LakehouseLocation",
-                  "folderPath": {
-                    "value": "@pipeline().parameters.DestinationRawFolder",
-                    "type": "Expression"
-                  },
                   "fileName": {
                     "value": "@pipeline().parameters.DestinationRawFile",
                     "type": "Expression"
+                  },
+                  "folderPath": {
+                    "value": "@pipeline().parameters.DestinationRawFolder",
+                    "type": "Expression"
                   }
                 },
-                "compressionCodec": "snappy"
+                "columnDelimiter": ",",
+                "escapeChar": "\\",
+                "firstRowAsHeader": true,
+                "quoteChar": "\""
               },
-              "schema": [],
-              "linkedService": {
-                "name": "lh_bronze",
-                "properties": {
-                  "type": "Lakehouse",
-                  "typeProperties": {
-                    "artifactId": "1355e38b-d635-45a7-9d21-8f02933bc81f",
-                    "workspaceId": "00000000-0000-0000-0000-000000000000",
-                    "rootFolder": "Files"
-                  },
-                  "annotations": []
-                }
-              },
-              "annotations": []
+              "schema": []
             }
           },
+          "enableStaging": false,
           "translator": {
             "type": "TabularTranslator",
             "typeConversion": true,
@@ -158,17 +179,12 @@
               "allowDataTruncation": true,
               "treatBooleanAsNumber": false
             }
-          },
-          "enableStaging": false
-        },
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Copy Source to Lakehouse",
+          }
+        }
+      },
+      {
+        "name": "Get High Watermark",
+        "type": "Lookup",
         "dependsOn": [
           {
             "activity": "Insert Ingest Instance - RUNNING",
@@ -176,10 +192,14 @@
               "Succeeded"
             ]
           }
-        ]
-      },
-      {
-        "type": "Lookup",
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
           "source": {
             "type": "AzureSqlSource",
@@ -187,43 +207,43 @@
               "value": "@pipeline().parameters.StatSQL",
               "type": "Expression"
             },
-            "partitionOption": "None",
-            "queryTimeout": "02:00:00"
+            "queryTimeout": "02:00:00",
+            "partitionOption": "None"
           },
           "datasetSettings": {
+            "annotations": [],
             "type": "AzureSqlTable",
+            "schema": [],
             "typeProperties": {
               "database": "WideWorldImporters"
             },
-            "schema": [],
             "externalReferences": {
               "connection": "a0a57e51-5032-4e46-b0f0-493c9d2f51c9"
-            },
-            "annotations": []
+            }
           }
-        },
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Get High Watermark",
+        }
+      },
+      {
+        "name": "Update Ingest Instance - SUCCESS",
+        "type": "SqlServerStoredProcedure",
         "dependsOn": [
           {
-            "activity": "Insert Ingest Instance - RUNNING",
+            "activity": "Update High Watermark",
             "dependencyConditions": [
               "Succeeded"
             ]
           }
-        ]
-      },
-      {
-        "type": "SqlServerStoredProcedure",
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
-          "database": "controlDB",
           "storedProcedureName": "[ELT].[UpdateIngestInstance]",
+          "database": "controlDB",
           "storedProcedureParameters": {
             "ADFIngestPipelineRunID": {
               "value": {
@@ -275,29 +295,29 @@
         },
         "externalReferences": {
           "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
-        },
+        }
+      },
+      {
+        "name": "Update Ingest Instance - FAILURE",
+        "type": "SqlServerStoredProcedure",
+        "dependsOn": [
+          {
+            "activity": "Copy Source to Lakehouse",
+            "dependencyConditions": [
+              "Failed"
+            ]
+          }
+        ],
         "policy": {
           "timeout": "0.12:00:00",
           "retry": 0,
           "retryIntervalInSeconds": 30,
-          "secureInput": false,
-          "secureOutput": false
+          "secureOutput": false,
+          "secureInput": false
         },
-        "name": "Update Ingest Instance - SUCCESS",
-        "dependsOn": [
-          {
-            "activity": "Update High Watermark",
-            "dependencyConditions": [
-              "Succeeded"
-            ]
-          }
-        ]
-      },
-      {
-        "type": "SqlServerStoredProcedure",
         "typeProperties": {
-          "database": "controlDB",
           "storedProcedureName": "[ELT].[UpdateIngestInstance]",
+          "database": "controlDB",
           "storedProcedureParameters": {
             "ADFIngestPipelineRunID": {
               "value": {
@@ -321,63 +341,11 @@
         },
         "externalReferences": {
           "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
-        },
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Update Ingest Instance - FAILURE",
-        "dependsOn": [
-          {
-            "activity": "Copy Source to Lakehouse",
-            "dependencyConditions": [
-              "Failed"
-            ]
-          }
-        ]
+        }
       },
       {
-        "type": "Lookup",
-        "typeProperties": {
-          "source": {
-            "type": "AzureSqlSource",
-            "sqlReaderStoredProcedureName": "[ELT].[GetTransformDefinition_L1]",
-            "storedProcedureParameters": {
-              "IngestID": {
-                "type": "Int32",
-                "value": {
-                  "value": "@pipeline().parameters.IngestID",
-                  "type": "Expression"
-                }
-              }
-            },
-            "partitionOption": "None",
-            "queryTimeout": "02:00:00"
-          },
-          "datasetSettings": {
-            "type": "AzureSqlTable",
-            "typeProperties": {
-              "database": "controlDB"
-            },
-            "schema": [],
-            "externalReferences": {
-              "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
-            },
-            "annotations": []
-          },
-          "firstRowOnly": false
-        },
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureInput": false,
-          "secureOutput": false
-        },
         "name": "Get Level 1 Transform Config",
+        "type": "Lookup",
         "dependsOn": [
           {
             "activity": "Get High Watermark",
@@ -391,22 +359,76 @@
               "Succeeded"
             ]
           }
-        ]
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "AzureSqlSource",
+            "sqlReaderStoredProcedureName": "[ELT].[GetTransformDefinition_L1]",
+            "storedProcedureParameters": {
+              "IngestID": {
+                "type": "Int32",
+                "value": {
+                  "value": "@pipeline().parameters.IngestID",
+                  "type": "Expression"
+                }
+              }
+            },
+            "queryTimeout": "02:00:00",
+            "partitionOption": "None"
+          },
+          "firstRowOnly": false,
+          "datasetSettings": {
+            "annotations": [],
+            "type": "AzureSqlTable",
+            "schema": [],
+            "typeProperties": {
+              "database": "controlDB"
+            },
+            "externalReferences": {
+              "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
+            }
+          }
+        }
       },
       {
+        "name": "ForEach Level 1 Config",
         "type": "ForEach",
+        "dependsOn": [
+          {
+            "activity": "Get Level 1 Transform Config",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
         "typeProperties": {
-          "isSequential": true,
           "items": {
             "value": "@activity('Get Level 1 Transform Config').output.value",
             "type": "Expression"
           },
+          "isSequential": true,
           "activities": [
             {
+              "name": "Instantiate Level 1 Transform",
               "type": "SqlServerStoredProcedure",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
               "typeProperties": {
-                "database": "controlDB",
                 "storedProcedureName": "[ELT].[InsertTransformInstance_L1]",
+                "database": "controlDB",
                 "storedProcedureParameters": {
                   "CustomParameters": {
                     "value": {
@@ -566,31 +588,29 @@
               },
               "externalReferences": {
                 "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
-              },
-              "policy": {
-                "timeout": "0.12:00:00",
-                "retry": 0,
-                "retryIntervalInSeconds": 30,
-                "secureInput": false,
-                "secureOutput": false
-              },
-              "name": "Instantiate Level 1 Transform",
-              "dependsOn": []
+              }
             }
           ]
-        },
-        "name": "ForEach Level 1 Config",
+        }
+      },
+      {
+        "name": "Get Level 2 Transform Config",
+        "type": "Lookup",
         "dependsOn": [
           {
-            "activity": "Get Level 1 Transform Config",
+            "activity": "ForEach Level 1 Config",
             "dependencyConditions": [
               "Succeeded"
             ]
           }
-        ]
-      },
-      {
-        "type": "Lookup",
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
           "source": {
             "type": "AzureSqlSource",
@@ -604,53 +624,55 @@
                 }
               }
             },
-            "partitionOption": "None",
-            "queryTimeout": "02:00:00"
+            "queryTimeout": "02:00:00",
+            "partitionOption": "None"
           },
+          "firstRowOnly": false,
           "datasetSettings": {
+            "annotations": [],
             "type": "AzureSqlTable",
+            "schema": [],
             "typeProperties": {
               "database": "controlDB"
             },
-            "schema": [],
             "externalReferences": {
               "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
-            },
-            "annotations": []
-          },
-          "firstRowOnly": false
-        },
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Get Level 2 Transform Config",
+            }
+          }
+        }
+      },
+      {
+        "name": "ForEach Level 2 Config",
+        "type": "ForEach",
         "dependsOn": [
           {
-            "activity": "ForEach Level 1 Config",
+            "activity": "Get Level 2 Transform Config",
             "dependencyConditions": [
               "Succeeded"
             ]
           }
-        ]
-      },
-      {
-        "type": "ForEach",
+        ],
         "typeProperties": {
-          "isSequential": true,
           "items": {
             "value": "@activity('Get Level 2 Transform Config').output.value",
             "type": "Expression"
           },
+          "isSequential": true,
           "activities": [
             {
+              "name": "Instantiate Level 2 Transform",
               "type": "SqlServerStoredProcedure",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
               "typeProperties": {
-                "database": "controlDB",
                 "storedProcedureName": "[ELT].[InsertTransformInstance_L2]",
+                "database": "controlDB",
                 "storedProcedureParameters": {
                   "CustomParameters": {
                     "value": {
@@ -866,34 +888,32 @@
               },
               "externalReferences": {
                 "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
-              },
-              "policy": {
-                "timeout": "0.12:00:00",
-                "retry": 0,
-                "retryIntervalInSeconds": 30,
-                "secureInput": false,
-                "secureOutput": false
-              },
-              "name": "Instantiate Level 2 Transform",
-              "dependsOn": []
+              }
             }
           ]
-        },
-        "name": "ForEach Level 2 Config",
+        }
+      },
+      {
+        "name": "Update High Watermark",
+        "type": "SqlServerStoredProcedure",
         "dependsOn": [
           {
-            "activity": "Get Level 2 Transform Config",
+            "activity": "ForEach Level 2 Config",
             "dependencyConditions": [
               "Succeeded"
             ]
           }
-        ]
-      },
-      {
-        "type": "SqlServerStoredProcedure",
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
         "typeProperties": {
-          "database": "controlDB",
           "storedProcedureName": "[ELT].[UpdateIngestDefinition]",
+          "database": "controlDB",
           "storedProcedureParameters": {
             "IngestID": {
               "value": {
@@ -924,23 +944,7 @@
         },
         "externalReferences": {
           "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
-        },
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "Update High Watermark",
-        "dependsOn": [
-          {
-            "activity": "ForEach Level 2 Config",
-            "dependencyConditions": [
-              "Succeeded"
-            ]
-          }
-        ]
+        }
       }
     ],
     "parameters": {
@@ -1055,6 +1059,10 @@
     "variables": {
       "RunID": {
         "type": "String"
+      },
+      "lakehouseObjectId": {
+        "type": "String",
+        "defaultValue": "c6c5024f-de55-45ca-a79a-decbe16235e3"
       }
     }
   }
