@@ -185,6 +185,14 @@
                   "ADFPipelineRunID": {
                     "value": "@item().ADFPipelineRunID",
                     "type": "Expression"
+                  },
+                  "BronzeObjectID": {
+                    "value": "@pipeline().parameters.BronzeObjectID",
+                    "type": "Expression"
+                  },
+                  "BronzeWorkspaceID": {
+                    "value": "@pipeline().parameters.BronzeWorkspaceID",
+                    "type": "Expression"
                   }
                 },
                 "waitOnCompletion": true
@@ -227,6 +235,14 @@
             "DelayL1TransformationFlag": {
               "value": "@pipeline().parameters.DelayTransformation",
               "type": "Expression"
+            },
+            "SilverObjectID": {
+              "value": "@pipeline().parameters.SilverObjectID",
+              "type": "Expression"
+            },
+            "SilverWorkspaceID": {
+              "value": "@pipeline().parameters.SilverWorkspaceID",
+              "type": "Expression"
             }
           },
           "waitOnCompletion": true
@@ -264,6 +280,18 @@
             "DelayL2TransformationFlag": {
               "value": "@pipeline().parameters.DelayTransformation",
               "type": "Expression"
+            },
+            "GoldObjectID": {
+              "value": "@pipeline().parameters.GoldObjectID",
+              "type": "Expression"
+            },
+            "GoldWorkspaceID": {
+              "value": "@pipeline().parameters.GoldWorkspaceID",
+              "type": "Expression"
+            },
+            "GoldDWEndpoint": {
+              "value": "@pipeline().parameters.GoldDWEndpoint",
+              "type": "Expression"
             }
           },
           "waitOnCompletion": true
@@ -292,6 +320,34 @@
       },
       "DelayTransformation": {
         "type": "int"
+      },
+      "BronzeObjectID": {
+        "type": "string",
+        "defaultValue": "c6c5024f-de55-45ca-a79a-decbe16235e3"
+      },
+      "BronzeWorkspaceID": {
+        "type": "string",
+        "defaultValue": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec"
+      },
+      "SilverObjectID": {
+        "type": "string",
+        "defaultValue": "c6c5024f-de55-45ca-a79a-decbe16235e3"
+      },
+      "SilverWorkspaceID": {
+        "type": "string",
+        "defaultValue": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec"
+      },
+      "GoldObjectID": {
+        "type": "string",
+        "defaultValue": "7e2bbf6b-43fb-498c-90e3-56199c8c3b5e"
+      },
+      "GoldWorkspaceID": {
+        "type": "string",
+        "defaultValue": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec"
+      },
+      "GoldDWEndpoint": {
+        "type": "string",
+        "defaultValue": "2ipjetq4tn6elkixc3xundvzbi-u4ai3dmkby5u5daorxfpvr5n5q.datawarehouse.fabric.microsoft.com"
       }
     }
   }
