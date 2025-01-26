@@ -203,6 +203,18 @@
                   "CustomParameters": {
                     "value": "@item().CustomParameters",
                     "type": "Expression"
+                  },
+                  "GoldObjectID": {
+                    "value": "@pipeline().parameters.GoldObjectID",
+                    "type": "Expression"
+                  },
+                  "GoldWorkspaceID": {
+                    "value": "@pipeline().parameters.GoldWorkspaceID",
+                    "type": "Expression"
+                  },
+                  "GoldDWEndpoint": {
+                    "value": "@pipeline().parameters.GoldDWEndpoint",
+                    "type": "Expression"
                   }
                 },
                 "waitOnCompletion": true
@@ -241,6 +253,18 @@
       "DelayL2TransformationFlag": {
         "type": "int",
         "defaultValue": 1
+      },
+      "GoldObjectID": {
+        "type": "string",
+        "defaultValue": "7e2bbf6b-43fb-498c-90e3-56199c8c3b5e"
+      },
+      "GoldWorkspaceID": {
+        "type": "string",
+        "defaultValue": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec"
+      },
+      "GoldDWEndpoint": {
+        "type": "string",
+        "defaultValue": "2ipjetq4tn6elkixc3xundvzbi-u4ai3dmkby5u5daorxfpvr5n5q.datawarehouse.fabric.microsoft.com"
       }
     }
   }
