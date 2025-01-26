@@ -235,6 +235,14 @@
             "DelayL1TransformationFlag": {
               "value": "@pipeline().parameters.DelayTransformation",
               "type": "Expression"
+            },
+            "SilverObjectID": {
+              "value": "@pipeline().parameters.SilverObjectID",
+              "type": "Expression"
+            },
+            "SilverWorkspaceID": {
+              "value": "@pipeline().parameters.SilverWorkspaceID",
+              "type": "Expression"
             }
           },
           "waitOnCompletion": true
@@ -306,6 +314,14 @@
         "defaultValue": "c6c5024f-de55-45ca-a79a-decbe16235e3"
       },
       "BronzeWorkspaceID": {
+        "type": "string",
+        "defaultValue": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec"
+      },
+      "SilverObjectID": {
+        "type": "string",
+        "defaultValue": "c6c5024f-de55-45ca-a79a-decbe16235e3"
+      },
+      "SilverWorkspaceID": {
         "type": "string",
         "defaultValue": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec"
       }

@@ -175,6 +175,14 @@
                   "WatermarkColName": {
                     "value": "@item().WatermarkColName",
                     "type": "Expression"
+                  },
+                  "SilverObjectID": {
+                    "value": "@pipeline().parameters.SilverObjectID",
+                    "type": "Expression"
+                  },
+                  "SilverWorkspaceID": {
+                    "value": "@pipeline().parameters.SilverWorkspaceID",
+                    "type": "Expression"
                   }
                 },
                 "waitOnCompletion": true
@@ -213,6 +221,14 @@
       "DelayL1TransformationFlag": {
         "type": "int",
         "defaultValue": 0
+      },
+      "SilverObjectID": {
+        "type": "string",
+        "defaultValue": "cc80a0ab-603d-4df9-bdfc-c35a7e8ab095"
+      },
+      "SilverWorkspaceID": {
+        "type": "string",
+        "defaultValue": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec"
       }
     }
   }
