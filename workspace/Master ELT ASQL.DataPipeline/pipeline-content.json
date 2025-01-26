@@ -186,12 +186,12 @@
                     "value": "@item().ADFPipelineRunID",
                     "type": "Expression"
                   },
-                  "BronzeLHObjectID": {
-                    "value": "@pipeline().parameters.BronzeLHObjectID",
+                  "BronzeObjectID": {
+                    "value": "@pipeline().parameters.BronzeObjectID",
                     "type": "Expression"
                   },
-                  "BronzeLHWorkspaceID": {
-                    "value": "@pipeline().parameters.BronzeLHWorkspaceID",
+                  "BronzeWorkspaceID": {
+                    "value": "@pipeline().parameters.BronzeWorkspaceID",
                     "type": "Expression"
                   }
                 },
@@ -301,11 +301,11 @@
       "DelayTransformation": {
         "type": "int"
       },
-      "BronzeLHObjectID": {
+      "BronzeObjectID": {
         "type": "string",
         "defaultValue": "c6c5024f-de55-45ca-a79a-decbe16235e3"
       },
-      "BronzeLHWorkspaceID": {
+      "BronzeWorkspaceID": {
         "type": "string",
         "defaultValue": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec"
       }

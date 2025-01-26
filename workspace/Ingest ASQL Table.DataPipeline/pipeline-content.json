@@ -144,8 +144,8 @@
                   "annotations": [],
                   "type": "Lakehouse",
                   "typeProperties": {
-                    "workspaceId": "@pipeline().parameters.BronzeLHWorkspaceID",
-                    "artifactId": "@pipeline().parameters.BronzeLHObjectID",
+                    "workspaceId": "@pipeline().parameters.BronzeWorkspaceID",
+                    "artifactId": "@pipeline().parameters.BronzeObjectID",
                     "rootFolder": "Files"
                   }
                 }
@@ -1055,11 +1055,11 @@
         "type": "string",
         "defaultValue": "TEST"
       },
-      "BronzeLHObjectID": {
+      "BronzeObjectID": {
         "type": "string",
         "defaultValue": "c6c5024f-de55-45ca-a79a-decbe16235e3"
       },
-      "BronzeLHWorkspaceID": {
+      "BronzeWorkspaceID": {
         "type": "string",
         "defaultValue": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec"
       }
