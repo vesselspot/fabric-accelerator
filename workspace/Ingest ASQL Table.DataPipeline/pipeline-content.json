@@ -144,8 +144,8 @@
                   "annotations": [],
                   "type": "Lakehouse",
                   "typeProperties": {
-                    "workspaceId": "@pipeline().DataFactory",
-                    "artifactId": "@variables('lakehouseObjectId')",
+                    "workspaceId": "@pipeline().parameters.BronzeLHWorkspaceID",
+                    "artifactId": "@pipeline().parameters.BronzeLHObjectID",
                     "rootFolder": "Files"
                   }
                 }
@@ -1054,15 +1054,19 @@
       "ADFPipelineRunID": {
         "type": "string",
         "defaultValue": "TEST"
+      },
+      "BronzeLHObjectID": {
+        "type": "string",
+        "defaultValue": "c6c5024f-de55-45ca-a79a-decbe16235e3"
+      },
+      "BronzeLHWorkspaceID": {
+        "type": "string",
+        "defaultValue": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec"
       }
     },
     "variables": {
       "RunID": {
         "type": "String"
-      },
-      "lakehouseObjectId": {
-        "type": "String",
-        "defaultValue": "c6c5024f-de55-45ca-a79a-decbe16235e3"
       }
     }
   }
