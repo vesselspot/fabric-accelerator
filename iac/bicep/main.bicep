@@ -33,7 +33,7 @@ param purviewrg string= 'rg-datagovernance'
 param purview_location string= 'westus2'
 
 @description('Resource Name of new or existing Purview Account. Must be globally unique. Specify a resource name if either create_purview=true or enable_purview=true')
-param purview_name string = '<Gloablly Unique Purview Name>'
+param purview_name string = 'ContosoDG' // Replace with a Globally unique name
 
 @description('Flag to indicate whether auditing of data platform resources should be enabled')
 param enable_audit bool = true
