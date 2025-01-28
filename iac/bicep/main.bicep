@@ -5,7 +5,7 @@ targetScope = 'subscription'
 @description('Resource group where Microsoft Fabric capacity will be deployed. Resource group will be created if it doesnt exist')
 param dprg string= 'rg-fabric'
 
-@description('Resource group location')
+@description('Microsoft Fabric Resource group location')
 param rglocation string = 'australiaeast'
 
 @description('Cost Centre tag that will be applied to all resources in this deployment')
@@ -29,11 +29,11 @@ param enable_purview bool = true
 @description('Resource group where Purview will be deployed. Resource group will be created if it doesnt exist')
 param purviewrg string= 'rg-datagovernance'
 
-@description('Location of Purview')
+@description('Location of Purview resource. This may not be same as the Fabric resource group location')
 param purview_location string= 'westus2'
 
-@description('Resource Name of new or existing Purview Account. Specify a resource name if create_purview=true or enable_purview=true')
-param purview_name string = 'ContosoDG'
+@description('Resource Name of new or existing Purview Account. Must be globally unique. Specify a resource name if either create_purview=true or enable_purview=true')
+param purview_name string = '<Gloablly Unique Purview Name>'
 
 @description('Flag to indicate whether auditing of data platform resources should be enabled')
 param enable_audit bool = true
@@ -64,7 +64,7 @@ resource fabric_rg  'Microsoft.Resources/resourceGroups@2024-03-01' = {
 // Create purview resource group
 resource purview_rg  'Microsoft.Resources/resourceGroups@2024-03-01' = if (create_purview) {
   name: purviewrg 
-  location: rglocation
+  location: purview_location
   tags: {
          CostCentre: cost_centre_tag
          Owner: owner_tag
