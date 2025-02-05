@@ -5,17 +5,17 @@ targetScope = 'subscription'
 @description('Resource group where Microsoft Fabric capacity will be deployed. Resource group will be created if it doesnt exist')
 param dprg string= 'rg-fabric'
 
-@description('Resource group location')
+@description('Microsoft Fabric Resource group location')
 param rglocation string = 'australiaeast'
 
 @description('Cost Centre tag that will be applied to all resources in this deployment')
-param cost_centre_tag string = 'Northstep Technologies'
+param cost_centre_tag string = 'MCAPS'
 
 @description('System Owner tag that will be applied to all resources in this deployment')
-param owner_tag string = 'thunders@northstep.com'
+param owner_tag string = 'whirlpool@contoso.com'
 
 @description('Subject Matter EXpert (SME) tag that will be applied to all resources in this deployment')
-param sme_tag string ='sixers@northstep.com'
+param sme_tag string ='sombrero@contoso.com'
 
 @description('Timestamp that will be appendedto the deployment name')
 param deployment_suffix string = utcNow()
@@ -24,19 +24,19 @@ param deployment_suffix string = utcNow()
 param create_purview bool = false
 
 @description('Flag to indicate whether to enable integration of data platform resources with either an existing or new Purview resource')
-param enable_purview bool = false
+param enable_purview bool = true
 
 @description('Resource group where Purview will be deployed. Resource group will be created if it doesnt exist')
 param purviewrg string= 'rg-datagovernance'
 
-@description('Location of Purview')
-param purview_location string= 'australiaeast'
+@description('Location of Purview resource. This may not be same as the Fabric resource group location')
+param purview_location string= 'westus2'
 
-@description('Resource Name of new or existing Purview Account. Specify a resource name if create_purview=true or enable_purview=true')
-param purview_name string = 'NorthstepDG'
+@description('Resource Name of new or existing Purview Account. Must be globally unique. Specify a resource name if either create_purview=true or enable_purview=true')
+param purview_name string = 'ContosoDG' // Replace with a Globally unique name
 
 @description('Flag to indicate whether auditing of data platform resources should be enabled')
-param enable_audit bool = false
+param enable_audit bool = true
 
 @description('Resource group where audit resources will be deployed if enabled. Resource group will be created if it doesnt exist')
 param auditrg string= 'rg-audit'
@@ -64,7 +64,7 @@ resource fabric_rg  'Microsoft.Resources/resourceGroups@2024-03-01' = {
 // Create purview resource group
 resource purview_rg  'Microsoft.Resources/resourceGroups@2024-03-01' = if (create_purview) {
   name: purviewrg 
-  location: rglocation
+  location: purview_location
   tags: {
          CostCentre: cost_centre_tag
          Owner: owner_tag
@@ -106,7 +106,7 @@ module kv './modules/keyvault.bicep' = {
   scope: fabric_rg
   params:{
      location: fabric_rg.location
-     keyvault_name: 'nst-kv01'
+     keyvault_name: 'ba-kv01'
      cost_centre_tag: cost_centre_tag
      owner_tag: owner_tag
      sme_tag: sme_tag
@@ -130,9 +130,9 @@ module audit_integration './modules/audit.bicep' = if(enable_audit) {
     cost_centre_tag: cost_centre_tag
     owner_tag: owner_tag
     sme_tag: sme_tag
-    audit_storage_name: 'nststorage01'
+    audit_storage_name: 'baauditstorage01'
     audit_storage_sku: 'Standard_LRS'    
-    audit_loganalytics_name: 'nst-loganalytics01'
+    audit_loganalytics_name: 'ba-loganalytics01'
   }
 }
 
@@ -141,7 +141,7 @@ module fabric_capacity './modules/fabric-capacity.bicep' = {
   name: fabric_deployment_name
   scope: fabric_rg
   params:{
-    fabric_name: 'nstfabric01'
+    fabric_name: 'bafabric01'
     location: fabric_rg.location
     cost_centre_tag: cost_centre_tag
     owner_tag: owner_tag
@@ -155,7 +155,7 @@ module controldb './modules/sqldb.bicep' = {
   name: controldb_deployment_name
   scope: fabric_rg
   params:{
-     sqlserver_name: 'nst-sql01'
+     sqlserver_name: 'ba-sql01'
      database_name: 'controlDB' 
      location: fabric_rg.location
      cost_centre_tag: cost_centre_tag

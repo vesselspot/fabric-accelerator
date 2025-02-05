@@ -212,7 +212,8 @@
         "defaultValue": "WWI"
       },
       "StreamName": {
-        "type": "string"
+        "type": "string",
+        "defaultValue": "People"
       },
       "MaxTransformInstance": {
         "type": "int",

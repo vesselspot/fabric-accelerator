@@ -14,6 +14,17 @@
 # META   }
 # META }
 
+# CELL ********************
+
+%run /EnvSettings
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # MARKDOWN ********************
 
 # ### Spark session configuration
@@ -24,8 +35,6 @@
 from delta.tables import *
 import json
 
-# Copyright (c) Microsoft Corporation.
-# Licensed under the MIT License.
 spark.conf.set("spark.sql.parquet.vorder.enabled", "true")
 spark.conf.set("spark.microsoft.delta.optimizeWrite.enabled", "true")
 spark.conf.set("spark.microsoft.delta.optimizeWrite.binSize", "1073741824")
@@ -43,18 +52,72 @@ spark.conf.set("spark.microsoft.delta.merge.lowShuffle.enabled", "true")
 
 # MARKDOWN ********************
 
+# # getAbfsPath()
+# Gets the Azure Blob File System (ABFS) path of the OneLake medallion layer as URI abfss://workspaceId@onelake.dfs.fabric.microsoft.com/lakehouseID
+
+
+# CELL ********************
+
+def getAbfsPath(medallionLayer):
+    # ##########################################################################################################################  
+    # Function: getAbfsPath
+    # Gets the Azure Blob File System (ABFS) path of the OneLake medallion layer 
+    # as URI abfss://workspaceId@onelake.dfs.fabric.microsoft.com/lakehouseID
+    # 
+    # Parameters:
+    # medallionLayer =  Medallion layer of data platform. Valid values are bronze, silver or gold.
+    # 
+    # Returns:
+    # The ABFS URI as string
+
+    validMedallionLayer = ["bronze","silver","gold"]
+    assert medallionLayer in validMedallionLayer, "Invalid medallion layer. Valid values are bronze, silver or gold"
+
+    AbfsPath =None
+    workspaceId = None
+    lhName = None
+
+    match medallionLayer:
+        case "bronze":
+            workspaceId = bronzeWorkspaceId
+            lhName = bronzeLakehouseName
+        case "silver":
+            workspaceId = silverWorkspaceId
+            lhName = silverLakehouseName
+        case "gold":
+            workspaceId = goldWorkspaceId
+            lhName = goldLakehouseName
+
+    lh= notebookutils.lakehouse.getWithProperties(lhName,workspaceId)
+    abfsPath = lh.properties["abfsPath"]
+
+    return abfsPath
+
+
+
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# MARKDOWN ********************
+
 # # readFile()
 # Reads a data file from Lakehouse and returns as Spark dataframe
 
 
 # CELL ********************
 
-def readFile(container, folder, file, colSeparator=None, headerFlag=None):
+def readFile(medallionLayer,container, folder, file, colSeparator=None, headerFlag=None):
   # ##########################################################################################################################  
   # Function: readFile
   # Reads a data file from Lakehouse and returns as spark dataframe
   # 
   # Parameters:
+  # medallionLayer =  Medallion layer of data platform. Valid values are bronze, silver or gold.
   # container = Container of Lakehouse. Default value 'Files'
   # folder = Folder within container where data file resides. E.g 'raw-bronze/wwi/Sales/Orders/2013-01'
   # file = File name of data file including and file extension. E.g 'Sales_Orders_2013-01-01_000000.parquet'
@@ -64,22 +127,26 @@ def readFile(container, folder, file, colSeparator=None, headerFlag=None):
   # Returns:
   # A dataframe of the data file
   # ##########################################################################################################################    
+    validMedallionLayer = ["bronze","silver","gold"]
+    assert medallionLayer in validMedallionLayer, "Invalid medallion layer. Valid values are bronze, silver or gold"
     assert container is not None, "container not provided"   
     assert folder is not None, "folder not provided"
     assert file is not None, "file not provided"
 
+    abfsPath = getAbfsPath(medallionLayer)
     relativePath =   container + '/' + folder +'/' + file
+    filePath = abfsPath + '/' + relativePath
 
     if ".csv" in file or ".txt" in file:
-        df = spark.read.csv(path=relativePath, sep=colSeparator, header=headerFlag, inferSchema="true")
+        df = spark.read.csv(path=filePath, sep=colSeparator, header=headerFlag, inferSchema="true")
     elif ".parquet" in file:
-        df = spark.read.parquet(relativePath)
+        df = spark.read.parquet(filePath)
     elif ".json" in file:
-        df = spark.read.json(relativePath, multiLine= True)
+        df = spark.read.json(filePath, multiLine= True)
     elif ".orc" in file:
-        df = spark.read.orc(relativePath)
+        df = spark.read.orc(filePath)
     else:
-        df = spark.read.format("csv").load(relativePath)
+        df = spark.read.format("csv").load(filePath)
   
     df =df.dropDuplicates()
     return df
@@ -251,51 +318,6 @@ def optimizeDelta(tableName):
     deltaTable.optimize().executeCompaction()
     deltaTable.vacuum()
     return
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
-# df = readFile("Files","raw-bronze/wwi/Sales/Orders/2013-01","Sales_Orders_2013-01-01_000000.parquet")
-# display(df)
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
-# upsertDelta(df,"sales_orders","OrderID|CustomerID","LastEditedWhen")
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
-# insertDelta (df, "sales_orders", "append")
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
-# optimizeDelta("silver_sales_customertransactions")
 
 # METADATA ********************
 
