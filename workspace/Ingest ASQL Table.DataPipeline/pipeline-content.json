@@ -127,14 +127,13 @@
             }
           },
           "sink": {
-            "type": "DelimitedTextSink",
+            "type": "ParquetSink",
             "storeSettings": {
               "type": "LakehouseWriteSettings"
             },
             "formatSettings": {
-              "type": "DelimitedTextWriteSettings",
-              "quoteAllText": true,
-              "fileExtension": ".txt"
+              "type": "ParquetWriteSettings",
+              "enableVertiParquet": true
             },
             "datasetSettings": {
               "annotations": [],
@@ -150,7 +149,7 @@
                   }
                 }
               },
-              "type": "DelimitedText",
+              "type": "Parquet",
               "typeProperties": {
                 "location": {
                   "type": "LakehouseLocation",
@@ -163,10 +162,7 @@
                     "type": "Expression"
                   }
                 },
-                "columnDelimiter": ",",
-                "escapeChar": "\\",
-                "firstRowAsHeader": true,
-                "quoteChar": "\""
+                "compressionCodec": "snappy"
               },
               "schema": []
             }
