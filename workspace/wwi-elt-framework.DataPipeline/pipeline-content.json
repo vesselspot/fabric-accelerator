@@ -26,7 +26,7 @@
                 "database": "WideWorldImporters"
               },
               "externalReferences": {
-                "connection": "a0a57e51-5032-4e46-b0f0-493c9d2f51c9"
+                "connection": "deeade7f-b561-43d2-b9af-9ba472e5b2be"
               }
             }
           },
@@ -52,7 +52,7 @@
                 "database": "controlDB"
               },
               "externalReferences": {
-                "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
+                "connection": "7a7b76a4-9e97-4ea3-8152-e0265c0d03c3"
               }
             }
           },
@@ -296,7 +296,7 @@
                 "database": "controlDB"
               },
               "externalReferences": {
-                "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
+                "connection": "7a7b76a4-9e97-4ea3-8152-e0265c0d03c3"
               }
             }
           },
@@ -324,7 +324,7 @@
                 "database": "controlDB"
               },
               "externalReferences": {
-                "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
+                "connection": "7a7b76a4-9e97-4ea3-8152-e0265c0d03c3"
               }
             }
           },
@@ -538,7 +538,7 @@
               "database": "WideWorldImporters"
             },
             "externalReferences": {
-              "connection": "a0a57e51-5032-4e46-b0f0-493c9d2f51c9"
+              "connection": "deeade7f-b561-43d2-b9af-9ba472e5b2be"
             }
           }
         }
@@ -620,7 +620,7 @@
                 "database": "controlDB"
               },
               "externalReferences": {
-                "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
+                "connection": "7a7b76a4-9e97-4ea3-8152-e0265c0d03c3"
               }
             }
           ]
@@ -669,7 +669,7 @@
           "database": "controlDB"
         },
         "externalReferences": {
-          "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
+          "connection": "7a7b76a4-9e97-4ea3-8152-e0265c0d03c3"
         }
       },
       {
@@ -718,14 +718,14 @@
           "database": "controlDB"
         },
         "externalReferences": {
-          "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
+          "connection": "7a7b76a4-9e97-4ea3-8152-e0265c0d03c3"
         }
       }
     ],
     "variables": {
       "NotebookID_L1Transform-Generic-Fabric": {
         "type": "String",
-        "defaultValue": "3e035f81-2c25-416b-9009-b7ba22e444ab"
+        "defaultValue": "0e811525-95f4-4daa-901a-3a7bed2b08c3"
       }
     }
   }

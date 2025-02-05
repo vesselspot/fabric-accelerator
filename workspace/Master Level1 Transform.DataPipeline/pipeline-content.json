@@ -47,7 +47,7 @@
             },
             "schema": [],
             "externalReferences": {
-              "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
+              "connection": "7a7b76a4-9e97-4ea3-8152-e0265c0d03c3"
             },
             "annotations": []
           },
@@ -213,7 +213,7 @@
       },
       "StreamName": {
         "type": "string",
-        "defaultValue": "People"
+        "defaultValue": "Colors"
       },
       "MaxTransformInstance": {
         "type": "int",
@@ -225,11 +225,11 @@
       },
       "SilverObjectID": {
         "type": "string",
-        "defaultValue": "cc80a0ab-603d-4df9-bdfc-c35a7e8ab095"
+        "defaultValue": "d448d910-1588-4593-b1d9-9fe2fb07c9df"
       },
       "SilverWorkspaceID": {
         "type": "string",
-        "defaultValue": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec"
+        "defaultValue": "d9cad270-d466-4e9c-81fa-bb032895368b"
       }
     }
   }
