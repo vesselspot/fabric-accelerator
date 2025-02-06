@@ -11,13 +11,8 @@
 
 # MARKDOWN ********************
 
-# 
-# #### Run the cell below to install the required packages for Copilot
-
-
-# MARKDOWN ********************
-
 # # Environment Variables
+# Use this notebook to set environment specific variables that can be referenced in other spark notebooks. These variables need to set once in each environment
 
 # CELL ********************
 
