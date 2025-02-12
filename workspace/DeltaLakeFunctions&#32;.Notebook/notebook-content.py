@@ -33,6 +33,7 @@
 # CELL ********************
 
 from delta.tables import *
+from pyspark.sql.functions import *
 import json
 
 spark.conf.set("spark.sql.parquet.vorder.enabled", "true")
@@ -93,9 +94,6 @@ def getAbfsPath(medallionLayer):
 
     return abfsPath
 
-
-
-
 # METADATA ********************
 
 # META {
@@ -149,6 +147,117 @@ def readFile(medallionLayer,container, folder, file, colSeparator=None, headerFl
         df = spark.read.format("csv").load(filePath)
   
     df =df.dropDuplicates()
+    return df
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# MARKDOWN ********************
+
+# # readMedallionLHTable()
+# Retrieves a Lakehouse Table from the medallion layers, allowing for table filtering and specific column selection
+
+# CELL ********************
+
+
+def readMedallionLHTable(medallionLayer,tableRelativePath, filterCond=None, colList=None):
+  # ##########################################################################################################################  
+  # Function: readMedallionLHTable
+  # Retrieves a Lakehouse Table from the medallion layers, allowing for table filtering and specific column selection
+  # 
+  # Parameters:
+  # medallionLayer =  Medallion layer of data platform. Valid values are bronze, silver or gold.
+  # tableRelativePath = Relative path of the LH table in format Tables/Schema/TableName
+  # filterCond = A valid filter condition for the table, passed as string. E.g "ColorName == 'Salmon'". Default value is None. 
+  #              If filterCond is None, the full table will be returned.
+  # colList = Columns to be selected, passed as list. E.g. ["ColorID","ColorName"]. Default value is None.
+  #           If colList is None, all columns in the table will be returned.
+  # 
+  # Returns:
+  # A dataframe containing the Lakehouse table.
+  # ##########################################################################################################################    
+    validMedallionLayer = ["bronze","silver","gold"]
+    assert medallionLayer in validMedallionLayer, "Invalid medallion layer. Valid values are bronze, silver or gold"
+    abfsPath = getAbfsPath(medallionLayer)
+    tablePath = abfsPath + '/' + tableRelativePath
+
+    # check if table exists
+    table = DeltaTable.forPath(spark,tablePath)
+    assert table is not None, "Lakehouse table does not exist"
+
+    df = spark.read.format("delta").load(tablePath)
+    
+    # Apply filter condition
+    if filterCond is not None:
+        df = df.filter(filterCond)
+
+    # Select columns
+    if colList is not None:
+        df = df.select(colList)
+
+    df =df.dropDuplicates()
+
+    return df
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# MARKDOWN ********************
+
+# # readLHTable()
+# Retrieves a any Lakehouse Table from OneLake, allowing for table filtering and specific column selection. Use this function to read from any Lakehouse in Onelake outside data platform for e.g. a mirrored database, Fabric SQL etc
+
+# CELL ********************
+
+
+def readLHTable(LakehouseName,tableRelativePath,WorkspaceID=None, filterCond=None, colList=None):
+  # ##########################################################################################################################  
+  # Function: readLHTable
+  # Retrieves a any Lakehouse Table from OneLake, allowing for table filtering and specific column selection
+  # Use this function to read from any Lakehouse in Onelake outside data platform for e.g a mirrored database, Fabric SQL etc
+  #  
+  # Parameters:
+  # LakehouseName =  Name of lakehouse where table is located
+  # tableRelativePath = Relative path of the table in format Tables/Schema/TableName
+  # WorkspaceID = ID of Fabric Workspace where lakehouse is located. Default is None
+  #               If WorkspaceID is None, the default Lakhouse attached to the notebook will be used.  
+ 
+  # filterCond = A valid filter condition for the table, passed as string. E.g "ColorName == 'Salmon'". Default value is None. 
+  #              If filterCond is None, the full table will be returned.
+  # colList = Columns to be selected, passed as list. E.g. ["ColorID","ColorName"]. Default value is None.
+  #           If colList is None, all columns in the table will be returned.
+  # 
+  # Returns:
+  # A dataframe containing the Lakehouse table.
+  # ##########################################################################################################################    
+    lh = notebookutils.lakehouse.getWithProperties(LakehouseName,WorkspaceID)
+    abfsPath = lh.properties["abfsPath"]
+    tablePath = abfsPath + '/' + tableRelativePath
+
+    # check if table exists
+    table = DeltaTable.forPath(spark,tablePath)
+    assert table is not None, "Lakehouse table does not exist"
+
+    df = spark.read.format("delta").load(tablePath)
+    
+    # Apply filter condition
+    if filterCond is not None:
+        df = df.filter(filterCond)
+
+    # Select columns
+    if colList is not None:
+        df = df.select(colList)
+
+    df =df.dropDuplicates()
+
     return df
 
 # METADATA ********************

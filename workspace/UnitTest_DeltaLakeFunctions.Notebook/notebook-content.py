@@ -74,3 +74,123 @@ optimizeDelta("silver_sales_customertransactions")
 # META   "language": "python",
 # META   "language_group": "synapse_pyspark"
 # META }
+
+# CELL ********************
+
+df = readMedallionLHTable("silver","Tables/dbo/silver_warehouse_colors")
+display(df)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+df = readMedallionLHTable("silver","Tables/dbo/silver_warehouse_colors","ColorName == 'Salmon'")
+display(df)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+df = readMedallionLHTable("silver","Tables/dbo/silver_warehouse_colors","ColorName == 'Salmon'",["ColorID","ColorName"])
+display(df)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+df = readMedallionLHTable("silver","Tables/dbo/silver_warehouse_colors",None,["ColorID","ColorName"])
+display(df)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+df = readMedallionLHTable("silver","Tables/dbo/silver_warehouse_colors","ColorName == 'Salmon'",None)
+display(df)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+df = readLHTable("lh_fabricEvents","Tables/jobs/pipelineJobs","582b9e24-0962-4fd0-aee5-647d9c200685", filterCond=None, colList=None)
+display(df)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+df = readLHTable("lh_fabricEvents","Tables/jobs/pipelineJobs","582b9e24-0962-4fd0-aee5-647d9c200685", "EventProcessedUtcTime >'2025-02-07 20:42:19.269818'", colList=None)
+display(df)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+df = readLHTable("lh_fabricEvents","Tables/jobs/pipelineJobs","582b9e24-0962-4fd0-aee5-647d9c200685", "EventProcessedUtcTime >'2025-02-07 20:42:19.269818'", ["id","data","EventProcessedUtcTime"])
+display(df)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+df = readLHTable("lh_fabricEvents","Tables/jobs/pipelineJobs","582b9e24-0962-4fd0-aee5-647d9c200685", "EventProcessedUtcTime >'2025-02-07 20:42:19.269818'", None)
+display(df)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+df = readLHTable("lh_fabricEvents","Tables/jobs/pipelineJobs","582b9e24-0962-4fd0-aee5-647d9c200685", None, ["id","data","EventProcessedUtcTime"])
+display(df)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
