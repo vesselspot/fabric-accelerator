@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "Master ELT ASQL",
+    "description": "Generic pipeline to extract, load and transform data from any Azure SQL source"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "1a4d0d7d-b617-9d88-4efb-fb4402b37a75"
+  }
+}
