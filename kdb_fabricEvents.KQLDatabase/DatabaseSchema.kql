@@ -1,0 +1,15 @@
+// KQL script
+// Use management commands in this script to configure your database items, such as tables, functions, materialized views, and more.
+
+
+.create-merge table storageEvents (id:string, datacontenttype:string, specversion:string, source:string, ['time']:datetime, subject:string, dataschemaversion:string, type:string, data:dynamic, EventProcessedUtcTime:datetime, PartitionId:long, EventEnqueuedUtcTime:datetime) 
+.create-merge table jobEvents (id:string, datacontenttype:string, specversion:string, source:string, ['time']:datetime, subject:string, dataschemaversion:string, type:string, data:dynamic, EventProcessedUtcTime:datetime, PartitionId:long, EventEnqueuedUtcTime:datetime) 
+.create-merge table workspaceEvents (id:string, datacontenttype:string, specversion:string, source:string, ['time']:datetime, subject:string, dataschemaversion:string, type:string, data:dynamic, EventProcessedUtcTime:datetime, PartitionId:long, EventEnqueuedUtcTime:datetime) 
+.create-or-alter materialized-view  dailyAggWorkspaceEvents on table workspaceEvents { workspaceEvents
+    | extend eventData = parse_json(data)
+    | extend workspaceName = tostring(eventData.workspaceName)
+    | extend itemKind = tostring(eventData.itemKind)
+    | extend itemName = tostring(eventData.itemName)
+    | extend executingPrincipalId = tostring(eventData.executingPrincipalId)
+    | extend executingPrincipalType = tostring(eventData.executingPrincipalType)
+    | summarize EventCount = count() by bin(['time'],1d), type, workspaceName, itemKind,itemName,executingPrincipalId, executingPrincipalType }

@@ -1,11 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
   "metadata": {
-    "type": "DataPipeline",
-    "displayName": "pipeline1"
+    "type": "KQLQueryset",
+    "displayName": "kdb_fabricEvents_queryset",
+    "description": "kdb_fabricEvents_queryset"
   },
   "config": {
     "version": "2.0",
-    "logicalId": "7ffd1e41-c40e-aed0-4fbb-414ea9d9e8e8"
+    "logicalId": "4bcc6306-82e1-8e62-4ed4-6097397bbd80"
   }
 }
