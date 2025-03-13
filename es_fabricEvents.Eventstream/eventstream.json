@@ -111,6 +111,28 @@
       }
     },
     {
+      "id": "7d53aea6-f023-409e-8882-b8bc8f219de9",
+      "name": "kdb-fabricEvents",
+      "type": "FabricOneLakeEvents",
+      "properties": {
+        "tenantId": "4e921ed2-9b1c-457c-a917-16ef468eb90a",
+        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "itemId": "14ea1177-fe93-4089-97ea-6292b22b1edd",
+        "oneLakePaths": [
+          "/Tables"
+        ],
+        "includedEventTypes": [
+          "Microsoft.Fabric.OneLake.FileCreated",
+          "Microsoft.Fabric.OneLake.FileDeleted",
+          "Microsoft.Fabric.OneLake.FileRenamed",
+          "Microsoft.Fabric.OneLake.FolderCreated",
+          "Microsoft.Fabric.OneLake.FolderDeleted",
+          "Microsoft.Fabric.OneLake.FolderRenamed"
+        ],
+        "filters": []
+      }
+    },
+    {
       "id": "9e9151f5-0b27-4860-8add-d13a41f00aa2",
       "name": "Master-Level2-Transform",
       "type": "FabricJobEvents",
@@ -214,6 +236,28 @@
           "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
           "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
           "Microsoft.Fabric.JobEvents.ItemJobFailed"
+        ],
+        "filters": []
+      }
+    },
+    {
+      "id": "ef4ff4a5-bc32-4fbe-9bad-74d523747750",
+      "name": "ehfabricAccelerator",
+      "type": "FabricOneLakeEvents",
+      "properties": {
+        "tenantId": "4e921ed2-9b1c-457c-a917-16ef468eb90a",
+        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "itemId": "72a1085d-3514-4a96-87e3-0f5be3258eb8",
+        "oneLakePaths": [
+          "/Tables"
+        ],
+        "includedEventTypes": [
+          "Microsoft.Fabric.OneLake.FileCreated",
+          "Microsoft.Fabric.OneLake.FileDeleted",
+          "Microsoft.Fabric.OneLake.FileRenamed",
+          "Microsoft.Fabric.OneLake.FolderCreated",
+          "Microsoft.Fabric.OneLake.FolderDeleted",
+          "Microsoft.Fabric.OneLake.FolderRenamed"
         ],
         "filters": []
       }
@@ -730,10 +774,16 @@
           "name": "dw-gold-storage"
         },
         {
+          "name": "ehfabricAccelerator"
+        },
+        {
           "name": "Fabric-Accelerator-Workspace"
         },
         {
           "name": "Ingest-ASQL-Table"
+        },
+        {
+          "name": "kdb-fabricEvents"
         },
         {
           "name": "L1Transform-Generic-Fabric"
