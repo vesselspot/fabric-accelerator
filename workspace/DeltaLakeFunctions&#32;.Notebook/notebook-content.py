@@ -401,6 +401,48 @@ def upsertDelta(df,tableName,keyColumns,watermarkColumn=None):
 
 # MARKDOWN ********************
 
+# # getHighWaterMark()
+# Retrieves High Watermark from a Lakehouse table for a given date range
+
+# CELL ********************
+
+def getHighWaterMark(lakehouseName,tableRelativePath,watermarkColName, fromRange, toRange, workspaceID=None):
+  # ##########################################################################################################################  
+  # Function: getHighWaterMark
+  # Retrieves High Watermark from a Lakehouse table for a given date range
+  #  
+  # Parameters:
+  # lakehouseName =  Name of lakehouse where table is located
+  # tableRelativePath = Relative path of the table in format Tables/Schema/TableName
+  # watermarkColName - Name of column used for watermark
+  # fromRange - datetime of lower range of data in watermark column
+  # toRange - datetime of upper range of data in watermark column
+  # WorkspaceID = ID of Fabric Workspace where lakehouse is located. Default is None
+  #               If WorkspaceID is None, the default Lakhouse attached to the notebook will be used.  
+ 
+  # 
+  # Returns:
+  # A max value of the high watermark column for the datetime range
+  # ##########################################################################################################################     
+    assert watermarkColName is not None,"Watermark column name not provided"
+    assert fromRange is not None,"fromRange datetime not provided"
+    assert toRange is not None,"toRange datetime not provided"
+
+    filterCond = watermarkColName +">" + "'" + fromRange +"'" + " and " + watermarkColName + "<=" + "'" + toRange + "'"
+    df = readLHTable(lakehouseName,tableRelativePath,workspaceID,filterCond,watermarkColName)
+    hwm = df.agg({watermarkColName: "max"}).collect()[0][0]
+
+    return hwm
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# MARKDOWN ********************
+
 # # optimizeDelta()
 # Compacts small files and removed unused files beyond default retention period for a Delta Table
 
