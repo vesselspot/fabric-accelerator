@@ -194,3 +194,15 @@ display(df)
 # META   "language": "python",
 # META   "language_group": "synapse_pyspark"
 # META }
+
+# CELL ********************
+
+hwm = getHighWaterMark("lh_fabricEvents","Tables/jobs/pipelineJobs","EventProcessedUtcTime", "2025-02-07 14:00:00.0000000", "2025-02-08 14:00:00.0000000", "582b9e24-0962-4fd0-aee5-647d9c200685")
+print(hwm)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
