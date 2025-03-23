@@ -59,46 +59,46 @@
     //     "filters": []
     //   }
     // },
-    {
-      "id": "c9169667-6d84-4650-9eea-88aeb3498274",
-      "name": "lh-bronze-storage",
-      "type": "FabricOneLakeEvents",
-      "properties": {
-        "tenantId": "68532298-a693-4293-9eff-e2b57ecf9b54",
-        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
-        "itemId": "834cc27d-1dbe-439e-96b4-3b7505c5ba79",
-        "oneLakePaths": [
-          "/Tables",
-          "/Files"
-        ],
-        "includedEventTypes": [
-          "Microsoft.Fabric.OneLake.FileCreated",
-          "Microsoft.Fabric.OneLake.FileDeleted",
-          "Microsoft.Fabric.OneLake.FileRenamed",
-          "Microsoft.Fabric.OneLake.FolderCreated",
-          "Microsoft.Fabric.OneLake.FolderDeleted",
-          "Microsoft.Fabric.OneLake.FolderRenamed"
-        ],
-        "filters": []
-      }
-    },
-    {
-      "id": "e715f26e-6a5d-4200-a6b3-ea5455b231f1",
-      "name": "Optimize-DeltaLake-Tabless",
-      "type": "FabricJobEvents",
-      "properties": {
-        "eventScope": "Item",
-        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
-        "itemId": "3f286371-3fa5-4ada-88d6-0af0b5ded7ca",
-        "includedEventTypes": [
-          "Microsoft.Fabric.JobEvents.ItemJobCreated",
-          "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
-          "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
-          "Microsoft.Fabric.JobEvents.ItemJobFailed"
-        ],
-        "filters": []
-      }
-    },
+    // {
+    //   "id": "c9169667-6d84-4650-9eea-88aeb3498274",
+    //   "name": "lh-bronze-storage",
+    //   "type": "FabricOneLakeEvents",
+    //   "properties": {
+    //     "tenantId": "68532298-a693-4293-9eff-e2b57ecf9b54",
+    //     "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
+    //     "itemId": "834cc27d-1dbe-439e-96b4-3b7505c5ba79",
+    //     "oneLakePaths": [
+    //       "/Tables",
+    //       "/Files"
+    //     ],
+    //     "includedEventTypes": [
+    //       "Microsoft.Fabric.OneLake.FileCreated",
+    //       "Microsoft.Fabric.OneLake.FileDeleted",
+    //       "Microsoft.Fabric.OneLake.FileRenamed",
+    //       "Microsoft.Fabric.OneLake.FolderCreated",
+    //       "Microsoft.Fabric.OneLake.FolderDeleted",
+    //       "Microsoft.Fabric.OneLake.FolderRenamed"
+    //     ],
+    //     "filters": []
+    //   }
+    // },
+    // {
+    //   "id": "e715f26e-6a5d-4200-a6b3-ea5455b231f1",
+    //   "name": "Optimize-DeltaLake-Tabless",
+    //   "type": "FabricJobEvents",
+    //   "properties": {
+    //     "eventScope": "Item",
+    //     "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
+    //     "itemId": "3f286371-3fa5-4ada-88d6-0af0b5ded7ca",
+    //     "includedEventTypes": [
+    //       "Microsoft.Fabric.JobEvents.ItemJobCreated",
+    //       "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
+    //       "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
+    //       "Microsoft.Fabric.JobEvents.ItemJobFailed"
+    //     ],
+    //     "filters": []
+    //   }
+    // },
     {
       "id": "f4104096-9f8d-464f-be4c-513c4fb7c4c9",
       "name": "lh-silver-storage",
@@ -130,8 +130,8 @@
       "type": "Eventhouse",
       "properties": {
         "dataIngestionMode": "ProcessedIngestion",
-        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
-        "itemId": "50bd93d5-98a7-456b-82f2-701594e83b2a",
+        "workspaceId": "00000000-0000-0000-0000-000000000000",
+        "itemId": "3c63cd71-257f-450d-8019-9cfcc3a1e519",
         "databaseName": "kdb_fabricEvents",
         "tableName": "storageEvents",
         "inputSerialization": {
@@ -234,8 +234,8 @@
       "type": "Eventhouse",
       "properties": {
         "dataIngestionMode": "ProcessedIngestion",
-        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
-        "itemId": "50bd93d5-98a7-456b-82f2-701594e83b2a",
+        "workspaceId": "00000000-0000-0000-0000-000000000000",
+        "itemId": "3c63cd71-257f-450d-8019-9cfcc3a1e519",
         "databaseName": "kdb_fabricEvents",
         "tableName": "workspaceEvents",
         "inputSerialization": {
@@ -338,8 +338,8 @@
       "type": "Eventhouse",
       "properties": {
         "dataIngestionMode": "ProcessedIngestion",
-        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
-        "itemId": "50bd93d5-98a7-456b-82f2-701594e83b2a",
+        "workspaceId": "00000000-0000-0000-0000-000000000000",
+        "itemId": "3c63cd71-257f-450d-8019-9cfcc3a1e519",
         "databaseName": "kdb_fabricEvents",
         "tableName": "jobEvents",
         "inputSerialization": {
