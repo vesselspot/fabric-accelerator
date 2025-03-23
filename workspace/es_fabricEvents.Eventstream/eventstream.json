@@ -6,7 +6,7 @@
       "type": "FabricJobEvents",
       "properties": {
         "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "9ebcb19c-4c30-4886-b50f-479b3478ed08",
         "includedEventTypes": [
           "Microsoft.Fabric.JobEvents.ItemJobCreated",
@@ -23,7 +23,7 @@
       "type": "FabricWorkspaceItemEvents",
       "properties": {
         "eventScope": "Workspace",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "includedEventTypes": [
           "Microsoft.Fabric.ItemCreateSucceeded",
           "Microsoft.Fabric.ItemCreateFailed",
@@ -43,7 +43,7 @@
       "type": "FabricOneLakeEvents",
       "properties": {
         "tenantId": "4e921ed2-9b1c-457c-a917-16ef468eb90a",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "7e2bbf6b-43fb-498c-90e3-56199c8c3b5e",
         "oneLakePaths": [
           "/Tables"
@@ -65,7 +65,7 @@
       "type": "FabricJobEvents",
       "properties": {
         "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "022965d1-2b31-447b-9ada-63a1d52f2f54",
         "includedEventTypes": [
           "Microsoft.Fabric.JobEvents.ItemJobCreated",
@@ -82,7 +82,7 @@
       "type": "FabricJobEvents",
       "properties": {
         "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "02b37a75-fb44-4efb-9d88-b6171a4d0d7d",
         "includedEventTypes": [
           "Microsoft.Fabric.JobEvents.ItemJobCreated",
@@ -99,7 +99,7 @@
       "type": "FabricJobEvents",
       "properties": {
         "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "a69ff94c-9014-48d9-a762-aa24593302de",
         "includedEventTypes": [
           "Microsoft.Fabric.JobEvents.ItemJobCreated",
@@ -116,7 +116,7 @@
       "type": "FabricOneLakeEvents",
       "properties": {
         "tenantId": "4e921ed2-9b1c-457c-a917-16ef468eb90a",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "14ea1177-fe93-4089-97ea-6292b22b1edd",
         "oneLakePaths": [
           "/Tables"
@@ -138,7 +138,7 @@
       "type": "FabricJobEvents",
       "properties": {
         "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "d5ccf002-8789-4809-ab76-af1ef4f2129c",
         "includedEventTypes": [
           "Microsoft.Fabric.JobEvents.ItemJobCreated",
@@ -155,7 +155,7 @@
       "type": "FabricJobEvents",
       "properties": {
         "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "cc80a0ab-603d-4df9-bdfc-c35a7e8ab095",
         "includedEventTypes": [
           "Microsoft.Fabric.JobEvents.ItemJobCreated",
@@ -172,7 +172,7 @@
       "type": "FabricOneLakeEvents",
       "properties": {
         "tenantId": "4e921ed2-9b1c-457c-a917-16ef468eb90a",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "c6c5024f-de55-45ca-a79a-decbe16235e3",
         "oneLakePaths": [
           "/Tables",
@@ -195,7 +195,7 @@
       "type": "FabricJobEvents",
       "properties": {
         "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "c6c5024f-de55-45ca-a79a-decbe16235e3",
         "includedEventTypes": [
           "Microsoft.Fabric.JobEvents.ItemJobCreated",
@@ -212,7 +212,7 @@
       "type": "FabricJobEvents",
       "properties": {
         "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "dcbe357b-2a94-4d28-a21f-8e2300e33f89",
         "includedEventTypes": [
           "Microsoft.Fabric.JobEvents.ItemJobCreated",
@@ -229,7 +229,7 @@
       "type": "FabricJobEvents",
       "properties": {
         "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "ff9848e5-1321-481b-9ee1-f448a0bc0dd7",
         "includedEventTypes": [
           "Microsoft.Fabric.JobEvents.ItemJobCreated",
@@ -246,7 +246,7 @@
       "type": "FabricOneLakeEvents",
       "properties": {
         "tenantId": "4e921ed2-9b1c-457c-a917-16ef468eb90a",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "72a1085d-3514-4a96-87e3-0f5be3258eb8",
         "oneLakePaths": [
           "/Tables"
@@ -268,7 +268,7 @@
       "type": "FabricOneLakeEvents",
       "properties": {
         "tenantId": "4e921ed2-9b1c-457c-a917-16ef468eb90a",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "cc80a0ab-603d-4df9-bdfc-c35a7e8ab095",
         "oneLakePaths": [
           "/Tables",
@@ -291,7 +291,7 @@
       "type": "FabricJobEvents",
       "properties": {
         "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "3e035f81-2c25-416b-9009-b7ba22e444ab",
         "includedEventTypes": [
           "Microsoft.Fabric.JobEvents.ItemJobCreated",
@@ -308,7 +308,7 @@
       "type": "FabricJobEvents",
       "properties": {
         "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "b5964964-b4cf-4b62-8e39-0f5d63ae6c5b",
         "includedEventTypes": [
           "Microsoft.Fabric.JobEvents.ItemJobCreated",
@@ -327,7 +327,7 @@
       "type": "Eventhouse",
       "properties": {
         "dataIngestionMode": "ProcessedIngestion",
-        "workspaceId": "00000000-0000-0000-0000-000000000000",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "b22b1edd-6292-97ea-4089-fe9314ea1177",
         "databaseName": "kdb_fabricEvents",
         "tableName": "storageEvents",
@@ -474,7 +474,7 @@
       "type": "Eventhouse",
       "properties": {
         "dataIngestionMode": "ProcessedIngestion",
-        "workspaceId": "00000000-0000-0000-0000-000000000000",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "b22b1edd-6292-97ea-4089-fe9314ea1177",
         "databaseName": "kdb_fabricEvents",
         "tableName": "workspaceEvents",
@@ -621,7 +621,7 @@
       "type": "Eventhouse",
       "properties": {
         "dataIngestionMode": "ProcessedIngestion",
-        "workspaceId": "00000000-0000-0000-0000-000000000000",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
         "itemId": "b22b1edd-6292-97ea-4089-fe9314ea1177",
         "databaseName": "kdb_fabricEvents",
         "tableName": "jobEvents",
