@@ -1,104 +1,104 @@
 {
   "sources": [
-    // {
-    //   "id": "1f00e84d-959f-46bd-b2d7-ce8cb28d6f18",
-    //   "name": "Fabric-Accelerator-Workspace",
-    //   "type": "FabricWorkspaceItemEvents",
-    //   "properties": {
-    //     "eventScope": "Workspace",
-    //     "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
-    //     "includedEventTypes": [
-    //       "Microsoft.Fabric.ItemCreateSucceeded",
-    //       "Microsoft.Fabric.ItemCreateFailed",
-    //       "Microsoft.Fabric.ItemUpdateSucceeded",
-    //       "Microsoft.Fabric.ItemUpdateFailed",
-    //       "Microsoft.Fabric.ItemDeleteSucceeded",
-    //       "Microsoft.Fabric.ItemDeleteFailed",
-    //       "Microsoft.Fabric.ItemReadSucceeded",
-    //       "Microsoft.Fabric.ItemReadFailed"
-    //     ],
-    //     "filters": []
-    //   }
-    // },
-    // {
-    //   "id": "2dd6053a-a31c-442d-b305-8e017672d0ca",
-    //   "name": "dw-gold",
-    //   "type": "FabricOneLakeEvents",
-    //   "properties": {
-    //     "tenantId": "68532298-a693-4293-9eff-e2b57ecf9b54",
-    //     "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
-    //     "itemId": "362f28bf-e43b-43fa-bab5-9ab0ea97b32e",
-    //     "oneLakePaths": [
-    //       "/Tables"
-    //     ],
-    //     "includedEventTypes": [
-    //       "Microsoft.Fabric.OneLake.FileCreated",
-    //       "Microsoft.Fabric.OneLake.FileDeleted",
-    //       "Microsoft.Fabric.OneLake.FileRenamed",
-    //       "Microsoft.Fabric.OneLake.FolderCreated",
-    //       "Microsoft.Fabric.OneLake.FolderDeleted",
-    //       "Microsoft.Fabric.OneLake.FolderRenamed"
-    //     ],
-    //     "filters": []
-    //   }
-    // },
-    // {
-    //   "id": "37054380-0a31-4806-8e12-e38862e7151a",
-    //   "name": "Master-ELT-ASQL",
-    //   "type": "FabricJobEvents",
-    //   "properties": {
-    //     "eventScope": "Item",
-    //     "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
-    //     "itemId": "b3f92189-3da8-4de2-bdda-71b09c2ed924",
-    //     "includedEventTypes": [
-    //       "Microsoft.Fabric.JobEvents.ItemJobCreated",
-    //       "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
-    //       "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
-    //       "Microsoft.Fabric.JobEvents.ItemJobFailed"
-    //     ],
-    //     "filters": []
-    //   }
-    // },
-    // {
-    //   "id": "c9169667-6d84-4650-9eea-88aeb3498274",
-    //   "name": "lh-bronze-storage",
-    //   "type": "FabricOneLakeEvents",
-    //   "properties": {
-    //     "tenantId": "68532298-a693-4293-9eff-e2b57ecf9b54",
-    //     "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
-    //     "itemId": "834cc27d-1dbe-439e-96b4-3b7505c5ba79",
-    //     "oneLakePaths": [
-    //       "/Tables",
-    //       "/Files"
-    //     ],
-    //     "includedEventTypes": [
-    //       "Microsoft.Fabric.OneLake.FileCreated",
-    //       "Microsoft.Fabric.OneLake.FileDeleted",
-    //       "Microsoft.Fabric.OneLake.FileRenamed",
-    //       "Microsoft.Fabric.OneLake.FolderCreated",
-    //       "Microsoft.Fabric.OneLake.FolderDeleted",
-    //       "Microsoft.Fabric.OneLake.FolderRenamed"
-    //     ],
-    //     "filters": []
-    //   }
-    // },
-    // {
-    //   "id": "e715f26e-6a5d-4200-a6b3-ea5455b231f1",
-    //   "name": "Optimize-DeltaLake-Tabless",
-    //   "type": "FabricJobEvents",
-    //   "properties": {
-    //     "eventScope": "Item",
-    //     "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
-    //     "itemId": "3f286371-3fa5-4ada-88d6-0af0b5ded7ca",
-    //     "includedEventTypes": [
-    //       "Microsoft.Fabric.JobEvents.ItemJobCreated",
-    //       "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
-    //       "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
-    //       "Microsoft.Fabric.JobEvents.ItemJobFailed"
-    //     ],
-    //     "filters": []
-    //   }
-    // },
+    {
+      "id": "1f00e84d-959f-46bd-b2d7-ce8cb28d6f18",
+      "name": "Fabric-Accelerator-Workspace",
+      "type": "FabricWorkspaceItemEvents",
+      "properties": {
+        "eventScope": "Workspace",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
+        "includedEventTypes": [
+          "Microsoft.Fabric.ItemCreateSucceeded",
+          "Microsoft.Fabric.ItemCreateFailed",
+          "Microsoft.Fabric.ItemUpdateSucceeded",
+          "Microsoft.Fabric.ItemUpdateFailed",
+          "Microsoft.Fabric.ItemDeleteSucceeded",
+          "Microsoft.Fabric.ItemDeleteFailed",
+          "Microsoft.Fabric.ItemReadSucceeded",
+          "Microsoft.Fabric.ItemReadFailed"
+        ],
+        "filters": []
+      }
+    },
+    {
+      "id": "2dd6053a-a31c-442d-b305-8e017672d0ca",
+      "name": "dw-gold",
+      "type": "FabricOneLakeEvents",
+      "properties": {
+        "tenantId": "68532298-a693-4293-9eff-e2b57ecf9b54",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
+        "itemId": "362f28bf-e43b-43fa-bab5-9ab0ea97b32e",
+        "oneLakePaths": [
+          "/Tables"
+        ],
+        "includedEventTypes": [
+          "Microsoft.Fabric.OneLake.FileCreated",
+          "Microsoft.Fabric.OneLake.FileDeleted",
+          "Microsoft.Fabric.OneLake.FileRenamed",
+          "Microsoft.Fabric.OneLake.FolderCreated",
+          "Microsoft.Fabric.OneLake.FolderDeleted",
+          "Microsoft.Fabric.OneLake.FolderRenamed"
+        ],
+        "filters": []
+      }
+    },
+    {
+      "id": "37054380-0a31-4806-8e12-e38862e7151a",
+      "name": "Master-ELT-ASQL",
+      "type": "FabricJobEvents",
+      "properties": {
+        "eventScope": "Item",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
+        "itemId": "b3f92189-3da8-4de2-bdda-71b09c2ed924",
+        "includedEventTypes": [
+          "Microsoft.Fabric.JobEvents.ItemJobCreated",
+          "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
+          "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
+          "Microsoft.Fabric.JobEvents.ItemJobFailed"
+        ],
+        "filters": []
+      }
+    },
+    {
+      "id": "c9169667-6d84-4650-9eea-88aeb3498274",
+      "name": "lh-bronze-storage",
+      "type": "FabricOneLakeEvents",
+      "properties": {
+        "tenantId": "68532298-a693-4293-9eff-e2b57ecf9b54",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
+        "itemId": "834cc27d-1dbe-439e-96b4-3b7505c5ba79",
+        "oneLakePaths": [
+          "/Tables",
+          "/Files"
+        ],
+        "includedEventTypes": [
+          "Microsoft.Fabric.OneLake.FileCreated",
+          "Microsoft.Fabric.OneLake.FileDeleted",
+          "Microsoft.Fabric.OneLake.FileRenamed",
+          "Microsoft.Fabric.OneLake.FolderCreated",
+          "Microsoft.Fabric.OneLake.FolderDeleted",
+          "Microsoft.Fabric.OneLake.FolderRenamed"
+        ],
+        "filters": []
+      }
+    },
+    {
+      "id": "e715f26e-6a5d-4200-a6b3-ea5455b231f1",
+      "name": "Optimize-DeltaLake-Tabless",
+      "type": "FabricJobEvents",
+      "properties": {
+        "eventScope": "Item",
+        "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
+        "itemId": "3f286371-3fa5-4ada-88d6-0af0b5ded7ca",
+        "includedEventTypes": [
+          "Microsoft.Fabric.JobEvents.ItemJobCreated",
+          "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
+          "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
+          "Microsoft.Fabric.JobEvents.ItemJobFailed"
+        ],
+        "filters": []
+      }
+    },
     {
       "id": "f4104096-9f8d-464f-be4c-513c4fb7c4c9",
       "name": "lh-silver-storage",
