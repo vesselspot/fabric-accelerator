@@ -1,23 +1,6 @@
 {
   "sources": [
     {
-      "id": "036846a9-76ac-4bf9-a67a-0f27a85f158e",
-      "name": "Level2-Transform",
-      "type": "FabricJobEvents",
-      "properties": {
-        "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
-        "itemId": "9ebcb19c-4c30-4886-b50f-479b3478ed08",
-        "includedEventTypes": [
-          "Microsoft.Fabric.JobEvents.ItemJobCreated",
-          "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
-          "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
-          "Microsoft.Fabric.JobEvents.ItemJobFailed"
-        ],
-        "filters": []
-      }
-    },
-    {
       "id": "1f00e84d-959f-46bd-b2d7-ce8cb28d6f18",
       "name": "Fabric-Accelerator-Workspace",
       "type": "FabricWorkspaceItemEvents",
@@ -38,8 +21,8 @@
       }
     },
     {
-      "id": "22f576c9-4872-4e0a-b8ef-ab40cf712daf",
-      "name": "dw-gold-storage",
+      "id": "2dd6053a-a31c-442d-b305-8e017672d0ca",
+      "name": "dw-gold",
       "type": "FabricOneLakeEvents",
       "properties": {
         "tenantId": "4e921ed2-9b1c-457c-a917-16ef468eb90a",
@@ -60,23 +43,6 @@
       }
     },
     {
-      "id": "30bf2be3-4e1a-43da-9812-4c48a4535815",
-      "name": "wwi-elt-framework",
-      "type": "FabricJobEvents",
-      "properties": {
-        "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
-        "itemId": "022965d1-2b31-447b-9ada-63a1d52f2f54",
-        "includedEventTypes": [
-          "Microsoft.Fabric.JobEvents.ItemJobCreated",
-          "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
-          "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
-          "Microsoft.Fabric.JobEvents.ItemJobFailed"
-        ],
-        "filters": []
-      }
-    },
-    {
       "id": "37054380-0a31-4806-8e12-e38862e7151a",
       "name": "Master-ELT-ASQL",
       "type": "FabricJobEvents",
@@ -84,79 +50,6 @@
         "eventScope": "Item",
         "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
         "itemId": "02b37a75-fb44-4efb-9d88-b6171a4d0d7d",
-        "includedEventTypes": [
-          "Microsoft.Fabric.JobEvents.ItemJobCreated",
-          "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
-          "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
-          "Microsoft.Fabric.JobEvents.ItemJobFailed"
-        ],
-        "filters": []
-      }
-    },
-    {
-      "id": "49bcebfe-1cfd-4d84-aaf6-0deaf431bcd9",
-      "name": "Master-Level1_Transform",
-      "type": "FabricJobEvents",
-      "properties": {
-        "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
-        "itemId": "a69ff94c-9014-48d9-a762-aa24593302de",
-        "includedEventTypes": [
-          "Microsoft.Fabric.JobEvents.ItemJobCreated",
-          "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
-          "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
-          "Microsoft.Fabric.JobEvents.ItemJobFailed"
-        ],
-        "filters": []
-      }
-    },
-    {
-      "id": "7d53aea6-f023-409e-8882-b8bc8f219de9",
-      "name": "kdb-fabricEvents",
-      "type": "FabricOneLakeEvents",
-      "properties": {
-        "tenantId": "4e921ed2-9b1c-457c-a917-16ef468eb90a",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
-        "itemId": "14ea1177-fe93-4089-97ea-6292b22b1edd",
-        "oneLakePaths": [
-          "/Tables"
-        ],
-        "includedEventTypes": [
-          "Microsoft.Fabric.OneLake.FileCreated",
-          "Microsoft.Fabric.OneLake.FileDeleted",
-          "Microsoft.Fabric.OneLake.FileRenamed",
-          "Microsoft.Fabric.OneLake.FolderCreated",
-          "Microsoft.Fabric.OneLake.FolderDeleted",
-          "Microsoft.Fabric.OneLake.FolderRenamed"
-        ],
-        "filters": []
-      }
-    },
-    {
-      "id": "9e9151f5-0b27-4860-8add-d13a41f00aa2",
-      "name": "Master-Level2-Transform",
-      "type": "FabricJobEvents",
-      "properties": {
-        "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
-        "itemId": "d5ccf002-8789-4809-ab76-af1ef4f2129c",
-        "includedEventTypes": [
-          "Microsoft.Fabric.JobEvents.ItemJobCreated",
-          "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
-          "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
-          "Microsoft.Fabric.JobEvents.ItemJobFailed"
-        ],
-        "filters": []
-      }
-    },
-    {
-      "id": "b2b2beb6-79c5-47da-b81d-11b0331a24d9",
-      "name": "lh-silver-jobs",
-      "type": "FabricJobEvents",
-      "properties": {
-        "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
-        "itemId": "cc80a0ab-603d-4df9-bdfc-c35a7e8ab095",
         "includedEventTypes": [
           "Microsoft.Fabric.JobEvents.ItemJobCreated",
           "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
@@ -190,23 +83,6 @@
       }
     },
     {
-      "id": "d487d1c8-4bc1-414d-99a6-9e49e0c15dab",
-      "name": "lh-bronze-jobs",
-      "type": "FabricJobEvents",
-      "properties": {
-        "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
-        "itemId": "c6c5024f-de55-45ca-a79a-decbe16235e3",
-        "includedEventTypes": [
-          "Microsoft.Fabric.JobEvents.ItemJobCreated",
-          "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
-          "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
-          "Microsoft.Fabric.JobEvents.ItemJobFailed"
-        ],
-        "filters": []
-      }
-    },
-    {
       "id": "e715f26e-6a5d-4200-a6b3-ea5455b231f1",
       "name": "Optimize-DeltaLake-Tabless",
       "type": "FabricJobEvents",
@@ -219,45 +95,6 @@
           "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
           "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
           "Microsoft.Fabric.JobEvents.ItemJobFailed"
-        ],
-        "filters": []
-      }
-    },
-    {
-      "id": "ebe1dff8-128b-4f95-b80a-4c0eb361f977",
-      "name": "Ingest-ASQL-Table",
-      "type": "FabricJobEvents",
-      "properties": {
-        "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
-        "itemId": "ff9848e5-1321-481b-9ee1-f448a0bc0dd7",
-        "includedEventTypes": [
-          "Microsoft.Fabric.JobEvents.ItemJobCreated",
-          "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
-          "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
-          "Microsoft.Fabric.JobEvents.ItemJobFailed"
-        ],
-        "filters": []
-      }
-    },
-    {
-      "id": "ef4ff4a5-bc32-4fbe-9bad-74d523747750",
-      "name": "ehfabricAccelerator",
-      "type": "FabricOneLakeEvents",
-      "properties": {
-        "tenantId": "4e921ed2-9b1c-457c-a917-16ef468eb90a",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
-        "itemId": "72a1085d-3514-4a96-87e3-0f5be3258eb8",
-        "oneLakePaths": [
-          "/Tables"
-        ],
-        "includedEventTypes": [
-          "Microsoft.Fabric.OneLake.FileCreated",
-          "Microsoft.Fabric.OneLake.FileDeleted",
-          "Microsoft.Fabric.OneLake.FileRenamed",
-          "Microsoft.Fabric.OneLake.FolderCreated",
-          "Microsoft.Fabric.OneLake.FolderDeleted",
-          "Microsoft.Fabric.OneLake.FolderRenamed"
         ],
         "filters": []
       }
@@ -281,40 +118,6 @@
           "Microsoft.Fabric.OneLake.FolderCreated",
           "Microsoft.Fabric.OneLake.FolderDeleted",
           "Microsoft.Fabric.OneLake.FolderRenamed"
-        ],
-        "filters": []
-      }
-    },
-    {
-      "id": "f8105623-319e-45d0-9d8a-7d425bb495a6",
-      "name": "L1Transform-Generic-Fabric",
-      "type": "FabricJobEvents",
-      "properties": {
-        "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
-        "itemId": "3e035f81-2c25-416b-9009-b7ba22e444ab",
-        "includedEventTypes": [
-          "Microsoft.Fabric.JobEvents.ItemJobCreated",
-          "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
-          "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
-          "Microsoft.Fabric.JobEvents.ItemJobFailed"
-        ],
-        "filters": []
-      }
-    },
-    {
-      "id": "f86a7d3c-e15d-470e-ab38-3be52c76357a",
-      "name": "Level1-Transform",
-      "type": "FabricJobEvents",
-      "properties": {
-        "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
-        "itemId": "b5964964-b4cf-4b62-8e39-0f5d63ae6c5b",
-        "includedEventTypes": [
-          "Microsoft.Fabric.JobEvents.ItemJobCreated",
-          "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
-          "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
-          "Microsoft.Fabric.JobEvents.ItemJobFailed"
         ],
         "filters": []
       }
@@ -398,51 +201,8 @@
               },
               {
                 "name": "data",
-                "type": "Record",
-                "fields": [
-                  {
-                    "name": "itemId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "itemName",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "workspaceId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "workspaceName",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "itemKind",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "executingPrincipalId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "executingPrincipalType",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  }
-                ],
+                "type": "BigInt",
+                "fields": null,
                 "items": null
               },
               {
@@ -545,51 +305,8 @@
               },
               {
                 "name": "data",
-                "type": "Record",
-                "fields": [
-                  {
-                    "name": "itemId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "itemName",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "workspaceId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "workspaceName",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "itemKind",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "executingPrincipalId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "executingPrincipalType",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  }
-                ],
+                "type": "BigInt",
+                "fields": null,
                 "items": null
               },
               {
@@ -692,51 +409,8 @@
               },
               {
                 "name": "data",
-                "type": "Record",
-                "fields": [
-                  {
-                    "name": "itemId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "itemName",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "workspaceId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "workspaceName",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "itemKind",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "executingPrincipalId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "executingPrincipalType",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  }
-                ],
+                "type": "BigInt",
+                "fields": null,
                 "items": null
               },
               {
@@ -771,37 +445,13 @@
       "properties": {},
       "inputNodes": [
         {
-          "name": "dw-gold-storage"
-        },
-        {
-          "name": "ehfabricAccelerator"
+          "name": "dw-gold"
         },
         {
           "name": "Fabric-Accelerator-Workspace"
         },
         {
-          "name": "Ingest-ASQL-Table"
-        },
-        {
-          "name": "kdb-fabricEvents"
-        },
-        {
-          "name": "L1Transform-Generic-Fabric"
-        },
-        {
-          "name": "Level1-Transform"
-        },
-        {
-          "name": "Level2-Transform"
-        },
-        {
-          "name": "lh-bronze-jobs"
-        },
-        {
           "name": "lh-bronze-storage"
-        },
-        {
-          "name": "lh-silver-jobs"
         },
         {
           "name": "lh-silver-storage"
@@ -810,16 +460,7 @@
           "name": "Master-ELT-ASQL"
         },
         {
-          "name": "Master-Level1_Transform"
-        },
-        {
-          "name": "Master-Level2-Transform"
-        },
-        {
           "name": "Optimize-DeltaLake-Tabless"
-        },
-        {
-          "name": "wwi-elt-framework"
         }
       ]
     }
@@ -906,51 +547,8 @@
               },
               {
                 "name": "data",
-                "type": "Record",
-                "fields": [
-                  {
-                    "name": "itemId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "itemName",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "workspaceId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "workspaceName",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "itemKind",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "executingPrincipalId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "executingPrincipalType",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  }
-                ],
+                "type": "BigInt",
+                "fields": null,
                 "items": null
               },
               {
@@ -1057,51 +655,8 @@
               },
               {
                 "name": "data",
-                "type": "Record",
-                "fields": [
-                  {
-                    "name": "itemId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "itemName",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "workspaceId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "workspaceName",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "itemKind",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "executingPrincipalId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "executingPrincipalType",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  }
-                ],
+                "type": "BigInt",
+                "fields": null,
                 "items": null
               },
               {
@@ -1208,51 +763,8 @@
               },
               {
                 "name": "data",
-                "type": "Record",
-                "fields": [
-                  {
-                    "name": "itemId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "itemName",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "workspaceId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "workspaceName",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "itemKind",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "executingPrincipalId",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  },
-                  {
-                    "name": "executingPrincipalType",
-                    "type": "Nvarchar(max)",
-                    "fields": null,
-                    "items": null
-                  }
-                ],
+                "type": "BigInt",
+                "fields": null,
                 "items": null
               },
               {
