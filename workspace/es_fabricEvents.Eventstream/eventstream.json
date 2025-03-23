@@ -339,7 +339,7 @@
       "properties": {
         "dataIngestionMode": "ProcessedIngestion",
         "workspaceId": "a7e89660-0646-4c6d-b003-185d3a3234b6",
-        "itemId": "111870bb-ef2e-4350-8f26-d4347d6412c8",
+        "itemId": "3c63cd71-257f-450d-8019-9cfcc3a1e519",
         "databaseName": "kdb_fabricEvents",
         "tableName": "jobEvents",
         "inputSerialization": {
