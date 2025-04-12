@@ -6,7 +6,7 @@ This accelerator will help you build a modern data platform end-to-end with Micr
 ## Table of Contents
 - [Features](#features)
 - [Getting Started](#getting-started)
-- [Contributing](#contributing)
+- [Collaborate](#collaborate)
 - [Contact](#contact)
 
 ## Features
