@@ -6,11 +6,11 @@ This accelerator will help you build a modern data platform end-to-end with Micr
 ## Table of Contents
 - [Features](#features)
 - [Getting Started](#getting-started)
-- [Contributing](#contributing)
+- [Collaborate](#collaborate)
 - [Contact](#contact)
 
 ## Features
-- Medallion architecture <sup>[1](https://github.com/bennyaustin/fabric-accelerator/wiki/02-Architecture)</sup>
+- Medallion architecture <sup>[1](https://github.com/bennyaustin/fabric-accelerator/wiki/02-Architecture)</sup> for both batch and real-time workloads.
 - Metadata-driven orchestration using [ELT Framework](https://github.com/bennyaustin/elt-framework) <sup>[2](https://github.com/bennyaustin/fabric-accelerator/wiki/03-Metadata%E2%80%90driven-Orchestration)</sup> 
 - Resusable Data Factory Pipelines that can be readily deployed with configuration changes <sup>[3](https://github.com/bennyaustin/fabric-accelerator/wiki/04-Reusable-Data-Factory-Pipelines)</sup>
 - Reusable Spark notebooks for common transformations <sup>[4](https://github.com/bennyaustin/fabric-accelerator/wiki/05-Reusable-Spark-Notebooks)</sup>
@@ -21,7 +21,7 @@ This accelerator will help you build a modern data platform end-to-end with Micr
 
 ## Getting Started
 To get started follow these steps:
-- Clone or Fork the repository: git clone https://github.com/bennyaustin/fabric-accelerator.git
+- Fork the repository: https://github.com/bennyaustin/fabric-accelerator.git
 - Follow the instructions in the [set-up guide](https://github.com/bennyaustin/fabric-accelerator/wiki/01-Set%E2%80%90up).
 
 
