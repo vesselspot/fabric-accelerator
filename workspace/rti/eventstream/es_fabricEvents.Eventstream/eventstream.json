@@ -21,7 +21,24 @@
       }
     },
     {
-      "id": "2dd6053a-a31c-442d-b305-8e017672d0ca",
+      "id": "37054380-0a31-4806-8e12-e38862e7151a",
+      "name": "Master-ELT-ASQL",
+      "type": "FabricJobEvents",
+      "properties": {
+        "eventScope": "Item",
+        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
+        "itemId": "02b37a75-fb44-4efb-9d88-b6171a4d0d7d",
+        "includedEventTypes": [
+          "Microsoft.Fabric.JobEvents.ItemJobCreated",
+          "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
+          "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
+          "Microsoft.Fabric.JobEvents.ItemJobFailed"
+        ],
+        "filters": []
+      }
+    },
+    {
+      "id": "5fb7fe30-07a8-43a1-9296-6fa570bbafa2",
       "name": "dw-gold",
       "type": "FabricOneLakeEvents",
       "properties": {
@@ -38,23 +55,6 @@
           "Microsoft.Fabric.OneLake.FolderCreated",
           "Microsoft.Fabric.OneLake.FolderDeleted",
           "Microsoft.Fabric.OneLake.FolderRenamed"
-        ],
-        "filters": []
-      }
-    },
-    {
-      "id": "37054380-0a31-4806-8e12-e38862e7151a",
-      "name": "Master-ELT-ASQL",
-      "type": "FabricJobEvents",
-      "properties": {
-        "eventScope": "Item",
-        "workspaceId": "8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec",
-        "itemId": "02b37a75-fb44-4efb-9d88-b6171a4d0d7d",
-        "includedEventTypes": [
-          "Microsoft.Fabric.JobEvents.ItemJobCreated",
-          "Microsoft.Fabric.JobEvents.ItemJobStatusChanged",
-          "Microsoft.Fabric.JobEvents.ItemJobSucceeded",
-          "Microsoft.Fabric.JobEvents.ItemJobFailed"
         ],
         "filters": []
       }
@@ -201,8 +201,51 @@
               },
               {
                 "name": "data",
-                "type": "BigInt",
-                "fields": null,
+                "type": "Record",
+                "fields": [
+                  {
+                    "name": "itemId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "itemName",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "workspaceId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "workspaceName",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "itemKind",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "executingPrincipalId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "executingPrincipalType",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  }
+                ],
                 "items": null
               },
               {
@@ -305,8 +348,51 @@
               },
               {
                 "name": "data",
-                "type": "BigInt",
-                "fields": null,
+                "type": "Record",
+                "fields": [
+                  {
+                    "name": "itemId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "itemName",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "workspaceId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "workspaceName",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "itemKind",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "executingPrincipalId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "executingPrincipalType",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  }
+                ],
                 "items": null
               },
               {
@@ -409,8 +495,51 @@
               },
               {
                 "name": "data",
-                "type": "BigInt",
-                "fields": null,
+                "type": "Record",
+                "fields": [
+                  {
+                    "name": "itemId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "itemName",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "workspaceId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "workspaceName",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "itemKind",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "executingPrincipalId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "executingPrincipalType",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  }
+                ],
                 "items": null
               },
               {
@@ -547,8 +676,51 @@
               },
               {
                 "name": "data",
-                "type": "BigInt",
-                "fields": null,
+                "type": "Record",
+                "fields": [
+                  {
+                    "name": "itemId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "itemName",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "workspaceId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "workspaceName",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "itemKind",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "executingPrincipalId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "executingPrincipalType",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  }
+                ],
                 "items": null
               },
               {
@@ -655,8 +827,51 @@
               },
               {
                 "name": "data",
-                "type": "BigInt",
-                "fields": null,
+                "type": "Record",
+                "fields": [
+                  {
+                    "name": "itemId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "itemName",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "workspaceId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "workspaceName",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "itemKind",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "executingPrincipalId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "executingPrincipalType",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  }
+                ],
                 "items": null
               },
               {
@@ -763,8 +978,51 @@
               },
               {
                 "name": "data",
-                "type": "BigInt",
-                "fields": null,
+                "type": "Record",
+                "fields": [
+                  {
+                    "name": "itemId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "itemName",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "workspaceId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "workspaceName",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "itemKind",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "executingPrincipalId",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  },
+                  {
+                    "name": "executingPrincipalType",
+                    "type": "Nvarchar(max)",
+                    "fields": null,
+                    "items": null
+                  }
+                ],
                 "items": null
               },
               {
