@@ -130,7 +130,7 @@
       "type": "Eventhouse",
       "properties": {
         "dataIngestionMode": "ProcessedIngestion",
-        "workspaceId": "efb8f09e-8d9d-4669-b7e1-6f70b9748ad3",
+        "workspaceId": "00000000-0000-0000-0000-000000000000",
         "itemId": "b11fae50-0ed3-409c-881e-511fea943461",
         "databaseName": "kdb_fabricEvents",
         "tableName": "storageEvents",
@@ -277,7 +277,7 @@
       "type": "Eventhouse",
       "properties": {
         "dataIngestionMode": "ProcessedIngestion",
-        "workspaceId": "efb8f09e-8d9d-4669-b7e1-6f70b9748ad3",
+        "workspaceId": "00000000-0000-0000-0000-000000000000",
         "itemId": "b11fae50-0ed3-409c-881e-511fea943461",
         "databaseName": "kdb_fabricEvents",
         "tableName": "workspaceEvents",
@@ -424,7 +424,7 @@
       "type": "Eventhouse",
       "properties": {
         "dataIngestionMode": "ProcessedIngestion",
-        "workspaceId": "efb8f09e-8d9d-4669-b7e1-6f70b9748ad3",
+        "workspaceId": "00000000-0000-0000-0000-000000000000",
         "itemId": "b11fae50-0ed3-409c-881e-511fea943461",
         "databaseName": "kdb_fabricEvents",
         "tableName": "jobEvents",
