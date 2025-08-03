@@ -3,7 +3,7 @@
   <Sdk Name="Microsoft.Build.Sql" Version="2.0.0-preview.2" />
   <PropertyGroup>
     <Name>controlDB</Name>
-    <ProjectGuid>{00000000-0000-0000-0000-000000000000}</ProjectGuid>
+    <ProjectGuid>{efb8f09e-8d9d-4669-b7e1-6f70b9748ad3}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.SqlDbFabricDatabaseSchemaProvider</DSP>
     <ModelCollation>1033, CI</ModelCollation>
   </PropertyGroup>
