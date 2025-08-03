@@ -8,6 +8,9 @@ param dprg string= 'rg-fabric'
 @description('Microsoft Fabric Resource group location')
 param rglocation string = 'australiaeast'
 
+@description('Email of Fabric Capacity Administrator')
+param fabric_capacity_admin_email string
+
 @description('Cost Centre tag that will be applied to all resources in this deployment')
 param cost_centre_tag string = 'MCAPS'
 
@@ -63,7 +66,7 @@ module fabric_capacity './modules/fabric-capacity.bicep' = {
     cost_centre_tag: cost_centre_tag
     owner_tag: owner_tag
     sme_tag: sme_tag
-    adminUsers: kv_ref.getSecret('fabric-capacity-admin-username')
+    adminUsers: fabric_capacity_admin_email
     skuName: 'F4' // Default Fabric Capacity SKU F2
   }
 }
