@@ -1053,7 +1053,7 @@
       },
       "BronzeObjectID": {
         "type": "string",
-        "defaultValue": "c6c5024f-de55-45ca-a79a-decbe16235e3"
+        "defaultValue": "763fd18c-6eff-492c-8096-9cecd9764488"
       },
       "BronzeWorkspaceID": {
         "type": "string",
