@@ -51,11 +51,6 @@ module kv './modules/keyvault.bicep' = {
   }
 }
 
-resource kv_ref 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
-  name: kv.outputs.keyvault_name
-  scope: fabric_rg
-}
-
 //Deploy Microsoft Fabric Capacity
 module fabric_capacity './modules/fabric-capacity.bicep' = {
   name: fabric_deployment_name
