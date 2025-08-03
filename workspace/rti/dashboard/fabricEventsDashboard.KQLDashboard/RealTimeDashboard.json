@@ -1262,7 +1262,7 @@
       "kind": "kusto-trident",
       "scopeId": "kusto-trident",
       "clusterUri": "",
-      "database": "b22b1edd-6292-97ea-4089-fe9314ea1177",
+      "database": "b11fae50-0ed3-409c-881e-511fea943461",
       "name": "kdb_fabricEvents",
       "id": "2505cb77-5a0e-49ed-8f65-9e0b9c774870",
       "workspace": "00000000-0000-0000-0000-000000000000"
