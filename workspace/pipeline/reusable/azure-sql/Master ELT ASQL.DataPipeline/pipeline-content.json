@@ -33,11 +33,11 @@
           "datasetSettings": {
             "type": "AzureSqlTable",
             "typeProperties": {
-              "database": "controlDB"
+              "database": "controlDB-78d6902e-70ea-4fb0-b51e-af3f2aaee3b7"
             },
             "schema": [],
             "externalReferences": {
-              "connection": "91ecdff4-3ab7-4bbb-b6e0-682881c0540d"
+              "connection": "78e8d795-a55c-412e-9b76-47ba404b4d51"
             },
             "annotations": []
           },
