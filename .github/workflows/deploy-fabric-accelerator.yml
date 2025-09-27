@@ -17,7 +17,7 @@ jobs:
        # Authenticate using Service Principal
         - name: Authenticate to Fabric
           run: |
-            fab auth login -u {{secrets.ACTION_SPN_CLIENTID}} -p{{sexcrets.ACTION_SPN_SECRET}} --tenant {{secrets.TENANT_ID}} 
+            fab auth login -u {{secrets.ACTION_SPN_CLIENTID}} -p{{secrets.ACTION_SPN_SECRET}} --tenant {{secrets.TENANT_ID}} 
 
         # Checkout code
         - uses: actions/checkout@v3   
