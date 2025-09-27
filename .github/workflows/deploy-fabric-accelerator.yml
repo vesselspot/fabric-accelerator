@@ -18,7 +18,7 @@ jobs:
         - name: Authenticate to Fabric
           run: |
             fab config set encryption_fallback_enabled true
-            fab auth login -u {{secrets.ACTION_SPN_CLIENTID}} -p{{secrets.ACTION_SPN_SECRET}} --tenant {{secrets.TENANT_ID}} 
+            fab auth login -u {{secrets.ACTION_SPN_CLIENTID}} -p {{secrets.ACTION_SPN_SECRET}} --tenant {{secrets.TENANT_ID}} 
 
         # Checkout code
         - uses: actions/checkout@v3   
