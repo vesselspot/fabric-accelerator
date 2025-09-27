@@ -4,7 +4,11 @@ jobs:
   deploy-fabric-accelerator:
     runs-on: ubuntu-latest
     steps:
-        # Log into Azure
+
+        # Checkout code
+        - uses: actions/checkout@v3   
+
+        # Python Version Pre-Requisites
         - name: Fabric CLI Python Pre-Requisites
           uses: actions/setup-python@v4
           with:
@@ -18,7 +22,5 @@ jobs:
         - name: Authenticate to Fabric
           run: |
             fab config set encryption_fallback_enabled true
-            fab auth login -u {{secrets.ACTION_SPN_CLIENTID}} -p {{secrets.ACTION_SPN_SECRET}} --tenant {{secrets.TENANT_ID}} 
+            fab auth login -u {{ secrets.ACTION_SPN_CLIENTID }} -p{{ secrets.ACTION_SPN_SECRET }} --tenant {{ secrets.TENANT_ID }} 
 
-        # Checkout code
-        - uses: actions/checkout@v3   
