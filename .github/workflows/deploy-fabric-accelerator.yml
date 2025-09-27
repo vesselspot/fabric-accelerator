@@ -1,0 +1,23 @@
+name: Deploy Fabric Accelerator
+on: workflow_dispatch 
+jobs:
+  deploy-fabric-accelerator:
+    runs-on: ubuntu-latest
+    steps:
+        # Log into Azure
+        - name: Fabric CLI Python Pre-Requisites
+          uses: actions/setup-python@v4
+          with:
+            python-version: 3.12
+       
+       # Install Fabric CLI 
+        - name: Install Fabric CLI
+          run: pip install ms-fabric-cli
+
+       # Authenticate using Service Principal
+        - name: Authenticate to Fabric
+          run: |
+            fab auth login -u {{secrets.ACTION_SPN_CLIENTID}} -p{{secrets.ACTION_SPN_SECRET}} --tenant {{secrets.TENANT_ID}} 
+
+        # Checkout code
+        - uses: actions/checkout@v3   
