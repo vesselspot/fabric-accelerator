@@ -31,7 +31,8 @@ jobs:
        # Create Workspace if it does not exist
         - name: Create Workspace if it does not exist
           run: |
-            if ![fab exists $WORKSPACE_NAME.Workspace]; then
+            $WorkspaceExists = fab exists $WORKSPACE_NAME.Workspace
+            if ![$WorkspaceExists]; then
               fab create $WORKSPACE_NAME.Workspace -P capacityName=$FABRIC_CAPACITY_NAME
               fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_ADMIN_ID -R admin -f
             fi
