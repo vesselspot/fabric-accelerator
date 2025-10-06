@@ -3,7 +3,8 @@ on: workflow_dispatch
 env:
   WORKSPACE_NAME: testws
   FABRIC_CAPACITY_NAME: bafabric014e4fwwm2ufole
-  WORKSPACE_ADMIN_ID: 01e16ca5-e5da-49f3-ac27-a46f1cc68ede
+  WORKSPACE_ADMIN_ID: aca94643-2e36-4cd6-ba96-bfc513b37851
+  WORKSPACE_COLLABORATOR_ID: 01e16ca5-e5da-49f3-ac27-a46f1cc68ede
 jobs:
   deploy-fabric-accelerator:
     runs-on: ubuntu-latest
@@ -35,4 +36,5 @@ jobs:
               if [ "$WorkspaceExists" != "true" ]; then
                 fab create $WORKSPACE_NAME.Workspace -P capacityName=$FABRIC_CAPACITY_NAME
                 fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_ADMIN_ID -R admin -f
+                fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_COLLABORATOR_ID -R contributor -f
               fi 
