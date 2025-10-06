@@ -6,7 +6,7 @@ env:
   WORKSPACE_ADMIN_ID: 01e16ca5-e5da-49f3-ac27-a46f1cc68ede
 jobs:
   deploy-fabric-accelerator:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
 
         # Checkout code
