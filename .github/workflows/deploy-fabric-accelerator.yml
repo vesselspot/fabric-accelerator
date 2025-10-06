@@ -6,7 +6,7 @@ env:
   WORKSPACE_ADMIN_ID: 01e16ca5-e5da-49f3-ac27-a46f1cc68ede
 jobs:
   deploy-fabric-accelerator:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
 
         # Checkout code
@@ -31,6 +31,6 @@ jobs:
        # Create Workspace if it does not exist
         - name: Create Workspace if it does not exist
           run: |
-            fab workspace create $WORKSPACE_NAME.Workspace -P capacityName=$FABRIC_CAPACITY_NAME
+            fab create $WORKSPACE_NAME.Workspace -P capacityName=$FABRIC_CAPACITY_NAME
             fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_ADMIN_ID -R admin -f
 
