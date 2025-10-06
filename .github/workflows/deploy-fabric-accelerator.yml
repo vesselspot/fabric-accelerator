@@ -1,5 +1,9 @@
 name: Deploy Fabric Accelerator
 on: workflow_dispatch 
+env:
+  WORKSPACE_NAME: testws
+  FABRIC_CAPACITY_NAME: bafabric014e4fwwm2ufole
+  WORKSPACE_ADMIN_ID: 01e16ca5-e5da-49f3-ac27-a46f1cc68ede
 jobs:
   deploy-fabric-accelerator:
     runs-on: ubuntu-latest
@@ -24,3 +28,10 @@ jobs:
             fab config set encryption_fallback_enabled true
             fab auth login -u ${{ secrets.ACTION_SPN_CLIENTID }} -p ${{ secrets.ACTION_SPN_SECRET }} --tenant ${{ secrets.TENANT_ID }} 
 
+       # Create Workspace if it does not exist
+        - name: Create Workspace if it does not exist
+          run: |
+            if ![fab exists testws.Worspace]; then
+              fab workspace create $WORKSPACE_NAME.Workspace -P capacityName=$FABRIC_CAPACITY_NAME
+              fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_ADMIN_ID -R Owner
+            fi
