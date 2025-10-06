@@ -41,7 +41,7 @@ jobs:
               fi 
 
        # Create Fabric SQL database if it does not exist
-        - name: Create WoFSQL if it does not exist
+        - name: Create FSQL DB if it does not exist
           run: |
               FSQLExists=$(fab exists $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase)
               if [ "$FSQLExists" != "true" ]; then
