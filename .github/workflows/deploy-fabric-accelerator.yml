@@ -39,7 +39,10 @@ jobs:
                 fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_ADMIN_ID -R admin -f
                 fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_COLLABORATOR_ID -R contributor -f
               fi 
-
+              WorkspaceIdentityExists =$(fab exists $WORKSPACE_NAME.Workspace .managedidentities/$WORKSPACE_NAME.ManagedIdentity)
+              if [ "$WorkspaceIdentityExists" != "* true"]; then
+                fab create $WORKSPACE_NAME.Workspace .managedidentities/workspace-identity.ManagedIdentity
+              if 
        # Create Fabric SQL database if it does not exist
         - name: Create FSQL DB if it does not exist
           run: |
