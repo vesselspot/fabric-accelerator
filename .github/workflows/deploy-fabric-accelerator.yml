@@ -34,13 +34,13 @@ jobs:
         - name: Create Workspace if it does not exist
           run: |
               WorkspaceExists=$(fab exists $WORKSPACE_NAME.Workspace)
-              if [ "$WorkspaceExists" != "* true"]; then
+              if [ "$WorkspaceExists" != "* true" ]; then
                 fab create $WORKSPACE_NAME.Workspace -P capacityName=$FABRIC_CAPACITY_NAME
                 fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_ADMIN_ID -R admin -f
                 fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_COLLABORATOR_ID -R contributor -f
               fi 
               WorkspaceIdentityExists=$(fab exists $WORKSPACE_NAME.Workspace .managedidentities/$WORKSPACE_NAME.ManagedIdentity)
-              if [ "$WorkspaceIdentityExists" != "* true"]; then
+              if [ "$WorkspaceIdentityExists" != "* true" ]; then
                 fab create $WORKSPACE_NAME.Workspace .managedidentities/workspace-identity.ManagedIdentity
               fi 
 
