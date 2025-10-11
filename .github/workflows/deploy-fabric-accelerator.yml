@@ -1,10 +1,20 @@
 name: Deploy Fabric Accelerator
 on: workflow_dispatch 
+env:
+  WORKSPACE_NAME: testws
+  FABRIC_CAPACITY_NAME: bafabric014e4fwwm2ufole
+  WORKSPACE_ADMIN_ID: aca94643-2e36-4cd6-ba96-bfc513b37851
+  WORKSPACE_COLLABORATOR_ID: 01e16ca5-e5da-49f3-ac27-a46f1cc68ede
+  FABRIC_SQL_DB_NAME: controldb-test
 jobs:
   deploy-fabric-accelerator:
     runs-on: ubuntu-latest
     steps:
-        # Log into Azure
+
+        # Checkout code
+        - uses: actions/checkout@v3   
+
+        # Python Version Pre-Requisites
         - name: Fabric CLI Python Pre-Requisites
           uses: actions/setup-python@v4
           with:
@@ -18,7 +28,44 @@ jobs:
         - name: Authenticate to Fabric
           run: |
             fab config set encryption_fallback_enabled true
-            fab auth login -u {{secrets.ACTION_SPN_CLIENTID}} -p {{secrets.ACTION_SPN_SECRET}} --tenant {{secrets.TENANT_ID}} 
+            fab auth login -u ${{ secrets.ACTION_SPN_CLIENTID }} -p ${{ secrets.ACTION_SPN_SECRET }} --tenant ${{ secrets.TENANT_ID }} 
 
-        # Checkout code
-        - uses: actions/checkout@v3   
+       # Create Workspace if it does not exist
+        - name: Create Workspace if it does not exist
+          run: |
+            WorkspaceExists=$(fab exists $WORKSPACE_NAME.Workspace | tr -d '[:space:]')
+            echo "WorkspaceExists: $WorkspaceExists"
+            if [ "$WorkspaceExists" != "*true" ]; then
+              fab create $WORKSPACE_NAME.Workspace -P capacityName=$FABRIC_CAPACITY_NAME
+              fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_ADMIN_ID -R admin -f
+              fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_COLLABORATOR_ID -R contributor -f
+            fi 
+
+       # Create Fabric SQL database if it does not exist
+        - name: Create FSQL DB if it does not exist
+          run: |
+              FSQLExists=$(fab exists $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase | tr -d '[:space:]')
+              echo "FSQLExists: $FSQLExists"
+              if [ "$FSQLExists" != "*true" ]; then
+                fab create $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase
+              fi 
+       # Create Fabric SQL database connection if it does not exist
+        - name: Create FSQL DB Connection if it does not exist
+          run: |
+              FSQLConnExists=$(fab exists .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection | tr -d '[:space:]')
+              echo "FSQLConnExists: $FSQLConnExists"
+              if [ "$FSQLConnExists" != "*true" ]; then
+                server=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.serverFqdn| tr -d '\r')
+                database=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.databaseName| tr -d '\r') 
+                echo "Creating connection for server: $server and database: $database"
+                fab create .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -P connectionDetails.creationMethod=SQL,connectionDetails.type=SQL,connectionDetails.parameters.server=$server,connectionDetails.parameters.database=$database,credentialDetails.type=ServicePrincipal,credentialDetails.servicePrincipalClientId=${{ secrets.ACTION_SPN_CLIENTID }},credentialDetails.servicePrincipalSecret=${{ secrets.ACTION_SPN_SECRET }},credentialDetails.tenantid=${{ secrets.TENANT_ID }} 
+                connectionID=$(fab get .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -q id| tr -d '\r')
+
+                rolejson=$(jq -n --arg id "$WORKSPACE_ADMIN_ID" '{"principal": {"id": $id, "type": "Group"}, "role": "Owner"}')
+                echo "Assigning role to connection: $rolejson"
+                fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
+                
+                rolejson=$(jq -n --arg id "$WORKSPACE_COLLABORATOR_ID" '{"principal": {"id": $id, "type": "Group"}, "role": "Owner"}')
+                echo "Assigning role to connection: $rolejson"
+                fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
+              fi
