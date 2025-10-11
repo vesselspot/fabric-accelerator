@@ -51,11 +51,10 @@ jobs:
        # Create Fabric SQL database connection if it does not exist
         - name: Create FSQL DB Connection if it does not exist
           run: |
-              server=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.serverFqdn)
-              database=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.databaseName)
+              server=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.serverFqdn) | tr -d '[:space:]'
+              database=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.databaseName) | tr -d '[:space:]'
               FSQLConnExists=$(fab exists .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection | tr -d '[:space:]')
-              echo "FSQLConnExists: $FSQLConnExists for ${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}"
               if [ "$FSQLConnExists" != "*true" ]; then
                 echo "Creating connection for server: $server and database: $database"
-                fab create .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -P connectionDetails.type=SQL,connectionDetails.parameters.server=$server,connectionDetails.parameters.database=controldb-test-25b0447b-d859-4cb9-83dd-b768563bfa92,credentialDetails.type=ServicePrincipal,credentialDetails.servicePrincipalClientId=${{ secrets.ACTION_SPN_CLIENTID }},credentialDetails.servicePrincipalSecret=${{ secrets.ACTION_SPN_SECRET }},credentialDetails.tenantid=${{ secrets.TENANT_ID }} 
+                fab create .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -P connectionDetails.type=SQL,connectionDetails.parameters.server="$server",connectionDetails.parameters.database="$database",credentialDetails.type=ServicePrincipal,credentialDetails.servicePrincipalClientId=${{ secrets.ACTION_SPN_CLIENTID }},credentialDetails.servicePrincipalSecret=${{ secrets.ACTION_SPN_SECRET }},credentialDetails.tenantid=${{ secrets.TENANT_ID }} 
               fi
