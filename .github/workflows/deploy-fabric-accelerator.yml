@@ -52,8 +52,8 @@ jobs:
        # Create Fabric SQL database connection if it does not exist
         - name: Create FSQL DB Connection if it does not exist
           run: |
-              server=fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.serverFqdn
-              database=fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.databaseName 
+              server=$fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.serverFqdn)
+              database=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.databaseName) 
               FSQLConnExists=$(fab exists .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection | tr -d '[:space:]')
               echo "FSQLConnExists: $FSQLConnExists"
               if [ "$FSQLConnExists" != "*true" ]; then
