@@ -56,5 +56,5 @@ jobs:
               FSQLConnExists=$(fab exists .connections/$database.Connection | tr -d '[:space:]')
               if [ "$FSQLConnExists" != "*true" ]; then
                 echo "Creating connection for server: $server and database: $database"
-                fab create .connections/$database.Connection -P connectionDetails.type=SQL,connectionDetails.parameters.server="$server",connectionDetails.parameters.database="$database",credentialDetails.type=ServicePrincipal,credentialDetails.servicePrincipalClientId="${{ secrets.ACTION_SPN_CLIENTID }}",credentialDetails.servicePrincipalSecret="${{ secrets.ACTION_SPN_SECRET }}",credentialDetails.tenantid="${{ secrets.TENANT_ID }}" 
+                fab create .connections/$database.Connection -P connectionDetails.type=SQL,connectionDetails.parameters.server=2ipjetq4tn6elkixc3xundvzbi-cbv5vebltnoetiaqszr7dsq6hm.database.fabric.microsoft.com,1433,connectionDetails.parameters.database=controldb-test-25b0447b-d859-4cb9-83dd-b768563bfa92,credentialDetails.type=ServicePrincipal,credentialDetails.servicePrincipalClientId=${{ secrets.ACTION_SPN_CLIENTID }},credentialDetails.servicePrincipalSecret=${{ secrets.ACTION_SPN_SECRET }},credentialDetails.tenantid=${{ secrets.TENANT_ID }} 
               fi
