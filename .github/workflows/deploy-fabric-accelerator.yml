@@ -61,12 +61,10 @@ jobs:
                 fab create .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -P connectionDetails.creationMethod=SQL,connectionDetails.type=SQL,connectionDetails.parameters.server=$server,connectionDetails.parameters.database=$database,credentialDetails.type=ServicePrincipal,credentialDetails.servicePrincipalClientId=${{ secrets.ACTION_SPN_CLIENTID }},credentialDetails.servicePrincipalSecret=${{ secrets.ACTION_SPN_SECRET }},credentialDetails.tenantid=${{ secrets.TENANT_ID }} 
                 connectionID=$(fab get .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -q id| tr -d '\r')
 
-                set -x
                 rolejson=$(jq -n --arg id "$WORKSPACE_ADMIN_ID" '{"principal": {"id": $id, "type": "User"}, "role": "Owner"}')
                 echo "Role JSON: $rolejson"
-                fab api -X post "connections/$connectionID/roleAssignments" -H Content-Type=application/json -i "$rolejson"
+                fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
                 rolejson=$(jq -n --arg id "$WORKSPACE_COLLABORATOR_ID" '{"principal": {"id": $id, "type": "User"}, "role": "Owner"}')
                 echo "Role JSON: $rolejson"
-                fab api -X post "connections/$connectionID/roleAssignments" -H Content-Type=application/json -i "$rolejson"
-                set +x
+                fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
               fi
