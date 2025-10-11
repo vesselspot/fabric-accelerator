@@ -9,6 +9,9 @@ env:
 jobs:
   deploy-fabric-accelerator:
     runs-on: ubuntu-latest
+    env:
+      FSQL_SERVER: null
+      FSQL_DATABASE: null
     steps:
 
         # Checkout code
@@ -57,6 +60,8 @@ jobs:
               if [ "$FSQLConnExists" != "*true" ]; then
                 server=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.serverFqdn)
                 database=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.databaseName) 
-                echo "Creating connection for server: $server and database: $database"
-                fab create .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -P connectionDetails.creationMethod=SQL,connectionDetails.type=SQL,connectionDetails.parameters.server=$server,connectionDetails.parameters.database=$database,credentialDetails.type=ServicePrincipal,credentialDetails.servicePrincipalClientId=${{ secrets.ACTION_SPN_CLIENTID }},credentialDetails.servicePrincipalSecret=${{ secrets.ACTION_SPN_SECRET }},credentialDetails.tenantid=${{ secrets.TENANT_ID }} 
+                FSQL_SERVER=$server
+                FSQL_DATABASE=$database
+                echo "Creating connection for server: $FSQL_SERVER and database: $FSQL_DATABASE"
+                fab create .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -P connectionDetails.creationMethod=SQL,connectionDetails.type=SQL,connectionDetails.parameters.server=$FSQL_SERVER,connectionDetails.parameters.database=$FSQL_DATABASE,credentialDetails.type=ServicePrincipal,credentialDetails.servicePrincipalClientId=${{ secrets.ACTION_SPN_CLIENTID }},credentialDetails.servicePrincipalSecret=${{ secrets.ACTION_SPN_SECRET }},credentialDetails.tenantid=${{ secrets.TENANT_ID }} 
               fi
