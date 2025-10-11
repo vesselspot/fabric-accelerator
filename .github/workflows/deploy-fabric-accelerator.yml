@@ -63,8 +63,10 @@ jobs:
 
                 rolejson=$(jq -n --arg id "$WORKSPACE_ADMIN_ID" '{"principal": {"id": $id, "type": "User"}, "role": "Owner"}')
                 echo "Role JSON: $rolejson"
+                set -x
                 fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
-                rolejson=$(jq -n --arg id "$WORKSPACE_COLLABORATOR_ID" '{"principal": {"id": $id, "type": "User"}, "role": "Owner"}')
-                echo "Role JSON: $rolejson"
-                fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
+                set +x
+                #rolejson=$(jq -n --arg id "$WORKSPACE_COLLABORATOR_ID" '{"principal": {"id": $id, "type": "User"}, "role": "Owner"}')
+                #echo "Role JSON: $rolejson"
+                #fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
               fi
