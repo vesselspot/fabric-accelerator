@@ -59,8 +59,8 @@ jobs:
               FSQLConnExists=$(fab exists .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection | tr -d '[:space:]')
               echo "FSQLConnExists: $FSQLConnExists"
               if [ "$FSQLConnExists" != "*true" ]; then
-                server=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.serverFqdn)
-                database=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.databaseName) 
+                server=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.serverFqdn| tr -d '\r')
+                database=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.databaseName| tr -d '\r') 
                 FSQL_SERVER=$server
                 FSQL_DATABASE=$database
                 echo "Creating connection for server: $FSQL_SERVER and database: $FSQL_DATABASE"
