@@ -87,9 +87,9 @@ jobs:
                 fab create $WORKSPACE_NAME.Workspace/$SILVER_LH.Lakehouse -P enableSchemas=true
               fi 
 
-              GoldDWExists=$(fab exists $WORKSPACE_NAME.Workspace/$GOLD_DW.DataWarehouse | tr -d '[:space:]')
+              GoldDWExists=$(fab exists $WORKSPACE_NAME.Workspace/$GOLD_DW.Warehouse | tr -d '[:space:]')
               echo "GoldDWExists: $GoldDWExists"
               if [ "$GoldDWExists" != "*true" ]; then
-                fab create $WORKSPACE_NAME.Workspace/$GOLD_DW.DataWarehouse
+                fab create $WORKSPACE_NAME.Workspace/$GOLD_DW.Warehouse
               fi
           
