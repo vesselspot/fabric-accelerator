@@ -44,7 +44,7 @@ jobs:
               fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_COLLABORATOR_ID -R contributor -f
             fi 
 
-       # Create Folders
+       # Create Folders if they do not exist
         - name: Create folders if they do not exist
           run: |  
               EltFolderExists=$(fab exists $WORKSPACE_NAME.Workspace/elt-framework.Folder | tr -d '[:space:]')
@@ -112,4 +112,7 @@ jobs:
               if [ "$GoldDWExists" != "*true" ]; then
                 fab create $WORKSPACE_NAME.Workspace/warehouse.Folder/$GOLD_DW.Warehouse
               fi
-          
+        #   Import Fabric Accelerator Artifacts
+        - name: Import Fabric Accelerator Artifacts
+          run: |
+              ls {{ github.workspace }}/artifacts
