@@ -6,9 +6,9 @@ env:
   WORKSPACE_ADMIN_ID: aca94643-2e36-4cd6-ba96-bfc513b37851
   WORKSPACE_COLLABORATOR_ID: 01e16ca5-e5da-49f3-ac27-a46f1cc68ede
   FABRIC_SQL_DB_NAME: controldb-test
-  BRONZE_LH: bronze-lh-test
-  SILVER_LH: silver-lh-test
-  GOLD_DW: gold-dw-test
+  BRONZE_LH: bronze_lh_test
+  SILVER_LH: silver_lh_test
+  GOLD_DW: gold_dw_test
 jobs:
   deploy-fabric-accelerator:
     runs-on: ubuntu-latest
