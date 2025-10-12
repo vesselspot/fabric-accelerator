@@ -6,6 +6,9 @@ env:
   WORKSPACE_ADMIN_ID: aca94643-2e36-4cd6-ba96-bfc513b37851
   WORKSPACE_COLLABORATOR_ID: 01e16ca5-e5da-49f3-ac27-a46f1cc68ede
   FABRIC_SQL_DB_NAME: controldb-test
+  BRONZE_LH: bronze-lh-test
+  SILVER_LH: silver-lh-test
+  GOLD_DW: gold-dw-test
 jobs:
   deploy-fabric-accelerator:
     runs-on: ubuntu-latest
@@ -69,3 +72,24 @@ jobs:
                 echo "Assigning role to connection: $rolejson"
                 fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
               fi
+          # Create Medallion Layers if they do not exist
+        - name: Create Medallion Layers if they do not exist
+          run: |
+              BronzeLHExists=$(fab exists $WORKSPACE_NAME.Workspace/$BRONZE_LH.Lakehouse | tr -d '[:space:]')
+              echo "BronzeLHExists: $BronzeLHExists"
+              if [ "$BronzeLHExists" != "*true" ]; then
+                fab create $WORKSPACE_NAME.Workspace/$BRONZE_LH.Lakehouse -P enableSchemas=true
+              fi 
+
+              SilverLHExists=$(fab exists $WORKSPACE_NAME.Workspace/$SILVER_LH.Lakehouse | tr -d '[:space:]')
+              echo "SilverLHExists: $SilverLHExists"
+              if [ "$SilverLHExists" != "*true" ]; then
+                fab create $WORKSPACE_NAME.Workspace/$SILVER_LH.Lakehouse -P enableSchemas=true
+              fi 
+
+              GoldDWExists=$(fab exists $WORKSPACE_NAME.Workspace/$GOLD_DW.DataWarehouse | tr -d '[:space:]')
+              echo "GoldDWExists: $GoldDWExists"
+              if [ "$GoldDWExists" != "*true" ]; then
+                fab create $WORKSPACE_NAME.Workspace/$GOLD_DW.DataWarehouse
+              fi
+          
