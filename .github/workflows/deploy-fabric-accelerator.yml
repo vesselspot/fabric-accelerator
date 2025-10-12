@@ -115,4 +115,4 @@ jobs:
         #   Import Fabric Accelerator Artifacts
         - name: Import Fabric Accelerator Artifacts
           run: |
-              ls $GITHUB_WORKSPACE
+              ls -R $GITHUB_WORKSPACE/workspace
