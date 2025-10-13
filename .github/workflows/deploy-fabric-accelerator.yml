@@ -9,8 +9,19 @@ env:
   BRONZE_LH: bronze_lh_test
   SILVER_LH: silver_lh_test
   GOLD_DW: gold_dw_test
+  WIDE_WORLD_IMPORTERS_CONNECTION_ID: a0a57e51-5032-4e46-b0f0-493c9d2f51c9
+
 jobs:
   deploy-fabric-accelerator:
+    env:
+     FABRIC_CAPACITY_ID: null
+     FABRIC_WORKSPACE_ID: null
+     CONTROLDB_NAME: null
+     CONTROLDB_CONNECTION_ID: null
+     BRONZE_LH_ID: null
+     SILVER_LH_ID: null
+     GOLD_DW_ID: null
+
     runs-on: ubuntu-latest
     steps:
 
@@ -47,23 +58,30 @@ jobs:
        # Create Folders if they do not exist
         - name: Create folders if they do not exist
           run: |  
-              EltFolderExists=$(fab exists $WORKSPACE_NAME.Workspace/elt-framework.Folder | tr -d '[:space:]')
-              echo "EltFolderExists: $EltFolderExists"
-              if [ "$EltFolderExists" != "*true" ]; then
-                fab create $WORKSPACE_NAME.Workspace/elt-framework.Folder
-              fi 
+              # EltFolderExists=$(fab exists $WORKSPACE_NAME.Workspace/elt-framework.Folder | tr -d '[:space:]')
+              # echo "EltFolderExists: $EltFolderExists"
+              # if [ "$EltFolderExists" != "*true" ]; then
+              #   fab create $WORKSPACE_NAME.Workspace/elt-framework.Folder
+              # fi 
 
-              LakehouseFolderExists=$(fab exists $WORKSPACE_NAME.Workspace/lakehouse.Folder | tr -d '[:space:]')
-              echo "LakehouseFolderExists: $LakehouseFolderExists"
-              if [ "$LakehouseFolderExists" != "*true" ]; then
-                fab create $WORKSPACE_NAME.Workspace/lakehouse.Folder
-              fi 
+              fab exists $WORKSPACE_NAME.Workspace/elt-framework.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/elt-framework.Folder
 
-              WarehouseFolderExists=$(fab exists $WORKSPACE_NAME.Workspace/warehouse.Folder | tr -d '[:space:]')
-              echo "WarehouseFolderExists: $WarehouseFolderExists"
-              if [ "$WarehouseFolderExists" != "*true" ]; then
-                fab create $WORKSPACE_NAME.Workspace/warehouse.Folder
-              fi
+              # LakehouseFolderExists=$(fab exists $WORKSPACE_NAME.Workspace/lakehouse.Folder | tr -d '[:space:]')
+              # echo "LakehouseFolderExists: $LakehouseFolderExists"
+              # if [ "$LakehouseFolderExists" != "*true" ]; then
+              #   fab create $WORKSPACE_NAME.Workspace/lakehouse.Folder
+              # fi 
+
+              fab exists $WORKSPACE_NAME.Workspace/lakehouse.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/lakehouse.Folder
+
+              # WarehouseFolderExists=$(fab exists $WORKSPACE_NAME.Workspace/warehouse.Folder | tr -d '[:space:]')
+              # echo "WarehouseFolderExists: $WarehouseFolderExists"
+              # if [ "$WarehouseFolderExists" != "*true" ]; then
+              #   fab create $WORKSPACE_NAME.Workspace/warehouse.Folder
+              # fi
+
+              fab exists $WORKSPACE_NAME.Workspace/warehouse.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/warehouse.Folder
+
        # Create Fabric SQL database if it does not exist
         - name: Create FSQL DB if it does not exist
           run: |
@@ -115,4 +133,5 @@ jobs:
         #   Import Fabric Accelerator Artifacts
         - name: Import Fabric Accelerator Artifacts
           run: |
-              ls -R $GITHUB_WORKSPACE/workspace
+              # ls -R $GITHUB_WORKSPACE/workspace
+              FABRIC_CAPACITY_ID=$(fab get $WORKSPACE_NAME.Workspace -q capacityId | tr -d '\r')
