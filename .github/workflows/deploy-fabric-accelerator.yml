@@ -122,4 +122,4 @@ jobs:
               SILVER_LH_ID=$(fab get $WORKSPACE_NAME.Workspace/$SILVER_LH.Lakehouse -q id | tr -d '\r')
               GOLD_DW_ID=$(fab get $WORKSPACE_NAME.Workspace/$GOLD_DW.Warehouse -q id | tr -d '\r')
 
-              grep -rl "controlDB-78d6902e-70ea-4fb0-b51e-af3f2aaee3b7" ${GITHUB_WORKSPACE}/workspace | xargs sed -i "s/controlDB-78d6902e-70ea-4fb0-b51e-af3f2aaee3b7/$CONTROLDB_NAME/g"
+              grep --null -rl "controlDB-78d6902e-70ea-4fb0-b51e-af3f2aaee3b7" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/controlDB-78d6902e-70ea-4fb0-b51e-af3f2aaee3b7/$CONTROLDB_NAME/g"
