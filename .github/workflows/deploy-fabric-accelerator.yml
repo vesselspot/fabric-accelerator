@@ -175,10 +175,8 @@ jobs:
               grep --null -rl "$OLD_TENANT_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl $OLD_TENANT_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_TENANT_ID/${{ secrets.TENANT_ID }}/g"
 
-              
-              cat "${GITHUB_WORKSPACE}/workspace/notebook/reusable/EnvSettings.Notebook/notebook-content.py"
               set -x
-              fab import "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/workspace/notebook/reusable/EnvSettings.Notebook/notebook-content.py" --format .py -f
+              fab import "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/workspace/notebook/reusable/EnvSettings.Notebook" -f
               set +x
       # Logout
         - name: Logout of Fabric
