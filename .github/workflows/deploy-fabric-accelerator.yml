@@ -76,11 +76,6 @@ jobs:
        # Create Fabric SQL database if it does not exist
         - name: Create FSQL DB if it does not exist
           run: |
-              # FSQLExists=$(fab exists $WORKSPACE_NAME.Workspace/elt-framework.Folder/$FABRIC_SQL_DB_NAME.SQLDatabase | tr -d '[:space:]')
-              # echo "FSQLExists: $FSQLExists"
-              # if [ "$FSQLExists" != "*true" ]; then
-              #   fab create $WORKSPACE_NAME.Workspace/elt-framework.Folder/$FABRIC_SQL_DB_NAME.SQLDatabase
-              # fi 
               fab exists $WORKSPACE_NAME.Workspace/elt-framework.Folder/$FABRIC_SQL_DB_NAME.SQLDatabase | grep -q true || fab create $WORKSPACE_NAME.Workspace/elt-framework.Folder/$FABRIC_SQL_DB_NAME.SQLDatabase
        # Create Fabric SQL database connection if it does not exist
         - name: Create FSQL DB Connection if it does not exist
