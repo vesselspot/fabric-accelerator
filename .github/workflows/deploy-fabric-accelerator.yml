@@ -175,16 +175,12 @@ jobs:
               # fab import "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb" --format .ipynb -f
               # set +x
 
-        - name: Debug notebook before import
-          run: |
-            jq . "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb"
-            ls -l "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb"
-
+        #   Import Fabric Accelerator Artifacts
         - name: Import Fabric Accelerator Artifacts
           run: |
             set -e
             set -x
-            fab import "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb" --format .ipynb -f 2> fab_error.log
+            fab import "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.Notebook" --format .ipynb -f 2> fab_error.log
             cat fab_error.log
 
       # Logout
