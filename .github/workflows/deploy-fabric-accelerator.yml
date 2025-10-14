@@ -172,7 +172,7 @@ jobs:
 
               set -x
               cat ${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb
-              fab import "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb" --format.ipynb -f
+              fab import "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb" --format .ipynb -f
               set +x
       # Logout
         - name: Logout of Fabric
