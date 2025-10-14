@@ -135,11 +135,11 @@ jobs:
               grep --null -rl $OLD_FABRIC_CAPACITY_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_CAPACITY_ID/$NEW_FABRIC_CAPACITY_ID/g"
              
               echo "Files to be updated from $OLD_FABRIC_WORKSPACE_ID to $NEW_FABRIC_WORKSPACE_ID"
-              grep --null -rl "$OLD_FABRIC_CAPACITY_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$OLD_FABRIC_WORKSPACE_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl $OLD_FABRIC_WORKSPACE_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID/$NEW_FABRIC_WORKSPACE_ID/g"
 
               echo "Files to be updated from $OLD_FABRIC_WORKSPACE_ID1 to $NEW_FABRIC_WORKSPACE_ID"
-              grep --null -rl "$OLD_FABRIC_CAPACITY_ID1" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$OLD_FABRIC_WORKSPACE_ID1" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl $OLD_FABRIC_WORKSPACE_ID1 ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID1/$NEW_FABRIC_WORKSPACE_ID/g"
 
               echo "Files to be updated from $OLD_CONTROLDB_NAME to $NEW_CONTROLDB_NAME"
