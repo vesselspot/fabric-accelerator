@@ -76,11 +76,6 @@ jobs:
        # Create Fabric SQL database if it does not exist
         - name: Create FSQL DB if it does not exist
           run: |
-              # FSQLExists=$(fab exists $WORKSPACE_NAME.Workspace/elt-framework.Folder/$FABRIC_SQL_DB_NAME.SQLDatabase | tr -d '[:space:]')
-              # echo "FSQLExists: $FSQLExists"
-              # if [ "$FSQLExists" != "*true" ]; then
-              #   fab create $WORKSPACE_NAME.Workspace/elt-framework.Folder/$FABRIC_SQL_DB_NAME.SQLDatabase
-              # fi 
               fab exists $WORKSPACE_NAME.Workspace/elt-framework.Folder/$FABRIC_SQL_DB_NAME.SQLDatabase | grep -q true || fab create $WORKSPACE_NAME.Workspace/elt-framework.Folder/$FABRIC_SQL_DB_NAME.SQLDatabase
        # Create Fabric SQL database connection if it does not exist
         - name: Create FSQL DB Connection if it does not exist
@@ -111,7 +106,7 @@ jobs:
                 fab create $WORKSPACE_NAME.Workspace/lakehouse.Folder/$BRONZE_LH.Lakehouse -P enableSchemas=true
               fi 
 
-              SilverLHExists=$(fab exists $WORKSPACE_NAME.Workspace/$SILVER_LH.Lakehouse | tr -d '[:space:]')
+              SilverLHExists=$(fab exists $WORKSPACE_NAME.Workspace/lakehouse.Folder/$SILVER_LH.Lakehouse | tr -d '[:space:]')
               echo "SilverLHExists: $SilverLHExists"
               if [ "$SilverLHExists" != "*true" ]; then
                 fab create $WORKSPACE_NAME.Workspace/lakehouse.Folder/$SILVER_LH.Lakehouse -P enableSchemas=true
@@ -140,11 +135,11 @@ jobs:
               grep --null -rl $OLD_FABRIC_CAPACITY_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_CAPACITY_ID/$NEW_FABRIC_CAPACITY_ID/g"
              
               echo "Files to be updated from $OLD_FABRIC_WORKSPACE_ID to $NEW_FABRIC_WORKSPACE_ID"
-              grep --null -rl "$OLD_FABRIC_CAPACITY_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$OLD_FABRIC_WORKSPACE_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl $OLD_FABRIC_WORKSPACE_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID/$NEW_FABRIC_WORKSPACE_ID/g"
 
               echo "Files to be updated from $OLD_FABRIC_WORKSPACE_ID1 to $NEW_FABRIC_WORKSPACE_ID"
-              grep --null -rl "$OLD_FABRIC_CAPACITY_ID1" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$OLD_FABRIC_WORKSPACE_ID1" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl $OLD_FABRIC_WORKSPACE_ID1 ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID1/$NEW_FABRIC_WORKSPACE_ID/g"
 
               echo "Files to be updated from $OLD_CONTROLDB_NAME to $NEW_CONTROLDB_NAME"
@@ -156,11 +151,11 @@ jobs:
               grep --null -rl $OLD_CONTROLDB_CONNECTION_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_CONTROLDB_CONNECTION_ID/$NEW_CONTROLDB_CONNECTION_ID/g"
               
               echo "Files to be updated from $OLD_BRONZE_LH_ID to $NEW_BRONZE_LH_ID"
-              grep --null -rl "$OLD_BRONZE_LH_ID " "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$OLD_BRONZE_LH_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl $OLD_BRONZE_LH_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_BRONZE_LH_ID/$NEW_BRONZE_LH_ID/g"
 
               echo "Files to be updated from $OLD_SILVER_LH_ID to $NEW_SILVER_LH_ID"
-              grep --null -rl "$OLD_SILVER_LH_ID " "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$OLD_SILVER_LH_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl $OLD_SILVER_LH_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_SILVER_LH_ID/$NEW_SILVER_LH_ID/g"
 
               echo "Files to be updated from $OLD_GOLD_DW_ID to $NEW_GOLD_DW_ID"
