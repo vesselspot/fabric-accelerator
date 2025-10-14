@@ -177,7 +177,7 @@ jobs:
 
               set -x
               cat ${GITHUB_WORKSPACE}/workspace/notebook/reusable/delta-lake/Optimize Delta Lake Tables.Notebook/notebook-content.py
-              fab import $WORKSPACE_NAME.Workspace/Optimize Delta Lake Tables.Notebook -i ${GITHUB_WORKSPACE}/workspace/notebook/reusable/delta-lake/Optimize Delta Lake Tables.Notebook/notebook-content.py --format .py -f
+              fab import "$WORKSPACE_NAME.Workspace/Optimize Delta Lake Tables.Notebook" -i ${GITHUB_WORKSPACE}/workspace/notebook/reusable/delta-lake/Optimize Delta Lake Tables.Notebook/notebook-content.py --format .py -f
               set +x
       # Logout
         - name: Logout of Fabric
