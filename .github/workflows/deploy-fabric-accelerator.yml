@@ -151,11 +151,11 @@ jobs:
               grep --null -rl $OLD_CONTROLDB_CONNECTION_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_CONTROLDB_CONNECTION_ID/$NEW_CONTROLDB_CONNECTION_ID/g"
               
               echo "Files to be updated from $OLD_BRONZE_LH_ID to $NEW_BRONZE_LH_ID"
-              grep --null -rl "$OLD_BRONZE_LH_ID " "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$OLD_BRONZE_LH_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl $OLD_BRONZE_LH_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_BRONZE_LH_ID/$NEW_BRONZE_LH_ID/g"
 
               echo "Files to be updated from $OLD_SILVER_LH_ID to $NEW_SILVER_LH_ID"
-              grep --null -rl "$OLD_SILVER_LH_ID " "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$OLD_SILVER_LH_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl $OLD_SILVER_LH_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_SILVER_LH_ID/$NEW_SILVER_LH_ID/g"
 
               echo "Files to be updated from $OLD_GOLD_DW_ID to $NEW_GOLD_DW_ID"
