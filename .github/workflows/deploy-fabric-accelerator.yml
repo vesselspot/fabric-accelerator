@@ -176,7 +176,7 @@ jobs:
               grep --null -rl $OLD_TENANT_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_TENANT_ID/${{ secrets.TENANT_ID }}/g"
 
               set -x
-              cat ${GITHUB_WORKSPACE}/workspace/notebook/reusable/delta-lake/Optimize Delta Lake Tables.Notebook/notebook-content.py
+              cat "${GITHUB_WORKSPACE}/workspace/notebook/reusable/delta-lake/Optimize Delta Lake Tables.Notebook/notebook-content.py
               fab import "$WORKSPACE_NAME.Workspace/Optimize Delta Lake Tables.Notebook" -i ${GITHUB_WORKSPACE}/workspace/notebook/reusable/delta-lake/Optimize Delta Lake Tables.Notebook/notebook-content.py --format .py -f
               set +x
       # Logout
