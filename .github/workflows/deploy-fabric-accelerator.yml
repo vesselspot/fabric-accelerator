@@ -106,7 +106,7 @@ jobs:
                 fab create $WORKSPACE_NAME.Workspace/lakehouse.Folder/$BRONZE_LH.Lakehouse -P enableSchemas=true
               fi 
 
-              SilverLHExists=$(fab exists $WORKSPACE_NAME.Workspace/$SILVER_LH.Lakehouse | tr -d '[:space:]')
+              SilverLHExists=$(fab exists $WORKSPACE_NAME.Workspace/lakehouse.Folder/$SILVER_LH.Lakehouse | tr -d '[:space:]')
               echo "SilverLHExists: $SilverLHExists"
               if [ "$SilverLHExists" != "*true" ]; then
                 fab create $WORKSPACE_NAME.Workspace/lakehouse.Folder/$SILVER_LH.Lakehouse -P enableSchemas=true
