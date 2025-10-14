@@ -170,10 +170,23 @@ jobs:
               grep --null -rl "$OLD_TENANT_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl $OLD_TENANT_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_TENANT_ID/${{ secrets.TENANT_ID }}/g"
 
-              set -x
-              cat ${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb
-              fab import "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb" --format .ipynb -f
-              set +x
+              # set -x
+              # cat ${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb
+              # fab import "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb" --format .ipynb -f
+              # set +x
+
+        - name: Debug notebook before import
+          run: |
+            jq . "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb"
+            ls -l "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb"
+
+        - name: Import Fabric Accelerator Artifacts
+          run: |
+            set -e
+            set -x
+            fab import "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb" --format .ipynb -f 2> fab_error.log
+            cat fab_error.log
+
       # Logout
         - name: Logout of Fabric
           run: fab auth logout
