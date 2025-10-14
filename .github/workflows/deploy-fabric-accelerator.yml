@@ -117,8 +117,8 @@ jobs:
               if [ "$GoldDWExists" != "*true" ]; then
                 fab create $WORKSPACE_NAME.Workspace/warehouse.Folder/$GOLD_DW.Warehouse
               fi
-        #   Import Fabric Accelerator Artifacts
-        - name: Import Fabric Accelerator Artifacts
+        #   Replace OLD IDs with NEW IDs in workspace files
+        - name: Replace OLD IDs with NEW IDs in workspace files
           run: |
               NEW_FABRIC_CAPACITY_ID=$(fab get $WORKSPACE_NAME.Workspace -q capacityId | tr -d '\r')
               NEW_FABRIC_WORKSPACE_ID=$(fab get $WORKSPACE_NAME.Workspace -q id | tr -d '\r')
