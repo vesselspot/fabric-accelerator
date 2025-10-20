@@ -184,11 +184,11 @@ jobs:
               # fab import "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.ipynb" --format .ipynb -f
               # set +x
 
-        #   Import Fabric Accelerator Artifacts
-        - name: Import Fabric Accelerator Artifacts
+        #   Import Notebooks
+        - name: Import Notebooks
           run: |
-            fab exists $WORKSPACE_NAME.Workspace/EnvSettings.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.Notebook" --format .ipynb -f
-            fab mv "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder"
+            fab exists $WORKSPACE_NAME.Workspace/EnvSettings.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace//notebook.Folder/reusable.Folder/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.Notebook" --format .ipynb -f
+            # fab mv "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/EnvSettings.Notebook" "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder"
 
       # Logout
         - name: Logout of Fabric
