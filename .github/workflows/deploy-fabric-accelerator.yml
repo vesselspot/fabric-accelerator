@@ -188,7 +188,6 @@ jobs:
         - name: Import Notebooks
           run: |
             fab exists $WORKSPACE_NAME.Workspace/EnvSettings.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace//notebook.Folder/reusable.Folder/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/workspace/ipynb/EnvSettings.Notebook" --format .ipynb -f
-            # fab mv "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/EnvSettings.Notebook" "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder"
 
       # Logout
         - name: Logout of Fabric
