@@ -181,46 +181,9 @@ jobs:
 
               echo "Replacing OLD ID with NEW ID in ipynb files"
 
-              # echo "Files to be updated from $OLD_FABRIC_CAPACITY_ID to $NEW_FABRIC_CAPACITY_ID"
-              # grep --null -rl "$OLD_FABRIC_CAPACITY_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              # grep --null -rl $OLD_FABRIC_CAPACITY_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_FABRIC_CAPACITY_ID/$NEW_FABRIC_CAPACITY_ID/g"
-             
-              # echo "Files to be updated from $OLD_FABRIC_WORKSPACE_ID to $NEW_FABRIC_WORKSPACE_ID"
-              # grep --null -rl "$OLD_FABRIC_WORKSPACE_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              # grep --null -rl $OLD_FABRIC_WORKSPACE_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID/$NEW_FABRIC_WORKSPACE_ID/g"
-
-              # echo "Files to be updated from $OLD_FABRIC_WORKSPACE_ID1 to $NEW_FABRIC_WORKSPACE_ID"
-              # grep --null -rl "$OLD_FABRIC_WORKSPACE_ID1" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              # grep --null -rl $OLD_FABRIC_WORKSPACE_ID1 ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID1/$NEW_FABRIC_WORKSPACE_ID/g"
-
-              # echo "Files to be updated from $OLD_CONTROLDB_NAME to $NEW_CONTROLDB_NAME"
-              # grep --null -rl "$OLD_CONTROLDB_NAME" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              # grep --null -rl $OLD_CONTROLDB_NAME ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_CONTROLDB_NAME/$NEW_CONTROLDB_NAME/g"
-
-              # echo "Files to be updated from $OLD_CONTROLDB_CONNECTION_ID to $NEW_CONTROLDB_CONNECTION_ID"
-              # grep --null -rl "$OLD_CONTROLDB_CONNECTION_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              # grep --null -rl $OLD_CONTROLDB_CONNECTION_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_CONTROLDB_CONNECTION_ID/$NEW_CONTROLDB_CONNECTION_ID/g"
-              
-              # echo "Files to be updated from $OLD_BRONZE_LH_ID to $NEW_BRONZE_LH_ID"
-              # grep --null -rl "$OLD_BRONZE_LH_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              # grep --null -rl $OLD_BRONZE_LH_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_BRONZE_LH_ID/$NEW_BRONZE_LH_ID/g"
-
               echo "Files to be updated from $OLD_SILVER_LH_ID to $NEW_SILVER_LH_ID"
               grep --null -rl "$OLD_SILVER_LH_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
               grep --null -rl $OLD_SILVER_LH_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_SILVER_LH_ID/$NEW_SILVER_LH_ID/g"
-
-              # echo "Files to be updated from $OLD_GOLD_DW_ID to $NEW_GOLD_DW_ID"
-              # grep --null -rl "$OLD_GOLD_DW_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              # grep --null -rl $OLD_GOLD_DW_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_GOLD_DW_ID/$NEW_GOLD_DW_ID/g"
-
-              # echo "Files to be updated from $OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID to $WIDE_WORLD_IMPORTERS_CONNECTION_ID"
-              # grep --null -rl "$OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              # grep --null -rl $OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID/$WIDE_WORLD_IMPORTERS_CONNECTION_ID/g"
-
-              # echo "Files to be updated with new Tenant ID"
-              # grep --null -rl "$OLD_TENANT_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              # grep --null -rl $OLD_TENANT_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_TENANT_ID/${{ secrets.TENANT_ID }}/g"
-
 
 
         #   Import Notebooks
