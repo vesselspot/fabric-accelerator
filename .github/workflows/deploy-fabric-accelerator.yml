@@ -285,7 +285,7 @@ jobs:
                         --arg platform "$platform" \
                         --arg folderId "$folderId" \
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
 
                 #Replace OLD MASTER LEVEL2 TRANSFORM PIPELINE LOGICAL ID with NEW MASTER LEVEL2 TRANSFORM PIPELINE LOGICAL ID in workspace files
 
