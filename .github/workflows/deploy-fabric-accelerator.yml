@@ -208,7 +208,7 @@ jobs:
                 
                 pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/pipeline-content.json"| base64)
                 platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/.platform"| base64)
-                jsonPayload=$(jq -n --arg displayName "wwi-elt-framework" --arg pipeline_content $pipeline_content --arg platform $platform '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": "$pipeline_content","payloadType": "InlineBase64"},{"path": ".platform","payload":"$platform","payloadType": "InlineBase64"}]}}')
+                jsonPayload=$(jq -n --arg displayName "wwi-elt-framework" --arg pipeline_content "$pipeline_content" --arg platform "$platform" '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
                 set -x
                 fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload"
                 set +x
