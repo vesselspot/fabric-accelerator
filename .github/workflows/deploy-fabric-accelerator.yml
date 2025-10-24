@@ -78,7 +78,7 @@ jobs:
               fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/common-pyspark.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/common-pyspark.Folder
               fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/delta-lake.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/delta-lake.Folder
               fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/entra.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/entra.Folder
-              fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/level-transform.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/level-transform.Folder
+              fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/level1-transform.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/level1-transform.Folder
 
 
 
