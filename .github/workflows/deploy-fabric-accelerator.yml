@@ -148,50 +148,50 @@ jobs:
               echo "Replacing OLD ID with NEW ID in workspace files"
 
               echo "Files to be updated from $OLD_FABRIC_CAPACITY_ID to $NEW_FABRIC_CAPACITY_ID"
-              grep --null -rl "$env.OLD_FABRIC_CAPACITY_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $env.OLD_FABRIC_CAPACITY_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$env.OLD_FABRIC_CAPACITY_ID/$env.NEW_FABRIC_CAPACITY_ID/g"
+              grep --null -rl "$OLD_FABRIC_CAPACITY_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl $OLD_FABRIC_CAPACITY_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_CAPACITY_ID/$NEW_FABRIC_CAPACITY_ID/g"
 
-              echo "Files to be updated from $env.OLD_FABRIC_WORKSPACE_ID to $env.NEW_FABRIC_WORKSPACE_ID"
-              grep --null -rl "$env.OLD_FABRIC_WORKSPACE_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $env.OLD_FABRIC_WORKSPACE_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$env.OLD_FABRIC_WORKSPACE_ID/$env.NEW_FABRIC_WORKSPACE_ID/g"
+              echo "Files to be updated from $OLD_FABRIC_WORKSPACE_ID to $NEW_FABRIC_WORKSPACE_ID"
+              grep --null -rl "$OLD_FABRIC_WORKSPACE_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl $OLD_FABRIC_WORKSPACE_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID/$NEW_FABRIC_WORKSPACE_ID/g"
 
-              echo "Files to be updated from $env.OLD_FABRIC_WORKSPACE_ID1 to $env.NEW_FABRIC_WORKSPACE_ID1"
-              grep --null -rl "$env.OLD_FABRIC_WORKSPACE_ID1" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $env.OLD_FABRIC_WORKSPACE_ID1 ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$env.OLD_FABRIC_WORKSPACE_ID1/$env.NEW_FABRIC_WORKSPACE_ID1/g"
+              echo "Files to be updated from $OLD_FABRIC_WORKSPACE_ID1 to $NEW_FABRIC_WORKSPACE_ID1"
+              grep --null -rl "$OLD_FABRIC_WORKSPACE_ID1" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl $OLD_FABRIC_WORKSPACE_ID1 ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID1/$NEW_FABRIC_WORKSPACE_ID1/g"
 
-              echo "Files to be updated from $env.OLD_CONTROLDB_NAME to $env.NEW_CONTROLDB_NAME"
-              grep --null -rl "$env.OLD_CONTROLDB_NAME" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $env.OLD_CONTROLDB_NAME ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$env.OLD_CONTROLDB_NAME/$env.NEW_CONTROLDB_NAME/g"
+              echo "Files to be updated from $OLD_CONTROLDB_NAME to $NEW_CONTROLDB_NAME"
+              grep --null -rl "$OLD_CONTROLDB_NAME" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl $OLD_CONTROLDB_NAME ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_CONTROLDB_NAME/$NEW_CONTROLDB_NAME/g"
 
-              echo "Files to be updated from $env.OLD_CONTROLDB_CONNECTION_ID to $env.NEW_CONTROLDB_CONNECTION_ID"
-              grep --null -rl "$env.OLD_CONTROLDB_CONNECTION_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $env.OLD_CONTROLDB_CONNECTION_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$env.OLD_CONTROLDB_CONNECTION_ID/$env.NEW_CONTROLDB_CONNECTION_ID/g"
+              echo "Files to be updated from $OLD_CONTROLDB_CONNECTION_ID to $NEW_CONTROLDB_CONNECTION_ID"
+              grep --null -rl "$OLD_CONTROLDB_CONNECTION_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl $OLD_CONTROLDB_CONNECTION_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_CONTROLDB_CONNECTION_ID/$NEW_CONTROLDB_CONNECTION_ID/g"
 
-              echo "Files to be updated from $env.OLD_BRONZE_LH_ID to $env.NEW_BRONZE_LH_ID"
-              grep --null -rl "$env.OLD_BRONZE_LH_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $env.OLD_BRONZE_LH_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$env.OLD_BRONZE_LH_ID/$env.NEW_BRONZE_LH_ID/g"
+              echo "Files to be updated from $OLD_BRONZE_LH_ID to $NEW_BRONZE_LH_ID"
+              grep --null -rl "$OLD_BRONZE_LH_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl $OLD_BRONZE_LH_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_BRONZE_LH_ID/$NEW_BRONZE_LH_ID/g"
 
-              echo "Files to be updated from $env.OLD_SILVER_LH_ID to $env.NEW_SILVER_LH_ID"
-              grep --null -rl "$env.OLD_SILVER_LH_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $env.OLD_SILVER_LH_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$env.OLD_SILVER_LH_ID/$env.NEW_SILVER_LH_ID/g"
+              echo "Files to be updated from $OLD_SILVER_LH_ID to $NEW_SILVER_LH_ID"
+              grep --null -rl "$OLD_SILVER_LH_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl $OLD_SILVER_LH_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_SILVER_LH_ID/$NEW_SILVER_LH_ID/g"
 
-              echo "Files to be updated from $env.OLD_GOLD_DW_ID to $env.NEW_GOLD_DW_ID"
-              grep --null -rl "$env.OLD_GOLD_DW_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $env.OLD_GOLD_DW_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$env.OLD_GOLD_DW_ID/$env.NEW_GOLD_DW_ID/g"
+              echo "Files to be updated from $OLD_GOLD_DW_ID to $NEW_GOLD_DW_ID"
+              grep --null -rl "$OLD_GOLD_DW_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl $OLD_GOLD_DW_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_GOLD_DW_ID/$NEW_GOLD_DW_ID/g"
 
-              echo "Files to be updated from $env.OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID to $env.NEW_WIDE_WORLD_IMPORTERS_CONNECTION_ID"
-              grep --null -rl "$env.OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $env.OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$env.OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID/$env.NEW_WIDE_WORLD_IMPORTERS_CONNECTION_ID/g"
+              echo "Files to be updated from $OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID to $NEW_WIDE_WORLD_IMPORTERS_CONNECTION_ID"
+              grep --null -rl "$OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl $OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID/$NEW_WIDE_WORLD_IMPORTERS_CONNECTION_ID/g"
 
               echo "Files to be updated with new Tenant ID"
-              grep --null -rl "$env.OLD_TENANT_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $env.OLD_TENANT_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$env.OLD_TENANT_ID/${{ secrets.TENANT_ID }}/g"
+              grep --null -rl "$OLD_TENANT_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl $OLD_TENANT_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_TENANT_ID/${{ secrets.TENANT_ID }}/g"
 
               echo "Replacing OLD ID with NEW ID in ipynb files"
 
-              echo "Files to be updated from $env.OLD_SILVER_LH_ID to $env.NEW_SILVER_LH_ID"
-              grep --null -rl "$env.OLD_SILVER_LH_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              grep --null -rl $env.OLD_SILVER_LH_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$env.OLD_SILVER_LH_ID/$env.NEW_SILVER_LH_ID/g"
+              echo "Files to be updated from $OLD_SILVER_LH_ID to $NEW_SILVER_LH_ID"
+              grep --null -rl "$OLD_SILVER_LH_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
+              grep --null -rl $OLD_SILVER_LH_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_SILVER_LH_ID/$NEW_SILVER_LH_ID/g"
 
 
         #   Import Notebooks
@@ -218,7 +218,7 @@ jobs:
                 pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/pipeline-content.json"| base64)
                 platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/.platform"| base64)
                 jsonPayload=$(jq -n --arg displayName "wwi-elt-framework" --arg pipeline_content "$pipeline_content" --arg platform "$platform" '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                fab api -X post "workspaces/env.$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload"
+                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload"
               fi 
 
       # Logout
