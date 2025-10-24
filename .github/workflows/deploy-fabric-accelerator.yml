@@ -257,12 +257,12 @@ jobs:
                 fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload"
                
                 #Replace OLD LEVEL2 TRANSFORM PIPELINE LOGICAL ID with NEW LEVEL2 TRANSFORM PIPELINE LOGICAL ID in workspace files
-                
+
                 NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline" -q id | tr -d '\r')
                 echo "NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
                 echo "Files to be updated from $OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID"
                 grep --null -rl "$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-                grep --null -rl $OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_IDD ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/g"
+                grep --null -rl "$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/g"
 
               fi
 
