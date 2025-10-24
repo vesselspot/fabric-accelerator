@@ -168,9 +168,9 @@ jobs:
               grep --null -rl "$OLD_FABRIC_WORKSPACE_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl $OLD_FABRIC_WORKSPACE_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID/$NEW_FABRIC_WORKSPACE_ID/g"
 
-              echo "Files to be updated from $OLD_FABRIC_WORKSPACE_ID1 to $NEW_FABRIC_WORKSPACE_ID1"
+              echo "Files to be updated from $OLD_FABRIC_WORKSPACE_ID1 to $NEW_FABRIC_WORKSPACE_ID"
               grep --null -rl "$OLD_FABRIC_WORKSPACE_ID1" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $OLD_FABRIC_WORKSPACE_ID1 ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID1/$NEW_FABRIC_WORKSPACE_ID1/g"
+              grep --null -rl $OLD_FABRIC_WORKSPACE_ID1 ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID1/$NEW_FABRIC_WORKSPACE_ID/g"
 
               echo "Files to be updated from $OLD_CONTROLDB_NAME to $NEW_CONTROLDB_NAME"
               grep --null -rl "$OLD_CONTROLDB_NAME" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
@@ -192,9 +192,9 @@ jobs:
               grep --null -rl "$OLD_GOLD_DW_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl $OLD_GOLD_DW_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_GOLD_DW_ID/$NEW_GOLD_DW_ID/g"
 
-              echo "Files to be updated from $OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID to $NEW_WIDE_WORLD_IMPORTERS_CONNECTION_ID"
+              echo "Files to be updated from $OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID to $WIDE_WORLD_IMPORTERS_CONNECTION_ID"
               grep --null -rl "$OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID/$NEW_WIDE_WORLD_IMPORTERS_CONNECTION_ID/g"
+              grep --null -rl $OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID/$WIDE_WORLD_IMPORTERS_CONNECTION_ID/g"
 
               echo "Files to be updated with new Tenant ID"
               grep --null -rl "$OLD_TENANT_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
@@ -266,13 +266,13 @@ jobs:
                 folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder -q id | tr -d '\r')
                 pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Master Level2 Transform.DataPipeline/pipeline-content.json"| base64)
                 platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Master Level2 Transform.DataPipeline/.platform"| base64)
-                set -x
                 jsonPayload=$(jq -n \
                         --arg displayName "Master Level2 Transform" \
                         --arg pipeline_content "$pipeline_content" \
                         --arg platform "$platform" \
                         --arg folderId "$folderId" \
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+                set -x
                 fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload"
                 set +x
               fi       
