@@ -22,6 +22,7 @@ jobs:
      NEW_SILVER_LH_ID: null
      NEW_GOLD_DW_ID: null
      NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID: null
+     NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID: null
 
      OLD_FABRIC_CAPACITY_ID: e4eb626a-4082-4143-983d-6fc9284b74cd
      OLD_FABRIC_WORKSPACE_ID: 8d8d00a7-0e8a-4e3b-8c0e-8dcafac7adec
@@ -34,6 +35,7 @@ jobs:
      OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID: a0a57e51-5032-4e46-b0f0-493c9d2f51c9
      OLD_TENANT_ID: 4e921ed2-9b1c-457c-a917-16ef468eb90a
      OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID: 5a473c1e-fd95-4b0a-a4a0-33537c65a0d7
+     OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID: 29ca711a-e20f-457c-a619-35b0310193ad
 
     runs-on: ubuntu-latest
     steps:
@@ -254,16 +256,18 @@ jobs:
                         --arg platform "$platform" \
                         --arg folderId "$folderId" \
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload"
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
                
                 #Replace OLD LEVEL2 TRANSFORM PIPELINE LOGICAL ID with NEW LEVEL2 TRANSFORM PIPELINE LOGICAL ID in workspace files
 
-                NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline" -q id | tr -d '\r')
-                echo "NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
-                echo "Files to be updated from $OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID"
-                grep --null -rl "$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-                grep --null -rl "$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/g"
-
+                status_code=$(echo "$response" | jq -r '.status_code')
+                if [ "$status_code" = "201" ]; then
+                  NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline" -q id | tr -d '\r')
+                  echo "NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
+                  echo "Files to be updated from $OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID"
+                  grep --null -rl "$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+                  grep --null -rl "$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/g"
+                fi
               fi
 
       # Create Pipeline Master Level2 Transform
@@ -281,10 +285,18 @@ jobs:
                         --arg platform "$platform" \
                         --arg folderId "$folderId" \
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                set -x
-                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload"
+                response=$fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
 
-                set +x
+                #Replace OLD MASTER LEVEL2 TRANSFORM PIPELINE LOGICAL ID with NEW MASTER LEVEL2 TRANSFORM PIPELINE LOGICAL ID in workspace files
+
+                status_code=$(echo "$response" | jq -r '.status_code')
+                if [ "$status_code" = "201" ]; then
+                  NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline" -q id | tr -d '\r')
+                  echo "NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
+                  echo "Files to be updated from $OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID"
+                  grep --null -rl "$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+                  grep --null -rl "$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/g"
+                fi
               fi       
       # Logout
         - name: Logout of Fabric
