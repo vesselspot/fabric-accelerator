@@ -212,12 +212,11 @@ jobs:
             PipelineExists=$(fab exists $WORKSPACE_NAME.Workspace/wwi-elt-framework.DataPipeline| tr -d '[:space:]')
             echo "$WORKSPACE_NAME.Workspace/wwi-elt-framework.DataPipeline: $PipelineExists"
               if [ "$PipelineExists" != "*true" ]; then
-                # NEW_FABRIC_WORKSPACE_ID=$(fab get $WORKSPACE_NAME.Workspace -q id | tr -d '\r')
-                echo "NEW_FABRIC_WORKSPACE_ID: $env.NEW_FABRIC_WORKSPACE_ID"
+                NEW_FABRIC_WORKSPACE_ID=$(fab get $WORKSPACE_NAME.Workspace -q id | tr -d '\r')
                 folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/elt-framework.Folder -q id | tr -d '\r')
                 pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/pipeline-content.json"| base64)
                 platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/.platform"| base64)
-                jsonPayload=$(jq -n --arg displayName "wwi-elt-framework" --arg pipeline_content "$pipeline_content" --arg platform "$platform" '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+                jsonPayload=$(jq -n --arg displayName "wwi-elt-framework" --arg pipeline_content "$pipeline_content" --arg platform "$platform" --arg folderId "$folderId" '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
                 fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload"
               fi 
 
