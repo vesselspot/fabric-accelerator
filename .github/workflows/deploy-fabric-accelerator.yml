@@ -243,7 +243,7 @@ jobs:
             PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline"| tr -d '[:space:]')
             echo "$WORKSPACE_NAME.Workspace/Level2Transform.DataPipeline: $PipelineExists"
               if [ "$PipelineExists" != "*true" ]; then
-                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/level2-transform.Folder -q id | tr -d '\r')
+                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder -q id | tr -d '\r')
                 pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Level2 Transform.DataPipeline/pipeline-content.json"| base64)
                 platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Level2 Transform.DataPipeline/.platform"| base64)
                 jsonPayload=$(jq -n \
@@ -261,7 +261,7 @@ jobs:
             PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline"| tr -d '[:space:]')
             echo "$WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline: $PipelineExists"
               if [ "$PipelineExists" != "*true" ]; then
-                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/level2-transform.Folder -q id | tr -d '\r')
+                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/resuable.Folder/level2-transform.Folder -q id | tr -d '\r')
                 pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Master Level2 Transform.DataPipeline/pipeline-content.json"| base64)
                 platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Master Level2 Transform.DataPipeline/.platform"| base64)
                 jsonPayload=$(jq -n \
