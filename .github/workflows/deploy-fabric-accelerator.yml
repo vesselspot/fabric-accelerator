@@ -202,7 +202,7 @@ jobs:
         - name: Create Pipeline wwi-elt-framework
           run: |
             PipelineExists=$(fab exists $WORKSPACE_NAME.Workspace/wwi-elt-framework.DataPipeline| tr -d '[:space:]')
-            echo "PipelineExists: $PipelineExists"
+            echo "$WORKSPACE_NAME.Workspace/wwi-elt-framework.DataPipeline: $PipelineExists"
               if [ "$PipelineExists" != "*true" ]; then
                 NEW_FABRIC_WORKSPACE_ID=$(fab get $WORKSPACE_NAME.Workspace -q id | tr -d '\r')
                 
