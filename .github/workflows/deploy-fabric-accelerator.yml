@@ -274,6 +274,9 @@ jobs:
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
                 set -x
                 fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload"
+
+                grep --null -rl " 5a473c1e-fd95-4b0a-a4a0-33537c65a0d7" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+
                 set +x
               fi       
       # Logout
