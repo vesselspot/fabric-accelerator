@@ -201,11 +201,11 @@ jobs:
       # Create Pipeline wwi-elt-framework
         - name: Create Pipeline wwi-elt-framework
           run: |
-            PipelineExists = $(fab exists $WORKSPACE_NAME.Workspace/wwi-elt-framework.DataPipeline| tr -d '[:space:]')
+            PipelineExists=$(fab exists $WORKSPACE_NAME.Workspace/wwi-elt-framework.DataPipeline| tr -d '[:space:]')
             echo "PipelineExists: $PipelineExists"
               if [ "$PipelineExists" != "*true" ]; then
                 set -x
-                jsonPayload= $(jq -n --arg displayName "wwi-elt-framework" --arg pipeline-content "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/pipeline-content.json" '{"displayName": $displayName,"type": "DataPipeline","pipeline-content.json": $pipeline-content}')
+                jsonPayload=$(jq -n --arg displayName "wwi-elt-framework" --arg pipeline-content "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/pipeline-content.json" '{"displayName": $displayName,"type": "DataPipeline","pipeline-content.json": $pipeline-content}')
                  fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/items" -i "$jsonPayload"
                 set +x
               fi 
