@@ -205,6 +205,7 @@ jobs:
             echo "PipelineExists: $PipelineExists"
               if [ "$PipelineExists" != "*true" ]; then
                 set -x
+                NEW_FABRIC_WORKSPACE_ID=$(fab get $WORKSPACE_NAME.Workspace -q id | tr -d '\r')
                 jsonPayload=$(jq -n --arg displayName "wwi-elt-framework" --arg pipeline_content "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/pipeline-content.json" '{"displayName": $displayName,"type": "DataPipeline","pipeline-content.json": $pipeline_content}')
                  fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/items" -i "$jsonPayload"
                 set +x
