@@ -401,7 +401,7 @@ jobs:
               if [ "$PipelineExists" != "*true" ]; then
                 folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder -q id | tr -d '\r')
                 pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Master ELT ASQL.DataPipeline/pipeline-content.json"| base64)
-                platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Master ELT ASQL.DataPipeline/.platform| base64)
+                platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Master ELT ASQL.DataPipeline/.platform"| base64)
                 jsonPayload=$(jq -n \
                         --arg displayName "Master ELT ASQL" \
                         --arg pipeline_content "$pipeline_content" \
