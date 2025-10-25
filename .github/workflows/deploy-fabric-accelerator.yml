@@ -101,6 +101,12 @@ jobs:
               fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder
               fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder/elt-framework.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder/elt-framework.Folder
            
+              echo "Creating RTI folders if they do not exist"
+              fab exists $WORKSPACE_NAME.Workspace/rti.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/rti.Folder
+              fab exists $WORKSPACE_NAME.Workspace/rti.Folder/dashboard.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/rti.Folder/dashboard.Folder
+              fab exists $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder
+              fab exists $WORKSPACE_NAME.Workspace/rti.Folder/eventstream.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/rti.Folder/eventstream.Folder
+
        # Create Fabric SQL database if it does not exist
         - name: Create FSQL DB if it does not exist
           run: |
