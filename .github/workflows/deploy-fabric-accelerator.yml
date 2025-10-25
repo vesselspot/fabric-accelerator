@@ -21,6 +21,7 @@ jobs:
      NEW_BRONZE_LH_ID: null
      NEW_SILVER_LH_ID: null
      NEW_GOLD_DW_ID: null
+     NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID: null
      NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID: null
      NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID: null
      NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID: null
@@ -37,6 +38,7 @@ jobs:
      OLD_GOLD_DW_ID: 7e2bbf6b-43fb-498c-90e3-56199c8c3b5e
      OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID: a0a57e51-5032-4e46-b0f0-493c9d2f51c9
      OLD_TENANT_ID: 4e921ed2-9b1c-457c-a917-16ef468eb90a
+     OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID: 7ea78b86-8d5e-4e2e-adc8-1138c278f6ab
      OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID: b25d5ad7-288a-4426-83f3-170aff284708
      OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID: 592635be-9979-40a3-8a91-0305b696cea2
      OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID: 5a473c1e-fd95-4b0a-a4a0-33537c65a0d7
@@ -360,7 +362,55 @@ jobs:
                   grep --null -rl "$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
                   grep --null -rl "$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/g"
                 fi
-              fi                     
+              fi          
+              
+      # Create Pipeline Ingest ASQL Table
+        - name: Create Pipeline Ingest ASQL Table
+          run: |
+            PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline"| tr -d '[:space:]')
+            echo "$WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline: $PipelineExists"
+              if [ "$PipelineExists" != "*true" ]; then
+                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder -q id | tr -d '\r')
+                pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Ingest ASQL Table.DataPipeline/pipeline-content.json"| base64)
+                platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Ingest ASQL Table.DataPipeline/.platform"| base64)
+                jsonPayload=$(jq -n \
+                        --arg displayName "Ingest ASQL Table" \
+                        --arg pipeline_content "$pipeline_content" \
+                        --arg platform "$platform" \
+                        --arg folderId "$folderId" \
+                        '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+
+                #Replace OLD INGEST ASQL TABLE PIPELINE LOGICAL ID with NEW INGEST ASQL TABLE PIPELINE LOGICAL ID in workspace files
+
+                status_code=$(echo "$response" | jq -r '.status_code')
+                if [ "$status_code" = "201" ]; then
+                  NEW_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline" -q id | tr -d '\r')
+                  echo "NEW_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID=$NEW_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
+                  echo "Files to be updated from $OLD_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID to $NEW_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID"
+                  grep --null -rl "$OLD_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+                  grep --null -rl "$OLD_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID/$NEW_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID/g"
+                fi
+              fi
+
+      # Create Pipeline Master ELT ASQL
+        - name: Create Pipeline Master ELT ASQL
+          run: |
+            PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Master ELT ASQL.DataPipeline"| tr -d '[:space:]')
+            echo "$WORKSPACE_NAME.Workspace/Master ELT ASQL.DataPipeline: $PipelineExists"
+              if [ "$PipelineExists" != "*true" ]; then
+                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder -q id | tr -d '\r')
+                pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Master ELT ASQL.DataPipeline/pipeline-content.json"| base64)
+                platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Master ELT ASQL.DataPipeline/.platform| base64)
+                jsonPayload=$(jq -n \
+                        --arg displayName "Master ELT ASQL" \
+                        --arg pipeline_content "$pipeline_content" \
+                        --arg platform "$platform" \
+                        --arg folderId "$folderId" \
+                        '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload"
+              fi            
+                      
       # Logout
         - name: Logout of Fabric
           run: fab auth logout
