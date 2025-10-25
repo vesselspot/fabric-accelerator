@@ -381,15 +381,15 @@ jobs:
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
                 response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
 
-                #Replace OLD INGEST ASQL TABLE PIPELINE LOGICAL ID with NEW INGEST ASQL TABLE PIPELINE LOGICAL ID in workspace files
+                #Replace OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID with NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID in workspace files
 
                 status_code=$(echo "$response" | jq -r '.status_code')
                 if [ "$status_code" = "201" ]; then
-                  NEW_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline" -q id | tr -d '\r')
-                  echo "NEW_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID=$NEW_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
-                  echo "Files to be updated from $OLD_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID to $NEW_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID"
-                  grep --null -rl "$OLD_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-                  grep --null -rl "$OLD_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID/$NEW_INGEST_ASQL_TABLE_PIPELINE_LOGICAL_ID/g"
+                  NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline" -q id | tr -d '\r')
+                  echo "NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID=$NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
+                  echo "Files to be updated from $OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID to $NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID"
+                  grep --null -rl "$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+                  grep --null -rl "$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID/$NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID/g"
                 fi
               fi
 
@@ -410,7 +410,7 @@ jobs:
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
                 fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload"
               fi            
-                      
+
       # Logout
         - name: Logout of Fabric
           run: fab auth logout
