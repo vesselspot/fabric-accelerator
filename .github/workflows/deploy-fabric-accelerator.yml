@@ -423,9 +423,8 @@ jobs:
             EventhouseExists=$(fab exists "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse"| tr -d '[:space:]')
             folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder -q id | tr -d '\r')
             eventhouse_properties=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/EventhouseProperties.json"| base64)
-            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/.platform")
-            oldLogicalId=$(echo "$platform" | jq -r '.config.logicalId')
-            platform=$(platform| base64)
+            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/.platform"| base64)
+            oldLogicalId=$(jq -r '.config.logicalId' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/.platform")
 
             echo "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse: $EventhouseExists"
               if [ "$EventhouseExists" != "*true" ]; then
