@@ -436,20 +436,23 @@ jobs:
                         --arg folderId "$folderId" \
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "EventhouseProperties.json","payload": $eventhouse_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
                 response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses" -i "$jsonPayload")
-                [ "$(echo "$response" | jq -r '.status_code')" = "201" ] && EventHouseId=$(fab get "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse" -q id | tr -d '\r')
               else
                 EventHouseId=$(fab get "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse" -q id | tr -d '\r')
                 jsonPayload=$(jq -n \
                         --arg eventhouse_properties "$eventhouse_properties" \
                         --arg platform "$platform" \
                         '{"definition": {"parts":[{"path": "EventhouseProperties.json","payload": $eventhouse_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses/$EventHouseId/updateDefinition?updateMetadata=True" -i "$jsonPayload"
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses/$EventHouseId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
               fi
 
-              echo "EventHouseId=$EventHouseId" >> $GITHUB_ENV
-              echo "Files to be updated from $oldLogicalId to $EventHouseId"
-              grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$EventHouseId/g"
+              echo "$response"
+              status_code=$(echo "$response" | jq -r '.status_code')
+              if [ "$status_code" = "200" ]|| [ "$status_code" = "201" ]; then
+                echo "EventHouseId=$EventHouseId" >> $GITHUB_ENV
+                echo "Files to be updated from $oldLogicalId to $EventHouseId"
+                grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+                grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$EventHouseId/g"
+              fi             
       # Logout
         - name: Logout of Fabric
           run: fab auth logout
