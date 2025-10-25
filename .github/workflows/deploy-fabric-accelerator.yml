@@ -248,7 +248,7 @@ jobs:
         - name: Create Pipeline Level2 Transform
           run: |
             PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline"| tr -d '[:space:]')
-            echo "$WORKSPACE_NAME.Workspace/Level2Transform.DataPipeline: $PipelineExists"
+            echo "$WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline: $PipelineExists"
               if [ "$PipelineExists" != "*true" ]; then
                 folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder -q id | tr -d '\r')
                 pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Level2 Transform.DataPipeline/pipeline-content.json"| base64)
