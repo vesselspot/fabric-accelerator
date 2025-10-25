@@ -417,6 +417,39 @@ jobs:
                 fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload"
               fi            
 
+      # Create Eventhouse eh_fabricAccelerator
+        - name: Create Eventhouse eh_fabricAccelerator
+          run: |
+            EventhouseExists=$(fab exists "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse"| tr -d '[:space:]')
+            folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder -q id | tr -d '\r')
+            eventhouse_properties=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/EventhouseProperties.json"| base64)
+            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/.platform")
+            oldLogicalId=$(echo "$platform" | jq -r '.config.logicalId')
+            platform=$(platform| base64)
+
+            echo "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse: $EventhouseExists"
+              if [ "$EventhouseExists" != "*true" ]; then
+                jsonPayload=$(jq -n \
+                        --arg displayName "eh_fabricAccelerator" \
+                        --arg eventhouse_properties "$eventhouse_properties" \
+                        --arg platform "$platform" \
+                        --arg folderId "$folderId" \
+                        '{"displayName": $displayName,"definition": {"parts":[{"path": "EventhouseProperties.json","payload": $eventhouse_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses" -i "$jsonPayload")
+                [ "$(echo "$response" | jq -r '.status_code')" = "201" ] && EventHouseId=$(fab get "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse" -q id | tr -d '\r')
+              else
+                EventHouseId=$(fab get "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse" -q id | tr -d '\r')
+                jsonPayload=$(jq -n \
+                        --arg eventhouse_properties "$eventhouse_properties" \
+                        --arg platform "$platform" \
+                        '{"definition": {"parts":[{"path": "EventhouseProperties.json","payload": $eventhouse_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses/$EventHouseId/updateDefinition?updateMetadata=True" -i "$jsonPayload"
+              fi
+
+              echo "EventHouseId=$EventHouseId" >> $GITHUB_ENV
+              echo "Files to be updated from $oldLogicalId to $EventHouseId"
+              grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$EventHouseId/g"
       # Logout
         - name: Logout of Fabric
           run: fab auth logout
