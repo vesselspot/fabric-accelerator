@@ -446,6 +446,7 @@ jobs:
             echo "$response"
             status_code=$(echo "$response" | jq -r '.status_code')
             if [ "$status_code" = "200" ]|| [ "$status_code" = "201" ] || [ "$status_code" = "202" ]; then
+              EventHouseId=$(fab get "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse" -q id | tr -d '\r')
               echo "EventHouseId=$EventHouseId" >> $GITHUB_ENV
               echo "Files to be updated from $oldLogicalId to $EventHouseId"
               grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
@@ -484,6 +485,7 @@ jobs:
             echo "$response"
             status_code=$(echo "$response" | jq -r '.status_code')
             if [ "$status_code" = "200" ]|| [ "$status_code" = "201" ] || [ "$status_code" = "202" ]; then
+              KqlDatabaseId=$(fab get "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KqlDatabase" -q id | tr -d '\r')
               echo "KqlDatabaseId=$KqlDatabaseId" >> $GITHUB_ENV
               echo "Files to be updated from $oldLogicalId to $KqlDatabaseId"
               grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
@@ -505,16 +507,15 @@ jobs:
                         --arg platform "$platform" \
                         --arg folderId "$folderId" \
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "RealTimeQueryset.json","payload": $realtimeQueryset,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlQuerysets" -i "$jsonPayload")
+                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlQuerysets" -i "$jsonPayload"
               else
                 KqlQuerysetId=$(fab get "$WORKSPACE_NAME.Workspace/fabricEvents_queryset.KQLQueryset" -q id | tr -d '\r')
                 jsonPayload=$(jq -n \
                         --arg realtimeQueryset "$realtimeQueryset" \
                         --arg platform "$platform" \
                         '{"definition": {"parts":[{"path": "RealTimeQueryset.json","payload": $realtimeQueryset,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlQuerysets/$KqlQuerysetId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlQuerysets/$KqlQuerysetId/updateDefinition?updateMetadata=True" -i "$jsonPayload"
               fi
-            echo "$response"
 
       # Logout
         - name: Logout of Fabric
