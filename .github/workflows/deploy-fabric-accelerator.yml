@@ -460,7 +460,7 @@ jobs:
             folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder -q id | tr -d '\r')
             set -x
             databaseProperties=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/DatabaseProperties.json"| base64)
-            databaseSchema=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/DatabaseSchema.kql"| base64)
+            databaseSchema=$(base64 -w 0 "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/DatabaseSchema.kql")
             platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/.platform"| base64)
             oldLogicalId=$(jq -r '.config.logicalId' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/.platform")
 
@@ -477,7 +477,7 @@ jobs:
               else
                 KqlDatabaseId=$(fab get "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KqlDatabase" -q id | tr -d '\r')
                 jsonPayload=$(jq -n \
-                         --arg databaseProperties "$databaseProperties" \
+                        --arg databaseProperties "$databaseProperties" \
                         --arg databaseSchema "$databaseSchema" \
                         --arg platform "$platform" \
                         '{"definition": {"parts":[{"path": "DatabaseProperties.json","payload": $databaseProperties,"payloadType": "InlineBase64"},{"path": "DatabaseSchema.kql","payload": $databaseSchema,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
