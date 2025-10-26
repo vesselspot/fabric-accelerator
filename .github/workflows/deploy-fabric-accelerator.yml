@@ -492,31 +492,6 @@ jobs:
               grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$KqlDatabaseId/g"
             fi
 
-       # Create KQL Queryset fabricEvents_queryset
-        - name: Create KQL Queryset fabricEvents_queryset
-          run: |
-            KqlQuerysetExists=$(fab exists "$WORKSPACE_NAME.Workspace/fabricEvents_queryset.KQLQueryset"| tr -d '[:space:]')
-            folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder -q id | tr -d '\r')
-            realtimeQueryset=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/fabricEvents_queryset.KQLQueryset/RealTimeQueryset.json"| base64)
-            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/fabricEvents_queryset.KQLQueryset/.platform"| base64)
-
-            if [ "$KqlQuerysetExists" != "*true" ]; then
-                jsonPayload=$(jq -n \
-                        --arg displayName "fabricEvents_queryset" \
-                        --arg realtimeQueryset "$realtimeQueryset" \
-                        --arg platform "$platform" \
-                        --arg folderId "$folderId" \
-                        '{"displayName": $displayName,"definition": {"parts":[{"path": "RealTimeQueryset.json","payload": $realtimeQueryset,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlQuerysets" -i "$jsonPayload"
-              else
-                KqlQuerysetId=$(fab get "$WORKSPACE_NAME.Workspace/fabricEvents_queryset.KQLQueryset" -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                        --arg realtimeQueryset "$realtimeQueryset" \
-                        --arg platform "$platform" \
-                        '{"definition": {"parts":[{"path": "RealTimeQueryset.json","payload": $realtimeQueryset,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlQuerysets/$KqlQuerysetId/updateDefinition?updateMetadata=True" -i "$jsonPayload"
-              fi
-
        # Create RTI Dashboard fabricEventsDashboard
         - name: Create RTI Dashboard fabricEventsDashboard
           run: |
