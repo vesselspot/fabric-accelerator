@@ -517,6 +517,32 @@ jobs:
                 fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlQuerysets/$KqlQuerysetId/updateDefinition?updateMetadata=True" -i "$jsonPayload"
               fi
 
+       # Create RTI Dashboard fabricEventsDashboard
+        - name: Create RTI Dashboard fabricEventsDashboard
+          run: |
+            DashboardExists=$(fab exists "$WORKSPACE_NAME.Workspace/fabricEventsDashboard.KQLDashboard"| tr -d '[:space:]')
+            folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/dashboard.Folder -q id | tr -d '\r')
+            realtimeDashboard=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json"| base64)
+            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/.platform"| base64)
+
+            if [ "$DashboardExists" != "*true" ]; then
+                jsonPayload=$(jq -n \
+                        --arg displayName "fabricEventsDashboard" \
+                        --arg realtimeDashboard "$realtimeDashboard" \
+                        --arg platform "$platform" \
+                        --arg folderId "$folderId" \
+                        '{"displayName": $displayName,"definition": {"parts":[{"path": "RealTimeDashboard.json","payload": $realtimeDashboard,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDashboards" -i "$jsonPayload"
+              else
+                DashboardId=$(fab get "$WORKSPACE_NAME.Workspace/fabricEventsDashboard.KQLDashboard" -q id | tr -d '\r')
+                jsonPayload=$(jq -n \
+                        --arg realtimeDashboard "$realtimeDashboard" \
+                        --arg platform "$platform" \
+                        '{"definition": {"parts":[{"path": "RealTimeDashboard.json","payload": $realtimeDashboard,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDashboards/$DashboardId/updateDefinition?updateMetadata=True" -i "$jsonPayload"
+              fi
+
+
       # Logout
         - name: Logout of Fabric
           run: fab auth logout
