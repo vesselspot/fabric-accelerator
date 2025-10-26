@@ -455,13 +455,16 @@ jobs:
         # Create KQL Database kdb_fabricEvents
         - name: Create KQL Database kdb_fabricEvents
           run: |
+            
             KqlDatabaseExists=$(fab exists "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KQLDatabase"| tr -d '[:space:]')
             folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder -q id | tr -d '\r')
+            set -x
             databaseProperties=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/DatabaseProperties.json"| base64)
             databaseSchema=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/DatabaseSchema.kql"| base64)
             platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/.platform"| base64)
             oldLogicalId=$(jq -r '.config.logicalId' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/.platform")
 
+            
             if [ "$KqlDatabaseExists" != "*true" ]; then
                 jsonPayload=$(jq -n \
                         --arg displayName "kdb_fabricEvents" \
@@ -488,6 +491,7 @@ jobs:
               grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$KqlDatabaseId/g"
             fi
+            set +x
       # Logout
         - name: Logout of Fabric
           run: fab auth logout
