@@ -417,6 +417,107 @@ jobs:
                 fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload"
               fi            
 
+      # Create Eventhouse eh_fabricAccelerator
+        - name: Create Eventhouse eh_fabricAccelerator
+          run: |
+            EventhouseExists=$(fab exists "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse"| tr -d '[:space:]')
+            folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder -q id | tr -d '\r')
+            eventhouse_properties=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/EventhouseProperties.json"| base64)
+            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/.platform"| base64)
+            oldLogicalId=$(jq -r '.config.logicalId' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/.platform")
+
+            if [ "$EventhouseExists" != "*true" ]; then
+                jsonPayload=$(jq -n \
+                        --arg displayName "eh_fabricAccelerator" \
+                        --arg eventhouse_properties "$eventhouse_properties" \
+                        --arg platform "$platform" \
+                        --arg folderId "$folderId" \
+                        '{"displayName": $displayName,"definition": {"parts":[{"path": "EventhouseProperties.json","payload": $eventhouse_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses" -i "$jsonPayload")
+              else
+                EventHouseId=$(fab get "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse" -q id | tr -d '\r')
+                jsonPayload=$(jq -n \
+                        --arg eventhouse_properties "$eventhouse_properties" \
+                        --arg platform "$platform" \
+                        '{"definition": {"parts":[{"path": "EventhouseProperties.json","payload": $eventhouse_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses/$EventHouseId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+              fi
+
+            echo "$response"
+            status_code=$(echo "$response" | jq -r '.status_code')
+            if [ "$status_code" = "200" ] || [ "$status_code" = "201" ] || [ "$status_code" = "202" ]; then
+              EventHouseId=$(fab get "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse" -q id | tr -d '\r')
+              echo "EventHouseId=$EventHouseId" >> $GITHUB_ENV
+              echo "Files to be updated from $oldLogicalId to $EventHouseId"
+              grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$EventHouseId/g"
+            fi          
+
+        # Create KQL Database kdb_fabricEvents
+        - name: Create KQL Database kdb_fabricEvents
+          run: |
+            
+            KqlDatabaseExists=$(fab exists "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KQLDatabase"| tr -d '[:space:]')
+            folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder -q id | tr -d '\r')
+            databaseProperties=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/DatabaseProperties.json"| base64)
+            databaseSchema=$(base64 -w 0 "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/DatabaseSchema.kql")
+            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/.platform"| base64)
+            oldLogicalId=$(jq -r '.config.logicalId' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/.platform")
+
+             if [ "$KqlDatabaseExists" != "*true" ]; then
+                jsonPayload=$(jq -n \
+                        --arg displayName "kdb_fabricEvents" \
+                        --arg databaseProperties "$databaseProperties" \
+                        --arg databaseSchema "$databaseSchema" \
+                        --arg platform "$platform" \
+                        --arg folderId "$folderId" \
+                        '{"displayName": $displayName,"definition": {"parts":[{"path": "DatabaseProperties.json","payload": $databaseProperties,"payloadType": "InlineBase64"},{"path": "DatabaseSchema.kql","payload": $databaseSchema,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDatabases" -i "$jsonPayload")
+              else
+                KqlDatabaseId=$(fab get "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KqlDatabase" -q id | tr -d '\r')
+                jsonPayload=$(jq -n \
+                        --arg databaseProperties "$databaseProperties" \
+                        --arg databaseSchema "$databaseSchema" \
+                        --arg platform "$platform" \
+                        '{"definition": {"parts":[{"path": "DatabaseProperties.json","payload": $databaseProperties,"payloadType": "InlineBase64"},{"path": "DatabaseSchema.kql","payload": $databaseSchema,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDatabases/$KqlDatabaseId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+              fi
+            echo "$response"
+            status_code=$(echo "$response" | jq -r '.status_code')
+            if [ "$status_code" = "200" ] || [ "$status_code" = "201" ] || [ "$status_code" = "202" ]; then
+              KqlDatabaseId=$(fab get "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KqlDatabase" -q id | tr -d '\r')
+              echo "KqlDatabaseId=$KqlDatabaseId" >> $GITHUB_ENV
+              echo "Files to be updated from $oldLogicalId to $KqlDatabaseId"
+              grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$KqlDatabaseId/g"
+            fi
+
+       # Create RTI Dashboard fabricEventsDashboard
+        - name: Create RTI Dashboard fabricEventsDashboard
+          run: |
+            DashboardExists=$(fab exists "$WORKSPACE_NAME.Workspace/fabricEventsDashboard.KQLDashboard"| tr -d '[:space:]')
+            folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/dashboard.Folder -q id | tr -d '\r')
+            realtimeDashboard=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json"| base64)
+            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/.platform"| base64)
+
+            if [ "$DashboardExists" != "*true" ]; then
+                jsonPayload=$(jq -n \
+                        --arg displayName "fabricEventsDashboard" \
+                        --arg realtimeDashboard "$realtimeDashboard" \
+                        --arg platform "$platform" \
+                        --arg folderId "$folderId" \
+                        '{"displayName": $displayName,"definition": {"parts":[{"path": "RealTimeDashboard.json","payload": $realtimeDashboard,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDashboards" -i "$jsonPayload"
+              else
+                DashboardId=$(fab get "$WORKSPACE_NAME.Workspace/fabricEventsDashboard.KQLDashboard" -q id | tr -d '\r')
+                jsonPayload=$(jq -n \
+                        --arg realtimeDashboard "$realtimeDashboard" \
+                        --arg platform "$platform" \
+                        '{"definition": {"parts":[{"path": "RealTimeDashboard.json","payload": $realtimeDashboard,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDashboards/$DashboardId/updateDefinition?updateMetadata=True" -i "$jsonPayload"
+              fi
+
+
       # Logout
         - name: Logout of Fabric
           run: fab auth logout
