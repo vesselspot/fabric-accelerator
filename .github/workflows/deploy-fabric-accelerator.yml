@@ -484,7 +484,7 @@ jobs:
               fi
             echo "$response"
             status_code=$(echo "$response" | jq -r '.status_code')
-            if [ "$status_code" = "200" ]|| [ "$status_code" = "201" ] || [ "$status_code" = "202" ]; then
+            if [ "$status_code" = "200" ] || [ "$status_code" = "201" ] || [ "$status_code" = "202" ]; then
               KqlDatabaseId=$(fab get "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KqlDatabase" -q id | tr -d '\r')
               echo "KqlDatabaseId=$KqlDatabaseId" >> $GITHUB_ENV
               echo "Files to be updated from $oldLogicalId to $KqlDatabaseId"
