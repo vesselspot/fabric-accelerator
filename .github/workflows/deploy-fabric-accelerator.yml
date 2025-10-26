@@ -426,8 +426,7 @@ jobs:
             platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/.platform"| base64)
             oldLogicalId=$(jq -r '.config.logicalId' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/.platform")
 
-            echo "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse: $EventhouseExists"
-              if [ "$EventhouseExists" != "*true" ]; then
+            if [ "$EventhouseExists" != "*true" ]; then
                 jsonPayload=$(jq -n \
                         --arg displayName "eh_fabricAccelerator" \
                         --arg eventhouse_properties "$eventhouse_properties" \
@@ -444,14 +443,51 @@ jobs:
                 response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses/$EventHouseId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
               fi
 
-              echo "$response"
-              status_code=$(echo "$response" | jq -r '.status_code')
-              if [ "$status_code" = "200" ]|| [ "$status_code" = "201" ] || [ "$status_code" = "202" ]; then
-                echo "EventHouseId=$EventHouseId" >> $GITHUB_ENV
-                echo "Files to be updated from $oldLogicalId to $EventHouseId"
-                grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-                grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$EventHouseId/g"
-              fi             
+            echo "$response"
+            status_code=$(echo "$response" | jq -r '.status_code')
+            if [ "$status_code" = "200" ]|| [ "$status_code" = "201" ] || [ "$status_code" = "202" ]; then
+              echo "EventHouseId=$EventHouseId" >> $GITHUB_ENV
+              echo "Files to be updated from $oldLogicalId to $EventHouseId"
+              grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$EventHouseId/g"
+            fi          
+
+        # Create KQL Database kdb_fabricEvents
+        - name: Create KQL Database kdb_fabricEvents
+          run: |
+            KqlDatabaseExists=$(fab exists "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KQLDatabase"| tr -d '[:space:]')
+            folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder -q id | tr -d '\r')
+            databaseProperties=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/DatabaseProperties.json"| base64)
+            databaseSchema=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/DatabaseSchema.kql"| base64)
+            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/.platform"| base64)
+            oldLogicalId=$(jq -r '.config.logicalId' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/kdb_fabricEvents.KQLDatabase/.platform")
+
+            if [ "$KqlDatabaseExists" != "*true" ]; then
+                jsonPayload=$(jq -n \
+                        --arg displayName "kdb_fabricEvents" \
+                        --arg databaseProperties "$databaseProperties" \
+                        --arg databaseSchema "$databaseSchema" \
+                        --arg platform "$platform" \
+                        --arg folderId "$folderId" \
+                        '{"displayName": $displayName,"definition": {"parts":[{"path": "DatabaseProperties.json","payload": $databaseProperties,"payloadType": "InlineBase64"},{"path": "DatabaseSchema.kql","payload": $databaseSchema,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDatabases" -i "$jsonPayload")
+              else
+                KqlDatabaseId=$(fab get "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KqlDatabase" -q id | tr -d '\r')
+                jsonPayload=$(jq -n \
+                         --arg databaseProperties "$databaseProperties" \
+                        --arg databaseSchema "$databaseSchema" \
+                        --arg platform "$platform" \
+                        '{"definition": {"parts":[{"path": "DatabaseProperties.json","payload": $databaseProperties,"payloadType": "InlineBase64"},{"path": "DatabaseSchema.kql","payload": $databaseSchema,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDatabases/$KqlDatabaseId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+              fi
+            echo "$response"
+            status_code=$(echo "$response" | jq -r '.status_code')
+            if [ "$status_code" = "200" ]|| [ "$status_code" = "201" ] || [ "$status_code" = "202" ]; then
+              echo "KqlDatabaseId=$KqlDatabaseId" >> $GITHUB_ENV
+              echo "Files to be updated from $oldLogicalId to $KqlDatabaseId"
+              grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$KqlDatabaseId/g"
+            fi
       # Logout
         - name: Logout of Fabric
           run: fab auth logout
