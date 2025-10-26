@@ -445,7 +445,7 @@ jobs:
 
             echo "$response"
             status_code=$(echo "$response" | jq -r '.status_code')
-            if [ "$status_code" = "200" ]|| [ "$status_code" = "201" ] || [ "$status_code" = "202" ]; then
+            if [ "$status_code" = "200" ] || [ "$status_code" = "201" ] || [ "$status_code" = "202" ]; then
               EventHouseId=$(fab get "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse" -q id | tr -d '\r')
               echo "EventHouseId=$EventHouseId" >> $GITHUB_ENV
               echo "Files to be updated from $oldLogicalId to $EventHouseId"
