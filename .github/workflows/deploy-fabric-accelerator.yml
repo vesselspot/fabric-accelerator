@@ -223,10 +223,25 @@ jobs:
 
               echo "Replacing OLD ID with NEW ID in ipynb files"
 
-              echo "Files to be updated from $OLD_SILVER_LH_ID to $NEW_SILVER_LH_ID"
+              echo "ipynb Files to be updated from $OLD_FABRIC_WORKSPACE_ID to $NEW_FABRIC_WORKSPACE_ID"
+              grep --null -rl "$OLD_FABRIC_WORKSPACE_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
+              grep --null -rl $OLD_FABRIC_WORKSPACE_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID/$NEW_FABRIC_WORKSPACE_ID/g"
+
+              echo "ipynb Files to be updated from $OLD_SILVER_LH_ID to $NEW_SILVER_LH_ID"
               grep --null -rl "$OLD_SILVER_LH_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
               grep --null -rl $OLD_SILVER_LH_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_SILVER_LH_ID/$NEW_SILVER_LH_ID/g"
 
+              echo "ipynb Files to be updated to $BRONZE_LH"
+              grep --null -rl "lh_bronze" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
+              grep --null -rl "lh_bronze" ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/lh_bronze/$BRONZE_LH/g"
+
+              echo "ipynb Files to be updated to $SILVER_LH"
+              grep --null -rl "lh_silver" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
+              grep --null -rl "lh_silver" ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/lh_silver/$SILVER_LH/g"
+
+              echo "ipynb Files to be updated to $GOLD_DW"
+              grep --null -rl "dw_gold" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
+              grep --null -rl "dw_gold" ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/dw_gold/$GOLD_DW/g"
 
         #   Import Notebooks
         - name: Import Notebooks
