@@ -476,7 +476,7 @@ jobs:
             echo "$response"
             #Replace OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID with NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID in workspace files
             status_code=$(echo "$response" | jq -r '.status_code')
-            if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "201" ]; then
+            if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
               NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline" -q id | tr -d '\r')
               echo "NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID=$NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
               echo "Files to be updated from $OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID to $NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID"
