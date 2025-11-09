@@ -599,8 +599,8 @@ jobs:
             EventStreamExists=$(fab exists "$WORKSPACE_NAME.Workspace/es_fabricEvents.EventStream"| tr -d '[:space:]')
             folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/eventstream.Folder -q id | tr -d '\r')
             eventstream=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventstream/es_fabricEvents.Eventstream/eventstream.json"| base64)
-            eventstream_properties=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventstream/es_fabricEvents.EventStream/EventStreamProperties.json"| base64)
-            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventstream/es_fabricEvents.EventStream/.platform"| base64)
+            eventstream_properties=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventstream/es_fabricEvents.Eventstream/eventstreamProperties.json"| base64)
+            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventstream/es_fabricEvents.Eventstream/.platform"| base64)
 
             if [ "$EventStreamExists" != "*true" ]; then
                 jsonPayload=$(jq -n \
