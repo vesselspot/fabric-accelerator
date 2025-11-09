@@ -594,10 +594,10 @@ jobs:
               grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$KqlDatabaseId/g"
 
-              set -x
-              KQLServiceUrl=$(fab get "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KQLDatabase" -q properties.queryServiceUri -f| tr -d '\r')
-              echo "KQLServiceUrl=$KQLServiceUrl" >> $GITHUB_ENV
-              set +x
+              # set -x
+              # KQLServiceUrl=$(fab get "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KQLDatabase" -q properties.queryServiceUri -f| tr -d '\r')
+              # echo "KQLServiceUrl=$KQLServiceUrl" >> $GITHUB_ENV
+              # set +x
             fi
 
        # Create RTI Dashboard fabricEventsDashboard
@@ -605,7 +605,8 @@ jobs:
           run: |
             DashboardExists=$(fab exists "$WORKSPACE_NAME.Workspace/fabricEventsDashboard.KQLDashboard"| tr -d '[:space:]')
             # Update KQL Database URL
-            jq --arg url "$KQLServiceUrl" '.dataSources[].clusterUri = $url' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json" > tmp.json && mv tmp.json "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json"
+            # jq --arg url "$KQLServiceUrl" '.dataSources[].clusterUri = $url' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json" > tmp.json && mv tmp.json "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json"
+            jq --arg url "" '.dataSources[].clusterUri = $url' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json" > tmp.json && mv tmp.json "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json"
 
             folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/dashboard.Folder -q id | tr -d '\r')
             realtimeDashboard=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json"| base64)
