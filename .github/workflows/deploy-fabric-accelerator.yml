@@ -600,8 +600,8 @@ jobs:
               # set +x
 
               set -x
-              # KQLServiceUrl=$(fab api -X get "/workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDatabases/$KqlDatabaseId" | jq -r '.properties.queryServiceUri')
-              fab api -X get "/workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDatabases/$KqlDatabaseId"
+              KQLServiceUrl=$(fab api -X get "/workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDatabases/$KqlDatabaseId" | jq -r '.text.properties.queryServiceUri')
+              # fab api -X get "/workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDatabases/$KqlDatabaseId"
               set +x
             fi
 
@@ -610,8 +610,8 @@ jobs:
           run: |
             DashboardExists=$(fab exists "$WORKSPACE_NAME.Workspace/fabricEventsDashboard.KQLDashboard"| tr -d '[:space:]')
             
-            # # Update KQL Database URL
-            # jq --arg url "$KQLServiceUrl" '.dataSources[].clusterUri = $url' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json" > tmp.json && mv tmp.json "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json"
+            # Update KQL Database URL
+            jq --arg url "$KQLServiceUrl" '.dataSources[].clusterUri = $url' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json" > tmp.json && mv tmp.json "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json"
             
             folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/dashboard.Folder -q id | tr -d '\r')
             realtimeDashboard=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json"| base64)
