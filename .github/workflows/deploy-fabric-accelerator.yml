@@ -429,15 +429,12 @@ jobs:
                       '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
               response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
             else
-              set -x
               pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline -q id | tr -d '\r')
               jsonPayload=$(jq -n \
                       --arg pipeline_content "$pipeline_content" \
                       --arg platform "$platform" \
                       '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')  
-              echo $jsonPayload                      
               response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
-              set +x
             fi
 
             echo "$response"
