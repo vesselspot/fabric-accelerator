@@ -246,8 +246,17 @@ jobs:
         #   Import Notebooks
         - name: Import Notebooks
           run: |
+            
+            fab exists $WORKSPACE_NAME.Workspace/CommonTransforms.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/CommonTransforms.Notebook" -f &
+            fab exists $WORKSPACE_NAME.Workspace/DeltaLakeFunctions.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/DeltaLakeFunctions.Notebook" -f &
+            fab exists $WORKSPACE_NAME.Workspace/entra-functions.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/entra-functions.Notebook" -f &
+            fab exists $WORKSPACE_NAME.Workspace/L1Transform-Generic-Fabric.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/L1Transform-Generic-Fabric.Notebook" -f &
+            fab exists "$WORKSPACE_NAME.Workspace/Optimize Delta Lake Tables.Notebook" | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/Optimize Delta Lake Tables.Notebook" -f &
             fab exists $WORKSPACE_NAME.Workspace/EnvSettings.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -f &
+            fab exists "$WORKSPACE_NAME.Workspace/Unit Test CommonTransforms.Notebook" | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/Unit Test CommonTransforms.Notebook" -f &
+            fab exists $WORKSPACE_NAME.Workspace/UnitTest_DeltaLakeFunctions.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/UnitTest_DeltaLakeFunctions.Notebook" -f &
             wait
+
             
             fab exists $WORKSPACE_NAME.Workspace/CommonTransforms.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/common-pyspark.Folder/CommonTransforms.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/CommonTransforms.Notebook" --format .ipynb -f &
             fab exists $WORKSPACE_NAME.Workspace/DeltaLakeFunctions.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/delta-lake.Folder/DeltaLakeFunctions.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/DeltaLakeFunctions.Notebook" --format .ipynb -f &
