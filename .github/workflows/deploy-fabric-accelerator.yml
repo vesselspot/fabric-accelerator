@@ -605,6 +605,10 @@ jobs:
             DashboardExists=$(fab exists "$WORKSPACE_NAME.Workspace/fabricEventsDashboard.KQLDashboard"| tr -d '[:space:]')
             
             # Update KQL Database URL
+            if [ -z "$KQLServiceUrl" ]; then
+              echo "Error: KQLServiceUrl is not set. Aborting dashboard update." >&2
+              exit 1
+            fi
             jq --arg url "$KQLServiceUrl" '.dataSources[].clusterUri = $url' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json" > tmp.json && mv tmp.json "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json"
             
             folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/dashboard.Folder -q id | tr -d '\r')
