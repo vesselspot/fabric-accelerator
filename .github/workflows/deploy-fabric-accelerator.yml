@@ -431,7 +431,7 @@ jobs:
             else
               set -x
               pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline -q id | tr -d '\r')
-              jsonPayload=$(jq -n \ 
+              jsonPayload=$(jq -n \
                       --arg pipeline_content "$pipeline_content" \
                       --arg platform "$platform" \
                       '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')  
