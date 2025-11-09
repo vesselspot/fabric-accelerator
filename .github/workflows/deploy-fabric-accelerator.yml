@@ -27,6 +27,7 @@ jobs:
      NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID: null
      NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID: null
      NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID: null
+     NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID: null
      
 
      OLD_FABRIC_CAPACITY_ID: e4eb626a-4082-4143-983d-6fc9284b74cd
@@ -45,6 +46,7 @@ jobs:
      OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID: 592635be-9979-40a3-8a91-0305b696cea2
      OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID: 5a473c1e-fd95-4b0a-a4a0-33537c65a0d7
      OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID: 29ca711a-e20f-457c-a619-35b0310193ad
+     OLD_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID: dcbe357b-2a94-4d28-a21f-8e2300e33f89
 
     runs-on: ubuntu-latest
     steps:
@@ -238,6 +240,13 @@ jobs:
             fab exists "$WORKSPACE_NAME.Workspace/Unit Test CommonTransforms.Notebook" | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/common-pyspark.Folder/Unit Test CommonTransforms.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/Unit Test CommonTransforms.Notebook" --format .ipynb -f &
             fab exists $WORKSPACE_NAME.Workspace/UnitTest_DeltaLakeFunctions.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/delta-lake.Folder/UnitTest_DeltaLakeFunctions.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/UnitTest_DeltaLakeFunctions.Notebook" --format .ipynb -f &
             wait
+
+            NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID=$(fab get "$WORKSPACE_NAME.Workspace/Optimize Delta Lake Tables.Notebook" -q id | tr -d '\r')
+            echo "NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID=$NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID" >> $GITHUB_ENV
+            echo "Files to be updated from $OLD_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID to $NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID"
+            grep --null -rl "$OLD_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+            grep --null -rl $OLD_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID/$NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID/g"
+
       # Deploy Pipeline wwi-elt-framework
         - name: Deploy Pipeline wwi-elt-framework
           run: |
