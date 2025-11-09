@@ -243,8 +243,8 @@ jobs:
               grep --null -rl "dw_gold" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
               grep --null -rl "dw_gold" ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/dw_gold/$GOLD_DW/g"
 
-        #   Import Notebooks
-        - name: Import Notebooks
+        # Deploy Notebooks
+        - name: Deploy Notebooks
           run: |
             
             fab exists $WORKSPACE_NAME.Workspace/CommonTransforms.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/CommonTransforms.Notebook" -f &
@@ -593,15 +593,28 @@ jobs:
               echo "Files to be updated from $oldLogicalId to $KqlDatabaseId"
               grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$KqlDatabaseId/g"
+
+              # Get KQL Service URL
+              KQLServiceUrl=$(fab api -X get "/workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDatabases/$KqlDatabaseId" | jq -r '.text.properties.queryServiceUri')
+              echo "KQLServiceUrl=$KQLServiceUrl" >> $GITHUB_ENV
             fi
 
        # Create RTI Dashboard fabricEventsDashboard
         - name: Create RTI Dashboard fabricEventsDashboard
           run: |
             DashboardExists=$(fab exists "$WORKSPACE_NAME.Workspace/fabricEventsDashboard.KQLDashboard"| tr -d '[:space:]')
+            
+            # Update KQL Database URL
+            if [ -z "$KQLServiceUrl" ]; then
+              echo "Error: KQLServiceUrl is not set. Aborting dashboard update." >&2
+              exit 1
+            fi
+            jq --arg url "$KQLServiceUrl" '.dataSources[].clusterUri = $url' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json" > tmp.json && mv tmp.json "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json"
+            
             folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/dashboard.Folder -q id | tr -d '\r')
             realtimeDashboard=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/RealTimeDashboard.json"| base64)
             platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/dashboard/fabricEventsDashboard.KQLDashboard/.platform"| base64)
+
 
             if [ "$DashboardExists" != "*true" ]; then
                 jsonPayload=$(jq -n \
@@ -628,25 +641,25 @@ jobs:
             eventstream=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventstream/es_fabricEvents.Eventstream/eventstream.json"| base64)
             eventstream_properties=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventstream/es_fabricEvents.Eventstream/eventstreamProperties.json"| base64)
             platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventstream/es_fabricEvents.Eventstream/.platform"| base64)
-
+            
             if [ "$EventStreamExists" != "*true" ]; then
-                jsonPayload=$(jq -n \
-                        --arg displayName "es_fabricEvents" \
-                        --arg eventstream "$eventstream" \
-                        --arg eventstream_properties "$eventstream_properties" \
-                        --arg platform "$platform" \
-                        --arg folderId "$folderId" \
-                        '{"displayName": $displayName,"definition": {"parts":[{"path": "eventstream.json","payload": $eventstream,"payloadType": "InlineBase64"},{"path": "eventstreamProperties.json","payload": $eventstream_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventStreams" -i "$jsonPayload")
-              else
-                EventStreamId=$(fab get "$WORKSPACE_NAME.Workspace/es_fabricEvents.EventStream" -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                        --arg eventstream "$eventstream" \
-                        --arg eventstream_properties "$eventstream_properties" \
-                        --arg platform "$platform" \
-                        '{"definition": {"parts":[{"path": "eventstream.json","payload": $eventstream,"payloadType": "InlineBase64"},{"path": "eventstreamProperties.json","payload": $eventstream_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventStreams/$EventStreamId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
-              fi
+              jsonPayload=$(jq -n \
+                          --arg displayName "es_fabricEvents" \
+                          --arg eventstream "$eventstream" \
+                          --arg eventstream_properties "$eventstream_properties" \
+                          --arg platform "$platform" \
+                          --arg folderId "$folderId" \
+                          '{"displayName": $displayName,"definition": {"parts":[{"path": "eventstream.json","payload": $eventstream,"payloadType": "InlineBase64"},{"path": "eventstreamProperties.json","payload": $eventstream_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventStreams" -i "$jsonPayload")
+            else
+              EventStreamId=$(fab get "$WORKSPACE_NAME.Workspace/es_fabricEvents.EventStream" -q id | tr -d '\r')
+              jsonPayload=$(jq -n \
+                          --arg eventstream "$eventstream" \
+                          --arg eventstream_properties "$eventstream_properties" \
+                          --arg platform "$platform" \
+                          '{"definition": {"parts":[{"path": "eventstream.json","payload": $eventstream,"payloadType": "InlineBase64"},{"path": "eventstreamProperties.json","payload": $eventstream_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventStreams/$EventStreamId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+            fi
             echo "$response"
       # Logout
         - name: Logout of Fabric
