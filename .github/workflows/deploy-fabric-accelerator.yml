@@ -70,491 +70,491 @@ jobs:
             fab config set encryption_fallback_enabled true
             fab auth login -u ${{ secrets.ACTION_SPN_CLIENTID }} -p ${{ secrets.ACTION_SPN_SECRET }} --tenant ${{ secrets.TENANT_ID }} 
 
-       # Create Workspace if it does not exist
-        - name: Create Workspace if it does not exist
-          run: |
-            WorkspaceExists=$(fab exists $WORKSPACE_NAME.Workspace | tr -d '[:space:]')
-            echo "WorkspaceExists: $WorkspaceExists"
-            if [ "$WorkspaceExists" != "*true" ]; then
-              fab create $WORKSPACE_NAME.Workspace -P capacityName=$FABRIC_CAPACITY_NAME
-              fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_ADMIN_ID -R admin -f
-              fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_COLLABORATOR_ID -R contributor -f
-            fi 
+      #  # Create Workspace if it does not exist
+      #   - name: Create Workspace if it does not exist
+      #     run: |
+      #       WorkspaceExists=$(fab exists $WORKSPACE_NAME.Workspace | tr -d '[:space:]')
+      #       echo "WorkspaceExists: $WorkspaceExists"
+      #       if [ "$WorkspaceExists" != "*true" ]; then
+      #         fab create $WORKSPACE_NAME.Workspace -P capacityName=$FABRIC_CAPACITY_NAME
+      #         fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_ADMIN_ID -R admin -f
+      #         fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_COLLABORATOR_ID -R contributor -f
+      #       fi 
 
-       # Create Folders if they do not exist
-        - name: Create folders if they do not exist
-          run: |  
-              echo "Creating Notebook folders if they do not exist"
-              fab exists $WORKSPACE_NAME.Workspace/elt-framework.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/elt-framework.Folder
-              fab exists $WORKSPACE_NAME.Workspace/lakehouse.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/lakehouse.Folder
-              fab exists $WORKSPACE_NAME.Workspace/warehouse.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/warehouse.Folder
+      #  # Create Folders if they do not exist
+      #   - name: Create folders if they do not exist
+      #     run: |  
+      #         echo "Creating Notebook folders if they do not exist"
+      #         fab exists $WORKSPACE_NAME.Workspace/elt-framework.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/elt-framework.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/lakehouse.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/lakehouse.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/warehouse.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/warehouse.Folder
               
-              fab exists $WORKSPACE_NAME.Workspace/notebook.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder
-              fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder
-              fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/common-pyspark.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/common-pyspark.Folder
-              fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/delta-lake.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/delta-lake.Folder
-              fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/entra.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/entra.Folder
-              fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/level1-transform.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/level1-transform.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/notebook.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/common-pyspark.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/common-pyspark.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/delta-lake.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/delta-lake.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/entra.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/entra.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/level1-transform.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/level1-transform.Folder
 
-              echo "Creating Pipeline folders if they do not exist"
-              fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder
-              fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder
-              fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder
-              fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/lakehouse.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/lakehouse.Folder
-              fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level1-transform.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level1-transform.Folder
-              fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder
-              fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder/elt-framework.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder/elt-framework.Folder
+      #         echo "Creating Pipeline folders if they do not exist"
+      #         fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/lakehouse.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/lakehouse.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level1-transform.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level1-transform.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/pipeline.Folder/elt-framework.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/pipeline.Folder/elt-framework.Folder
            
-              echo "Creating RTI folders if they do not exist"
-              fab exists $WORKSPACE_NAME.Workspace/rti.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/rti.Folder
-              fab exists $WORKSPACE_NAME.Workspace/rti.Folder/dashboard.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/rti.Folder/dashboard.Folder
-              fab exists $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder
-              fab exists $WORKSPACE_NAME.Workspace/rti.Folder/eventstream.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/rti.Folder/eventstream.Folder
+      #         echo "Creating RTI folders if they do not exist"
+      #         fab exists $WORKSPACE_NAME.Workspace/rti.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/rti.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/rti.Folder/dashboard.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/rti.Folder/dashboard.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder
+      #         fab exists $WORKSPACE_NAME.Workspace/rti.Folder/eventstream.Folder | grep -q true || fab create $WORKSPACE_NAME.Workspace/rti.Folder/eventstream.Folder
 
-       # Create Fabric SQL database if it does not exist
-        - name: Create FSQL DB if it does not exist
-          run: |
-              fab exists $WORKSPACE_NAME.Workspace/elt-framework.Folder/$FABRIC_SQL_DB_NAME.SQLDatabase | grep -q true || fab create $WORKSPACE_NAME.Workspace/elt-framework.Folder/$FABRIC_SQL_DB_NAME.SQLDatabase
-       # Create Fabric SQL database connection if it does not exist
-        - name: Create FSQL DB Connection if it does not exist
-          run: |
-              FSQLConnExists=$(fab exists .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection | tr -d '[:space:]')
-              echo "FSQLConnExists: $FSQLConnExists"
-              if [ "$FSQLConnExists" != "*true" ]; then
-                server=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.serverFqdn| tr -d '\r')
-                database=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.databaseName| tr -d '\r') 
-                echo "Creating connection for server: $server and database: $database"
-                fab create .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -P connectionDetails.creationMethod=SQL,connectionDetails.type=SQL,connectionDetails.parameters.server=$server,connectionDetails.parameters.database=$database,credentialDetails.type=ServicePrincipal,credentialDetails.servicePrincipalClientId=${{ secrets.ACTION_SPN_CLIENTID }},credentialDetails.servicePrincipalSecret=${{ secrets.ACTION_SPN_SECRET }},credentialDetails.tenantid=${{ secrets.TENANT_ID }} 
-                connectionID=$(fab get .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -q id| tr -d '\r')
+      #  # Create Fabric SQL database if it does not exist
+      #   - name: Create FSQL DB if it does not exist
+      #     run: |
+      #         fab exists $WORKSPACE_NAME.Workspace/elt-framework.Folder/$FABRIC_SQL_DB_NAME.SQLDatabase | grep -q true || fab create $WORKSPACE_NAME.Workspace/elt-framework.Folder/$FABRIC_SQL_DB_NAME.SQLDatabase
+      #  # Create Fabric SQL database connection if it does not exist
+      #   - name: Create FSQL DB Connection if it does not exist
+      #     run: |
+      #         FSQLConnExists=$(fab exists .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection | tr -d '[:space:]')
+      #         echo "FSQLConnExists: $FSQLConnExists"
+      #         if [ "$FSQLConnExists" != "*true" ]; then
+      #           server=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.serverFqdn| tr -d '\r')
+      #           database=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.databaseName| tr -d '\r') 
+      #           echo "Creating connection for server: $server and database: $database"
+      #           fab create .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -P connectionDetails.creationMethod=SQL,connectionDetails.type=SQL,connectionDetails.parameters.server=$server,connectionDetails.parameters.database=$database,credentialDetails.type=ServicePrincipal,credentialDetails.servicePrincipalClientId=${{ secrets.ACTION_SPN_CLIENTID }},credentialDetails.servicePrincipalSecret=${{ secrets.ACTION_SPN_SECRET }},credentialDetails.tenantid=${{ secrets.TENANT_ID }} 
+      #           connectionID=$(fab get .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -q id| tr -d '\r')
 
-                rolejson=$(jq -n --arg id "$WORKSPACE_ADMIN_ID" '{"principal": {"id": $id, "type": "Group"}, "role": "Owner"}')
-                echo "Assigning role to connection: $rolejson"
-                fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
+      #           rolejson=$(jq -n --arg id "$WORKSPACE_ADMIN_ID" '{"principal": {"id": $id, "type": "Group"}, "role": "Owner"}')
+      #           echo "Assigning role to connection: $rolejson"
+      #           fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
                 
-                rolejson=$(jq -n --arg id "$WORKSPACE_COLLABORATOR_ID" '{"principal": {"id": $id, "type": "Group"}, "role": "Owner"}')
-                echo "Assigning role to connection: $rolejson"
-                fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
-              fi
-          # Create Medallion Layers if they do not exist
-        - name: Create Medallion Layers if they do not exist
-          run: |
-              BronzeLHExists=$(fab exists $WORKSPACE_NAME.Workspace/lakehouse.Folder/$BRONZE_LH.Lakehouse | tr -d '[:space:]')
-              echo "BronzeLHExists: $BronzeLHExists"
-              if [ "$BronzeLHExists" != "*true" ]; then
-                fab create $WORKSPACE_NAME.Workspace/lakehouse.Folder/$BRONZE_LH.Lakehouse -P enableSchemas=true
-              fi 
+      #           rolejson=$(jq -n --arg id "$WORKSPACE_COLLABORATOR_ID" '{"principal": {"id": $id, "type": "Group"}, "role": "Owner"}')
+      #           echo "Assigning role to connection: $rolejson"
+      #           fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
+      #         fi
+      #     # Create Medallion Layers if they do not exist
+      #   - name: Create Medallion Layers if they do not exist
+      #     run: |
+      #         BronzeLHExists=$(fab exists $WORKSPACE_NAME.Workspace/lakehouse.Folder/$BRONZE_LH.Lakehouse | tr -d '[:space:]')
+      #         echo "BronzeLHExists: $BronzeLHExists"
+      #         if [ "$BronzeLHExists" != "*true" ]; then
+      #           fab create $WORKSPACE_NAME.Workspace/lakehouse.Folder/$BRONZE_LH.Lakehouse -P enableSchemas=true
+      #         fi 
 
-              SilverLHExists=$(fab exists $WORKSPACE_NAME.Workspace/lakehouse.Folder/$SILVER_LH.Lakehouse | tr -d '[:space:]')
-              echo "SilverLHExists: $SilverLHExists"
-              if [ "$SilverLHExists" != "*true" ]; then
-                fab create $WORKSPACE_NAME.Workspace/lakehouse.Folder/$SILVER_LH.Lakehouse -P enableSchemas=true
-              fi 
+      #         SilverLHExists=$(fab exists $WORKSPACE_NAME.Workspace/lakehouse.Folder/$SILVER_LH.Lakehouse | tr -d '[:space:]')
+      #         echo "SilverLHExists: $SilverLHExists"
+      #         if [ "$SilverLHExists" != "*true" ]; then
+      #           fab create $WORKSPACE_NAME.Workspace/lakehouse.Folder/$SILVER_LH.Lakehouse -P enableSchemas=true
+      #         fi 
 
-              GoldDWExists=$(fab exists $WORKSPACE_NAME.Workspace/warehouse.Folder/$GOLD_DW.Warehouse | tr -d '[:space:]')
-              echo "GoldDWExists: $GoldDWExists"
-              if [ "$GoldDWExists" != "*true" ]; then
-                fab create $WORKSPACE_NAME.Workspace/warehouse.Folder/$GOLD_DW.Warehouse
-              fi
-        #   Replace OLD IDs with NEW IDs in workspace files
-        - name: Replace OLD IDs with NEW IDs in workspace files
-          run: |
-              NEW_FABRIC_CAPACITY_ID=$(fab get $WORKSPACE_NAME.Workspace -q capacityId | tr -d '\r')
-              echo "NEW_FABRIC_CAPACITY_ID=$NEW_FABRIC_CAPACITY_ID" >> $GITHUB_ENV
+      #         GoldDWExists=$(fab exists $WORKSPACE_NAME.Workspace/warehouse.Folder/$GOLD_DW.Warehouse | tr -d '[:space:]')
+      #         echo "GoldDWExists: $GoldDWExists"
+      #         if [ "$GoldDWExists" != "*true" ]; then
+      #           fab create $WORKSPACE_NAME.Workspace/warehouse.Folder/$GOLD_DW.Warehouse
+      #         fi
+      #   #   Replace OLD IDs with NEW IDs in workspace files
+      #   - name: Replace OLD IDs with NEW IDs in workspace files
+      #     run: |
+      #         NEW_FABRIC_CAPACITY_ID=$(fab get $WORKSPACE_NAME.Workspace -q capacityId | tr -d '\r')
+      #         echo "NEW_FABRIC_CAPACITY_ID=$NEW_FABRIC_CAPACITY_ID" >> $GITHUB_ENV
              
-              NEW_FABRIC_WORKSPACE_ID=$(fab get $WORKSPACE_NAME.Workspace -q id | tr -d '\r')
-              echo "NEW_FABRIC_WORKSPACE_ID=$NEW_FABRIC_WORKSPACE_ID" >> $GITHUB_ENV
+      #         NEW_FABRIC_WORKSPACE_ID=$(fab get $WORKSPACE_NAME.Workspace -q id | tr -d '\r')
+      #         echo "NEW_FABRIC_WORKSPACE_ID=$NEW_FABRIC_WORKSPACE_ID" >> $GITHUB_ENV
              
-              NEW_CONTROLDB_NAME=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.databaseName| tr -d '\r')
-              echo "NEW_CONTROLDB_NAME=$NEW_CONTROLDB_NAME" >> $GITHUB_ENV
+      #         NEW_CONTROLDB_NAME=$(fab get $WORKSPACE_NAME.Workspace/$FABRIC_SQL_DB_NAME.SQLDatabase -q properties.databaseName| tr -d '\r')
+      #         echo "NEW_CONTROLDB_NAME=$NEW_CONTROLDB_NAME" >> $GITHUB_ENV
              
-              NEW_CONTROLDB_CONNECTION_ID=$(fab get .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -q id | tr -d '\r')
-              echo "NEW_CONTROLDB_CONNECTION_ID=$NEW_CONTROLDB_CONNECTION_ID" >> $GITHUB_ENV
+      #         NEW_CONTROLDB_CONNECTION_ID=$(fab get .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -q id | tr -d '\r')
+      #         echo "NEW_CONTROLDB_CONNECTION_ID=$NEW_CONTROLDB_CONNECTION_ID" >> $GITHUB_ENV
              
-              NEW_BRONZE_LH_ID=$(fab get $WORKSPACE_NAME.Workspace/$BRONZE_LH.Lakehouse -q id | tr -d '\r')
-              echo "NEW_BRONZE_LH_ID=$NEW_BRONZE_LH_ID" >> $GITHUB_ENV
+      #         NEW_BRONZE_LH_ID=$(fab get $WORKSPACE_NAME.Workspace/$BRONZE_LH.Lakehouse -q id | tr -d '\r')
+      #         echo "NEW_BRONZE_LH_ID=$NEW_BRONZE_LH_ID" >> $GITHUB_ENV
              
-              NEW_SILVER_LH_ID=$(fab get $WORKSPACE_NAME.Workspace/$SILVER_LH.Lakehouse -q id | tr -d '\r')
-              echo "NEW_SILVER_LH_ID=$NEW_SILVER_LH_ID" >> $GITHUB_ENV
+      #         NEW_SILVER_LH_ID=$(fab get $WORKSPACE_NAME.Workspace/$SILVER_LH.Lakehouse -q id | tr -d '\r')
+      #         echo "NEW_SILVER_LH_ID=$NEW_SILVER_LH_ID" >> $GITHUB_ENV
              
-              NEW_GOLD_DW_ID=$(fab get $WORKSPACE_NAME.Workspace/$GOLD_DW.Warehouse -q id | tr -d '\r')
-              echo "NEW_GOLD_DW_ID=$NEW_GOLD_DW_ID" >> $GITHUB_ENV
+      #         NEW_GOLD_DW_ID=$(fab get $WORKSPACE_NAME.Workspace/$GOLD_DW.Warehouse -q id | tr -d '\r')
+      #         echo "NEW_GOLD_DW_ID=$NEW_GOLD_DW_ID" >> $GITHUB_ENV
 
-              echo "Replacing OLD ID with NEW ID in workspace files"
+      #         echo "Replacing OLD ID with NEW ID in workspace files"
 
-              echo "Files to be updated from $OLD_FABRIC_CAPACITY_ID to $NEW_FABRIC_CAPACITY_ID"
-              grep --null -rl "$OLD_FABRIC_CAPACITY_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $OLD_FABRIC_CAPACITY_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_CAPACITY_ID/$NEW_FABRIC_CAPACITY_ID/g"
+      #         echo "Files to be updated from $OLD_FABRIC_CAPACITY_ID to $NEW_FABRIC_CAPACITY_ID"
+      #         grep --null -rl "$OLD_FABRIC_CAPACITY_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl $OLD_FABRIC_CAPACITY_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_CAPACITY_ID/$NEW_FABRIC_CAPACITY_ID/g"
 
-              echo "Files to be updated from $OLD_FABRIC_WORKSPACE_ID to $NEW_FABRIC_WORKSPACE_ID"
-              grep --null -rl "$OLD_FABRIC_WORKSPACE_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $OLD_FABRIC_WORKSPACE_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID/$NEW_FABRIC_WORKSPACE_ID/g"
+      #         echo "Files to be updated from $OLD_FABRIC_WORKSPACE_ID to $NEW_FABRIC_WORKSPACE_ID"
+      #         grep --null -rl "$OLD_FABRIC_WORKSPACE_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl $OLD_FABRIC_WORKSPACE_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID/$NEW_FABRIC_WORKSPACE_ID/g"
 
-              echo "Files to be updated from $OLD_FABRIC_WORKSPACE_ID1 to $NEW_FABRIC_WORKSPACE_ID"
-              grep --null -rl "$OLD_FABRIC_WORKSPACE_ID1" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $OLD_FABRIC_WORKSPACE_ID1 ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID1/$NEW_FABRIC_WORKSPACE_ID/g"
+      #         echo "Files to be updated from $OLD_FABRIC_WORKSPACE_ID1 to $NEW_FABRIC_WORKSPACE_ID"
+      #         grep --null -rl "$OLD_FABRIC_WORKSPACE_ID1" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl $OLD_FABRIC_WORKSPACE_ID1 ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID1/$NEW_FABRIC_WORKSPACE_ID/g"
 
-              echo "Files to be updated from $OLD_CONTROLDB_NAME to $NEW_CONTROLDB_NAME"
-              grep --null -rl "$OLD_CONTROLDB_NAME" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $OLD_CONTROLDB_NAME ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_CONTROLDB_NAME/$NEW_CONTROLDB_NAME/g"
+      #         echo "Files to be updated from $OLD_CONTROLDB_NAME to $NEW_CONTROLDB_NAME"
+      #         grep --null -rl "$OLD_CONTROLDB_NAME" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl $OLD_CONTROLDB_NAME ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_CONTROLDB_NAME/$NEW_CONTROLDB_NAME/g"
 
-              echo "Files to be updated from $OLD_CONTROLDB_CONNECTION_ID to $NEW_CONTROLDB_CONNECTION_ID"
-              grep --null -rl "$OLD_CONTROLDB_CONNECTION_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $OLD_CONTROLDB_CONNECTION_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_CONTROLDB_CONNECTION_ID/$NEW_CONTROLDB_CONNECTION_ID/g"
+      #         echo "Files to be updated from $OLD_CONTROLDB_CONNECTION_ID to $NEW_CONTROLDB_CONNECTION_ID"
+      #         grep --null -rl "$OLD_CONTROLDB_CONNECTION_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl $OLD_CONTROLDB_CONNECTION_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_CONTROLDB_CONNECTION_ID/$NEW_CONTROLDB_CONNECTION_ID/g"
 
-              echo "Files to be updated from $OLD_BRONZE_LH_ID to $NEW_BRONZE_LH_ID"
-              grep --null -rl "$OLD_BRONZE_LH_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $OLD_BRONZE_LH_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_BRONZE_LH_ID/$NEW_BRONZE_LH_ID/g"
+      #         echo "Files to be updated from $OLD_BRONZE_LH_ID to $NEW_BRONZE_LH_ID"
+      #         grep --null -rl "$OLD_BRONZE_LH_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl $OLD_BRONZE_LH_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_BRONZE_LH_ID/$NEW_BRONZE_LH_ID/g"
 
-              echo "Files to be updated from $OLD_SILVER_LH_ID to $NEW_SILVER_LH_ID"
-              grep --null -rl "$OLD_SILVER_LH_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $OLD_SILVER_LH_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_SILVER_LH_ID/$NEW_SILVER_LH_ID/g"
+      #         echo "Files to be updated from $OLD_SILVER_LH_ID to $NEW_SILVER_LH_ID"
+      #         grep --null -rl "$OLD_SILVER_LH_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl $OLD_SILVER_LH_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_SILVER_LH_ID/$NEW_SILVER_LH_ID/g"
 
-              echo "Files to be updated from $OLD_GOLD_DW_ID to $NEW_GOLD_DW_ID"
-              grep --null -rl "$OLD_GOLD_DW_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $OLD_GOLD_DW_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_GOLD_DW_ID/$NEW_GOLD_DW_ID/g"
+      #         echo "Files to be updated from $OLD_GOLD_DW_ID to $NEW_GOLD_DW_ID"
+      #         grep --null -rl "$OLD_GOLD_DW_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl $OLD_GOLD_DW_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_GOLD_DW_ID/$NEW_GOLD_DW_ID/g"
 
-              echo "Files to be updated from $OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID to $WIDE_WORLD_IMPORTERS_CONNECTION_ID"
-              grep --null -rl "$OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID/$WIDE_WORLD_IMPORTERS_CONNECTION_ID/g"
+      #         echo "Files to be updated from $OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID to $WIDE_WORLD_IMPORTERS_CONNECTION_ID"
+      #         grep --null -rl "$OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl $OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID/$WIDE_WORLD_IMPORTERS_CONNECTION_ID/g"
 
-              echo "Files to be updated with new Tenant ID"
-              grep --null -rl "$OLD_TENANT_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl $OLD_TENANT_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_TENANT_ID/${{ secrets.TENANT_ID }}/g"
+      #         echo "Files to be updated with new Tenant ID"
+      #         grep --null -rl "$OLD_TENANT_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl $OLD_TENANT_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_TENANT_ID/${{ secrets.TENANT_ID }}/g"
 
-              echo "Replacing OLD ID with NEW ID in ipynb files"
+      #         echo "Replacing OLD ID with NEW ID in ipynb files"
 
-              echo "ipynb Files to be updated from $OLD_FABRIC_WORKSPACE_ID to $NEW_FABRIC_WORKSPACE_ID"
-              grep --null -rl "$OLD_FABRIC_WORKSPACE_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              grep --null -rl $OLD_FABRIC_WORKSPACE_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID/$NEW_FABRIC_WORKSPACE_ID/g"
+      #         echo "ipynb Files to be updated from $OLD_FABRIC_WORKSPACE_ID to $NEW_FABRIC_WORKSPACE_ID"
+      #         grep --null -rl "$OLD_FABRIC_WORKSPACE_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
+      #         grep --null -rl $OLD_FABRIC_WORKSPACE_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_FABRIC_WORKSPACE_ID/$NEW_FABRIC_WORKSPACE_ID/g"
 
-              echo "ipynb Files to be updated from $OLD_SILVER_LH_ID to $NEW_SILVER_LH_ID"
-              grep --null -rl "$OLD_SILVER_LH_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              grep --null -rl $OLD_SILVER_LH_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_SILVER_LH_ID/$NEW_SILVER_LH_ID/g"
+      #         echo "ipynb Files to be updated from $OLD_SILVER_LH_ID to $NEW_SILVER_LH_ID"
+      #         grep --null -rl "$OLD_SILVER_LH_ID" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
+      #         grep --null -rl $OLD_SILVER_LH_ID ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/$OLD_SILVER_LH_ID/$NEW_SILVER_LH_ID/g"
 
-              echo "ipynb Files to be updated to $BRONZE_LH"
-              grep --null -rl "lh_bronze" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              grep --null -rl "lh_bronze" ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/lh_bronze/$BRONZE_LH/g"
+      #         echo "ipynb Files to be updated to $BRONZE_LH"
+      #         grep --null -rl "lh_bronze" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
+      #         grep --null -rl "lh_bronze" ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/lh_bronze/$BRONZE_LH/g"
 
-              echo "ipynb Files to be updated to $SILVER_LH"
-              grep --null -rl "lh_silver" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              grep --null -rl "lh_silver" ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/lh_silver/$SILVER_LH/g"
+      #         echo "ipynb Files to be updated to $SILVER_LH"
+      #         grep --null -rl "lh_silver" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
+      #         grep --null -rl "lh_silver" ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/lh_silver/$SILVER_LH/g"
 
-              echo "ipynb Files to be updated to $GOLD_DW"
-              grep --null -rl "dw_gold" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
-              grep --null -rl "dw_gold" ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/dw_gold/$GOLD_DW/g"
+      #         echo "ipynb Files to be updated to $GOLD_DW"
+      #         grep --null -rl "dw_gold" "${GITHUB_WORKSPACE}/ipynb" | tr '\0' '\n'
+      #         grep --null -rl "dw_gold" ${GITHUB_WORKSPACE}/ipynb | xargs -0 sed -i "s/dw_gold/$GOLD_DW/g"
 
-        # Deploy Notebooks
-        - name: Deploy Notebooks
-          run: |
+      #   # Deploy Notebooks
+      #   - name: Deploy Notebooks
+      #     run: |
             
-            fab exists $WORKSPACE_NAME.Workspace/CommonTransforms.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/CommonTransforms.Notebook" -f &
-            fab exists $WORKSPACE_NAME.Workspace/DeltaLakeFunctions.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/DeltaLakeFunctions.Notebook" -f &
-            fab exists $WORKSPACE_NAME.Workspace/entra-functions.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/entra-functions.Notebook" -f &
-            fab exists $WORKSPACE_NAME.Workspace/L1Transform-Generic-Fabric.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/L1Transform-Generic-Fabric.Notebook" -f &
-            fab exists "$WORKSPACE_NAME.Workspace/Optimize Delta Lake Tables.Notebook" | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/Optimize Delta Lake Tables.Notebook" -f &
-            fab exists $WORKSPACE_NAME.Workspace/EnvSettings.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -f &
-            fab exists "$WORKSPACE_NAME.Workspace/Unit Test CommonTransforms.Notebook" | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/Unit Test CommonTransforms.Notebook" -f &
-            fab exists $WORKSPACE_NAME.Workspace/UnitTest_DeltaLakeFunctions.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/UnitTest_DeltaLakeFunctions.Notebook" -f &
-            wait
+      #       fab exists $WORKSPACE_NAME.Workspace/CommonTransforms.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/CommonTransforms.Notebook" -f &
+      #       fab exists $WORKSPACE_NAME.Workspace/DeltaLakeFunctions.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/DeltaLakeFunctions.Notebook" -f &
+      #       fab exists $WORKSPACE_NAME.Workspace/entra-functions.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/entra-functions.Notebook" -f &
+      #       fab exists $WORKSPACE_NAME.Workspace/L1Transform-Generic-Fabric.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/L1Transform-Generic-Fabric.Notebook" -f &
+      #       fab exists "$WORKSPACE_NAME.Workspace/Optimize Delta Lake Tables.Notebook" | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/Optimize Delta Lake Tables.Notebook" -f &
+      #       fab exists $WORKSPACE_NAME.Workspace/EnvSettings.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/EnvSettings.Notebook" -f &
+      #       fab exists "$WORKSPACE_NAME.Workspace/Unit Test CommonTransforms.Notebook" | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/Unit Test CommonTransforms.Notebook" -f &
+      #       fab exists $WORKSPACE_NAME.Workspace/UnitTest_DeltaLakeFunctions.Notebook | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/UnitTest_DeltaLakeFunctions.Notebook" -f &
+      #       wait
 
             
-            fab exists $WORKSPACE_NAME.Workspace/CommonTransforms.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/common-pyspark.Folder/CommonTransforms.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/CommonTransforms.Notebook" --format .ipynb -f &
-            fab exists $WORKSPACE_NAME.Workspace/DeltaLakeFunctions.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/delta-lake.Folder/DeltaLakeFunctions.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/DeltaLakeFunctions.Notebook" --format .ipynb -f &
-            fab exists $WORKSPACE_NAME.Workspace/entra-functions.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/entra.Folder/entra-functions.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/entra-functions.Notebook" --format .ipynb -f &
-            fab exists $WORKSPACE_NAME.Workspace/L1Transform-Generic-Fabric.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/level1-transform.Folder/L1Transform-Generic-Fabric.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/L1Transform-Generic-Fabric.Notebook" --format .ipynb -f &
-            fab exists $WORKSPACE_NAME.Workspace/Optimize Delta Lake Tables.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/level1-transform.Folder/Optimize Delta Lake Tables.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/Optimize Delta Lake Tables.Notebook" --format .ipynb -f &
-            fab exists $WORKSPACE_NAME.Workspace/EnvSettings.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/EnvSettings.Notebook" --format .ipynb -f &
-            fab exists "$WORKSPACE_NAME.Workspace/Unit Test CommonTransforms.Notebook" | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/common-pyspark.Folder/Unit Test CommonTransforms.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/Unit Test CommonTransforms.Notebook" --format .ipynb -f &
-            fab exists $WORKSPACE_NAME.Workspace/UnitTest_DeltaLakeFunctions.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/delta-lake.Folder/UnitTest_DeltaLakeFunctions.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/UnitTest_DeltaLakeFunctions.Notebook" --format .ipynb -f &
-            wait
+      #       fab exists $WORKSPACE_NAME.Workspace/CommonTransforms.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/common-pyspark.Folder/CommonTransforms.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/CommonTransforms.Notebook" --format .ipynb -f &
+      #       fab exists $WORKSPACE_NAME.Workspace/DeltaLakeFunctions.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/delta-lake.Folder/DeltaLakeFunctions.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/DeltaLakeFunctions.Notebook" --format .ipynb -f &
+      #       fab exists $WORKSPACE_NAME.Workspace/entra-functions.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/entra.Folder/entra-functions.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/entra-functions.Notebook" --format .ipynb -f &
+      #       fab exists $WORKSPACE_NAME.Workspace/L1Transform-Generic-Fabric.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/level1-transform.Folder/L1Transform-Generic-Fabric.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/L1Transform-Generic-Fabric.Notebook" --format .ipynb -f &
+      #       fab exists $WORKSPACE_NAME.Workspace/Optimize Delta Lake Tables.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/level1-transform.Folder/Optimize Delta Lake Tables.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/Optimize Delta Lake Tables.Notebook" --format .ipynb -f &
+      #       fab exists $WORKSPACE_NAME.Workspace/EnvSettings.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/EnvSettings.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/EnvSettings.Notebook" --format .ipynb -f &
+      #       fab exists "$WORKSPACE_NAME.Workspace/Unit Test CommonTransforms.Notebook" | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/common-pyspark.Folder/Unit Test CommonTransforms.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/Unit Test CommonTransforms.Notebook" --format .ipynb -f &
+      #       fab exists $WORKSPACE_NAME.Workspace/UnitTest_DeltaLakeFunctions.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/delta-lake.Folder/UnitTest_DeltaLakeFunctions.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/UnitTest_DeltaLakeFunctions.Notebook" --format .ipynb -f &
+      #       wait
 
-            NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID=$(fab get "$WORKSPACE_NAME.Workspace/Optimize Delta Lake Tables.Notebook" -q id | tr -d '\r')
-            echo "NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID=$NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID" >> $GITHUB_ENV
-            echo "Files to be updated from $OLD_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID to $NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID"
-            grep --null -rl "$OLD_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-            grep --null -rl $OLD_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID/$NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID/g"
+      #       NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID=$(fab get "$WORKSPACE_NAME.Workspace/Optimize Delta Lake Tables.Notebook" -q id | tr -d '\r')
+      #       echo "NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID=$NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID" >> $GITHUB_ENV
+      #       echo "Files to be updated from $OLD_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID to $NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID"
+      #       grep --null -rl "$OLD_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #       grep --null -rl $OLD_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID/$NEW_OPTIMIZE_DELTA_TABLES_NOTEBOOK_ID/g"
 
-      # Deploy Pipeline wwi-elt-framework
-        - name: Deploy Pipeline wwi-elt-framework
-          run: |
-            PipelineExists=$(fab exists $WORKSPACE_NAME.Workspace/wwi-elt-framework.DataPipeline| tr -d '[:space:]')
-            pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/pipeline-content.json"| base64)
-            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/.platform"| base64)
+      # # Deploy Pipeline wwi-elt-framework
+      #   - name: Deploy Pipeline wwi-elt-framework
+      #     run: |
+      #       PipelineExists=$(fab exists $WORKSPACE_NAME.Workspace/wwi-elt-framework.DataPipeline| tr -d '[:space:]')
+      #       pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/pipeline-content.json"| base64)
+      #       platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/.platform"| base64)
 
-            if [ "$PipelineExists" != "*true" ]; then
-                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/elt-framework.Folder -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                        --arg displayName "wwi-elt-framework" \
-                        --arg pipeline_content "$pipeline_content" \
-                        --arg platform "$platform" \
-                        --arg folderId "$folderId" \
-                        '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
-              else
-                pipelineId=$(fab get $WORKSPACE_NAME.Workspace/wwi-elt-framework.DataPipeline -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                        --arg pipeline_content "$pipeline_content" \
-                        --arg platform "$platform" \
-                        '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
-              fi 
-              echo "$response"
+      #       if [ "$PipelineExists" != "*true" ]; then
+      #           folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/elt-framework.Folder -q id | tr -d '\r')
+      #           jsonPayload=$(jq -n \
+      #                   --arg displayName "wwi-elt-framework" \
+      #                   --arg pipeline_content "$pipeline_content" \
+      #                   --arg platform "$platform" \
+      #                   --arg folderId "$folderId" \
+      #                   '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+      #           response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+      #         else
+      #           pipelineId=$(fab get $WORKSPACE_NAME.Workspace/wwi-elt-framework.DataPipeline -q id | tr -d '\r')
+      #           jsonPayload=$(jq -n \
+      #                   --arg pipeline_content "$pipeline_content" \
+      #                   --arg platform "$platform" \
+      #                   '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+      #           response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+      #         fi 
+      #         echo "$response"
 
-      # Deploy Pipeline Level2 Transform
-        - name: Deploy Pipeline Level2 Transform
-          run: |
-            PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline"| tr -d '[:space:]')
-            pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Level2 Transform.DataPipeline/pipeline-content.json"| base64)
-            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Level2 Transform.DataPipeline/.platform"| base64)
+      # # Deploy Pipeline Level2 Transform
+      #   - name: Deploy Pipeline Level2 Transform
+      #     run: |
+      #       PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline"| tr -d '[:space:]')
+      #       pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Level2 Transform.DataPipeline/pipeline-content.json"| base64)
+      #       platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Level2 Transform.DataPipeline/.platform"| base64)
 
-            if [ "$PipelineExists" != "*true" ]; then
-                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                        --arg displayName "Level2 Transform" \
-                        --arg pipeline_content "$pipeline_content" \
-                        --arg platform "$platform" \
-                        --arg folderId "$folderId" \
-                        '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
-            else
-                pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                        --arg pipeline_content "$pipeline_content" \
-                        --arg platform "$platform" \
-                        '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
-            fi   
+      #       if [ "$PipelineExists" != "*true" ]; then
+      #           folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder -q id | tr -d '\r')
+      #           jsonPayload=$(jq -n \
+      #                   --arg displayName "Level2 Transform" \
+      #                   --arg pipeline_content "$pipeline_content" \
+      #                   --arg platform "$platform" \
+      #                   --arg folderId "$folderId" \
+      #                   '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+      #           response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+      #       else
+      #           pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline -q id | tr -d '\r')
+      #           jsonPayload=$(jq -n \
+      #                   --arg pipeline_content "$pipeline_content" \
+      #                   --arg platform "$platform" \
+      #                   '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+      #           response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+      #       fi   
             
-            echo "$response"
-            #Replace OLD LEVEL2 TRANSFORM PIPELINE LOGICAL ID with NEW LEVEL2 TRANSFORM PIPELINE LOGICAL ID in workspace files
-            status_code=$(echo "$response" | jq -r '.status_code')
-            if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
-              NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline" -q id | tr -d '\r')
-              echo "NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
-              echo "Files to be updated from $OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID"
-              grep --null -rl "$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl "$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/g"
-            fi
+      #       echo "$response"
+      #       #Replace OLD LEVEL2 TRANSFORM PIPELINE LOGICAL ID with NEW LEVEL2 TRANSFORM PIPELINE LOGICAL ID in workspace files
+      #       status_code=$(echo "$response" | jq -r '.status_code')
+      #       if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
+      #         NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline" -q id | tr -d '\r')
+      #         echo "NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
+      #         echo "Files to be updated from $OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID"
+      #         grep --null -rl "$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl "$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/g"
+      #       fi
 
 
-      # Deploy Pipeline Master Level2 Transform
-        - name: Deploy Pipeline Master Level2 Transform
-          run: |
-            PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline"| tr -d '[:space:]')
-            pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Master Level2 Transform.DataPipeline/pipeline-content.json"| base64)
-            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Master Level2 Transform.DataPipeline/.platform"| base64)
+      # # Deploy Pipeline Master Level2 Transform
+      #   - name: Deploy Pipeline Master Level2 Transform
+      #     run: |
+      #       PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline"| tr -d '[:space:]')
+      #       pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Master Level2 Transform.DataPipeline/pipeline-content.json"| base64)
+      #       platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Master Level2 Transform.DataPipeline/.platform"| base64)
 
-            if [ "$PipelineExists" != "*true" ]; then
-              folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder -q id | tr -d '\r')
-              jsonPayload=$(jq -n \
-                --arg displayName "Master Level2 Transform" \
-                --arg pipeline_content "$pipeline_content" \
-                --arg platform "$platform" \
-                --arg folderId "$folderId" \
-                '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
-            else
-              pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline -q id | tr -d '\r')
-              jsonPayload=$(jq -n \
-                --arg pipeline_content "$pipeline_content" \
-                --arg platform "$platform" \
-                '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
-            fi  
+      #       if [ "$PipelineExists" != "*true" ]; then
+      #         folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder -q id | tr -d '\r')
+      #         jsonPayload=$(jq -n \
+      #           --arg displayName "Master Level2 Transform" \
+      #           --arg pipeline_content "$pipeline_content" \
+      #           --arg platform "$platform" \
+      #           --arg folderId "$folderId" \
+      #           '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+      #         response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+      #       else
+      #         pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline -q id | tr -d '\r')
+      #         jsonPayload=$(jq -n \
+      #           --arg pipeline_content "$pipeline_content" \
+      #           --arg platform "$platform" \
+      #           '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+      #         response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+      #       fi  
             
-            echo "$response"
-            #Replace OLD MASTER LEVEL2 TRANSFORM PIPELINE LOGICAL ID with NEW MASTER LEVEL2 TRANSFORM PIPELINE LOGICAL ID in workspace files
+      #       echo "$response"
+      #       #Replace OLD MASTER LEVEL2 TRANSFORM PIPELINE LOGICAL ID with NEW MASTER LEVEL2 TRANSFORM PIPELINE LOGICAL ID in workspace files
 
-            status_code=$(echo "$response" | jq -r '.status_code')
-            if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
-              NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline" -q id | tr -d '\r')
-              echo "NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
-              echo "Files to be updated from $OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID"
-              grep --null -rl "$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl "$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/g"
-            fi
+      #       status_code=$(echo "$response" | jq -r '.status_code')
+      #       if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
+      #         NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline" -q id | tr -d '\r')
+      #         echo "NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
+      #         echo "Files to be updated from $OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID"
+      #         grep --null -rl "$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl "$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/g"
+      #       fi
      
 
-      # Deploy Pipeline Level1 Transform
-        - name: Deploy Pipeline Level1 Transform
-          run: |
-            PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Level1 Transform.DataPipeline"| tr -d '[:space:]')
-            pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Level1 Transform.DataPipeline/pipeline-content.json"| base64)
-            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Level1 Transform.DataPipeline/.platform"| base64)
+      # # Deploy Pipeline Level1 Transform
+      #   - name: Deploy Pipeline Level1 Transform
+      #     run: |
+      #       PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Level1 Transform.DataPipeline"| tr -d '[:space:]')
+      #       pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Level1 Transform.DataPipeline/pipeline-content.json"| base64)
+      #       platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Level1 Transform.DataPipeline/.platform"| base64)
 
-            if [ "$PipelineExists" != "*true" ]; then
-                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level1-transform.Folder -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                    --arg displayName "Level1 Transform" \
-                    --arg pipeline_content "$pipeline_content" \
-                    --arg platform "$platform" \
-                    --arg folderId "$folderId" \
-                    '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
-            else
-                pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Level1 Transform.DataPipeline -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                    --arg pipeline_content "$pipeline_content" \
-                    --arg platform "$platform" \
-                    '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
-            fi
+      #       if [ "$PipelineExists" != "*true" ]; then
+      #           folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level1-transform.Folder -q id | tr -d '\r')
+      #           jsonPayload=$(jq -n \
+      #               --arg displayName "Level1 Transform" \
+      #               --arg pipeline_content "$pipeline_content" \
+      #               --arg platform "$platform" \
+      #               --arg folderId "$folderId" \
+      #               '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+      #           response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+      #       else
+      #           pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Level1 Transform.DataPipeline -q id | tr -d '\r')
+      #           jsonPayload=$(jq -n \
+      #               --arg pipeline_content "$pipeline_content" \
+      #               --arg platform "$platform" \
+      #               '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+      #           response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+      #       fi
 
-            echo "$response"
-            #Replace OLD LEVEL1 TRANSFORM PIPELINE LOGICAL ID with NEW LEVEL1 TRANSFORM PIPELINE LOGICAL ID in workspace files
-            status_code=$(echo "$response" | jq -r '.status_code')
-            if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
-              NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Level1 Transform.DataPipeline" -q id | tr -d '\r')
-              echo "NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
-              echo "Files to be updated from $OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID"
-              grep --null -rl "$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl "$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/g"
-            fi
+      #       echo "$response"
+      #       #Replace OLD LEVEL1 TRANSFORM PIPELINE LOGICAL ID with NEW LEVEL1 TRANSFORM PIPELINE LOGICAL ID in workspace files
+      #       status_code=$(echo "$response" | jq -r '.status_code')
+      #       if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
+      #         NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Level1 Transform.DataPipeline" -q id | tr -d '\r')
+      #         echo "NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
+      #         echo "Files to be updated from $OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID"
+      #         grep --null -rl "$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl "$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/g"
+      #       fi
 
 
-      # Deploy Pipeline Master Level1 Transform
-        - name: Deploy Pipeline Master Level1 Transform
-          run: |
-            PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Master Level1 Transform.DataPipeline"| tr -d '[:space:]')
-            pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Master Level1 Transform.DataPipeline/pipeline-content.json"| base64)
-            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Master Level1 Transform.DataPipeline/.platform"| base64)
+      # # Deploy Pipeline Master Level1 Transform
+      #   - name: Deploy Pipeline Master Level1 Transform
+      #     run: |
+      #       PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Master Level1 Transform.DataPipeline"| tr -d '[:space:]')
+      #       pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Master Level1 Transform.DataPipeline/pipeline-content.json"| base64)
+      #       platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Master Level1 Transform.DataPipeline/.platform"| base64)
 
-            if [ "$PipelineExists" != "*true" ]; then
-                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level1-transform.Folder -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                    --arg displayName "Master Level1 Transform" \
-                    --arg pipeline_content "$pipeline_content" \
-                    --arg platform "$platform" \
-                    --arg folderId "$folderId" \
-                    '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
-            else
-                pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Master Level1 Transform.DataPipeline -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                    --arg pipeline_content "$pipeline_content" \
-                    --arg platform "$platform" \
-                    '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')    
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
-            fi
+      #       if [ "$PipelineExists" != "*true" ]; then
+      #           folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level1-transform.Folder -q id | tr -d '\r')
+      #           jsonPayload=$(jq -n \
+      #               --arg displayName "Master Level1 Transform" \
+      #               --arg pipeline_content "$pipeline_content" \
+      #               --arg platform "$platform" \
+      #               --arg folderId "$folderId" \
+      #               '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+      #           response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+      #       else
+      #           pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Master Level1 Transform.DataPipeline -q id | tr -d '\r')
+      #           jsonPayload=$(jq -n \
+      #               --arg pipeline_content "$pipeline_content" \
+      #               --arg platform "$platform" \
+      #               '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')    
+      #           response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+      #       fi
 
-            echo "$response"
-            #Replace OLD MASTER LEVEL1 TRANSFORM PIPELINE LOGICAL ID with NEW MASTER LEVEL1 TRANSFORM PIPELINE LOGICAL ID in workspace files
-            status_code=$(echo "$response" | jq -r '.status_code')
-            if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
-              NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Master Level1 Transform.DataPipeline" -q id | tr -d '\r')
-              echo "NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
-              echo "Files to be updated from $OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID"
-              grep --null -rl "$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl "$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/g"
-            fi
+      #       echo "$response"
+      #       #Replace OLD MASTER LEVEL1 TRANSFORM PIPELINE LOGICAL ID with NEW MASTER LEVEL1 TRANSFORM PIPELINE LOGICAL ID in workspace files
+      #       status_code=$(echo "$response" | jq -r '.status_code')
+      #       if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
+      #         NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Master Level1 Transform.DataPipeline" -q id | tr -d '\r')
+      #         echo "NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
+      #         echo "Files to be updated from $OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID"
+      #         grep --null -rl "$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl "$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/g"
+      #       fi
               
-      # Deploy Pipeline Ingest ASQL Table
-        - name: Deploy Pipeline Ingest ASQL Table
-          run: |
-            PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline"| tr -d '[:space:]')
-            pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Ingest ASQL Table.DataPipeline/pipeline-content.json"| base64)
-            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Ingest ASQL Table.DataPipeline/.platform"| base64)
+      # # Deploy Pipeline Ingest ASQL Table
+      #   - name: Deploy Pipeline Ingest ASQL Table
+      #     run: |
+      #       PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline"| tr -d '[:space:]')
+      #       pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Ingest ASQL Table.DataPipeline/pipeline-content.json"| base64)
+      #       platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Ingest ASQL Table.DataPipeline/.platform"| base64)
 
-            if [ "$PipelineExists" != "*true" ]; then
-                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                    --arg displayName "Ingest ASQL Table" \
-                    --arg pipeline_content "$pipeline_content" \
-                    --arg platform "$platform" \
-                    --arg folderId "$folderId" \
-                    '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
-            else
-                pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                    --arg pipeline_content "$pipeline_content" \
-                    --arg platform "$platform" \
-                    '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')  
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
-            fi
+      #       if [ "$PipelineExists" != "*true" ]; then
+      #           folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder -q id | tr -d '\r')
+      #           jsonPayload=$(jq -n \
+      #               --arg displayName "Ingest ASQL Table" \
+      #               --arg pipeline_content "$pipeline_content" \
+      #               --arg platform "$platform" \
+      #               --arg folderId "$folderId" \
+      #               '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+      #           response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+      #       else
+      #           pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline -q id | tr -d '\r')
+      #           jsonPayload=$(jq -n \
+      #               --arg pipeline_content "$pipeline_content" \
+      #               --arg platform "$platform" \
+      #               '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')  
+      #           response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+      #       fi
 
-            echo "$response"
-            #Replace OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID with NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID in workspace files
-            status_code=$(echo "$response" | jq -r '.status_code')
-            if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
-              NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline" -q id | tr -d '\r')
-              echo "NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID=$NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
-              echo "Files to be updated from $OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID to $NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID"
-              grep --null -rl "$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl "$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID/$NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID/g"
-            fi
+      #       echo "$response"
+      #       #Replace OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID with NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID in workspace files
+      #       status_code=$(echo "$response" | jq -r '.status_code')
+      #       if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
+      #         NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline" -q id | tr -d '\r')
+      #         echo "NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID=$NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
+      #         echo "Files to be updated from $OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID to $NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID"
+      #         grep --null -rl "$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl "$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID/$NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID/g"
+      #       fi
 
-      # Deploy Pipeline Master ELT ASQL
-        - name: Deploy Pipeline Master ELT ASQL
-          run: |
-            PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Master ELT ASQL.DataPipeline"| tr -d '[:space:]')
-            pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Master ELT ASQL.DataPipeline/pipeline-content.json"| base64)
-            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Master ELT ASQL.DataPipeline/.platform"| base64)
+      # # Deploy Pipeline Master ELT ASQL
+      #   - name: Deploy Pipeline Master ELT ASQL
+      #     run: |
+      #       PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Master ELT ASQL.DataPipeline"| tr -d '[:space:]')
+      #       pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Master ELT ASQL.DataPipeline/pipeline-content.json"| base64)
+      #       platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Master ELT ASQL.DataPipeline/.platform"| base64)
 
-            if [ "$PipelineExists" != "*true" ]; then
-                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                    --arg displayName "Master ELT ASQL" \
-                    --arg pipeline_content "$pipeline_content" \
-                    --arg platform "$platform" \
-                    --arg folderId "$folderId" \
-                    '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
-            else
-                pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Master ELT ASQL.DataPipeline -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                    --arg pipeline_content "$pipeline_content" \
-                    --arg platform "$platform" \
-                    '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
-            fi
+      #       if [ "$PipelineExists" != "*true" ]; then
+      #           folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder -q id | tr -d '\r')
+      #           jsonPayload=$(jq -n \
+      #               --arg displayName "Master ELT ASQL" \
+      #               --arg pipeline_content "$pipeline_content" \
+      #               --arg platform "$platform" \
+      #               --arg folderId "$folderId" \
+      #               '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+      #           response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+      #       else
+      #           pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Master ELT ASQL.DataPipeline -q id | tr -d '\r')
+      #           jsonPayload=$(jq -n \
+      #               --arg pipeline_content "$pipeline_content" \
+      #               --arg platform "$platform" \
+      #               '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+      #           response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+      #       fi
             
-            echo "$response"
-            #Replace OLD_MASTER_INGEST_ASQL_PIPELINE_ID, not LOGICAL_ID with NEW_MASTER_INGEST_ASQL_PIPELINE_ID in workspace files
-            status_code=$(echo "$response" | jq -r '.status_code')
-            if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
-              NEW_MASTER_INGEST_ASQL_PIPELINE_ID=$(fab get "$WORKSPACE_NAME.Workspace/Master ELT ASQL.DataPipeline" -q id | tr -d '\r')
-              echo "NEW_MASTER_INGEST_ASQL_PIPELINE_ID=$NEW_MASTER_INGEST_ASQL_PIPELINE_ID" >> $GITHUB_ENV
-              echo "Files to be updated from $OLD_MASTER_INGEST_ASQL_PIPELINE_ID to $NEW_MASTER_INGEST_ASQL_PIPELINE_ID"
-              grep --null -rl "$OLD_MASTER_INGEST_ASQL_PIPELINE_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl "$OLD_MASTER_INGEST_ASQL_PIPELINE_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_INGEST_ASQL_PIPELINE_ID/$NEW_MASTER_INGEST_ASQL_PIPELINE_ID/g"
-            fi
+      #       echo "$response"
+      #       #Replace OLD_MASTER_INGEST_ASQL_PIPELINE_ID, not LOGICAL_ID with NEW_MASTER_INGEST_ASQL_PIPELINE_ID in workspace files
+      #       status_code=$(echo "$response" | jq -r '.status_code')
+      #       if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
+      #         NEW_MASTER_INGEST_ASQL_PIPELINE_ID=$(fab get "$WORKSPACE_NAME.Workspace/Master ELT ASQL.DataPipeline" -q id | tr -d '\r')
+      #         echo "NEW_MASTER_INGEST_ASQL_PIPELINE_ID=$NEW_MASTER_INGEST_ASQL_PIPELINE_ID" >> $GITHUB_ENV
+      #         echo "Files to be updated from $OLD_MASTER_INGEST_ASQL_PIPELINE_ID to $NEW_MASTER_INGEST_ASQL_PIPELINE_ID"
+      #         grep --null -rl "$OLD_MASTER_INGEST_ASQL_PIPELINE_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl "$OLD_MASTER_INGEST_ASQL_PIPELINE_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_INGEST_ASQL_PIPELINE_ID/$NEW_MASTER_INGEST_ASQL_PIPELINE_ID/g"
+      #       fi
 
-      # Create Eventhouse eh_fabricAccelerator
-        - name: Create Eventhouse eh_fabricAccelerator
-          run: |
-            EventhouseExists=$(fab exists "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse"| tr -d '[:space:]')
-            folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder -q id | tr -d '\r')
-            eventhouse_properties=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/EventhouseProperties.json"| base64)
-            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/.platform"| base64)
-            oldLogicalId=$(jq -r '.config.logicalId' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/.platform")
+      # # Create Eventhouse eh_fabricAccelerator
+      #   - name: Create Eventhouse eh_fabricAccelerator
+      #     run: |
+      #       EventhouseExists=$(fab exists "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse"| tr -d '[:space:]')
+      #       folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/eventhouse.Folder -q id | tr -d '\r')
+      #       eventhouse_properties=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/EventhouseProperties.json"| base64)
+      #       platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/.platform"| base64)
+      #       oldLogicalId=$(jq -r '.config.logicalId' "${GITHUB_WORKSPACE}/workspace/rti/eventhouse/eh_fabricAccelerator.Eventhouse/.platform")
 
-            if [ "$EventhouseExists" != "*true" ]; then
-                jsonPayload=$(jq -n \
-                        --arg displayName "eh_fabricAccelerator" \
-                        --arg eventhouse_properties "$eventhouse_properties" \
-                        --arg platform "$platform" \
-                        --arg folderId "$folderId" \
-                        '{"displayName": $displayName,"definition": {"parts":[{"path": "EventhouseProperties.json","payload": $eventhouse_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses" -i "$jsonPayload")
-              else
-                EventHouseId=$(fab get "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse" -q id | tr -d '\r')
-                jsonPayload=$(jq -n \
-                        --arg eventhouse_properties "$eventhouse_properties" \
-                        --arg platform "$platform" \
-                        '{"definition": {"parts":[{"path": "EventhouseProperties.json","payload": $eventhouse_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses/$EventHouseId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
-              fi
+      #       if [ "$EventhouseExists" != "*true" ]; then
+      #           jsonPayload=$(jq -n \
+      #                   --arg displayName "eh_fabricAccelerator" \
+      #                   --arg eventhouse_properties "$eventhouse_properties" \
+      #                   --arg platform "$platform" \
+      #                   --arg folderId "$folderId" \
+      #                   '{"displayName": $displayName,"definition": {"parts":[{"path": "EventhouseProperties.json","payload": $eventhouse_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+      #           response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses" -i "$jsonPayload")
+      #         else
+      #           EventHouseId=$(fab get "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse" -q id | tr -d '\r')
+      #           jsonPayload=$(jq -n \
+      #                   --arg eventhouse_properties "$eventhouse_properties" \
+      #                   --arg platform "$platform" \
+      #                   '{"definition": {"parts":[{"path": "EventhouseProperties.json","payload": $eventhouse_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+      #           response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses/$EventHouseId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+      #         fi
 
-            echo "$response"
-            status_code=$(echo "$response" | jq -r '.status_code')
-            if [ "$status_code" = "200" ] || [ "$status_code" = "201" ] || [ "$status_code" = "202" ]; then
-              EventHouseId=$(fab get "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse" -q id | tr -d '\r')
-              echo "EventHouseId=$EventHouseId" >> $GITHUB_ENV
-              echo "Files to be updated from $oldLogicalId to $EventHouseId"
-              grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-              grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$EventHouseId/g"
-            fi          
+      #       echo "$response"
+      #       status_code=$(echo "$response" | jq -r '.status_code')
+      #       if [ "$status_code" = "200" ] || [ "$status_code" = "201" ] || [ "$status_code" = "202" ]; then
+      #         EventHouseId=$(fab get "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse" -q id | tr -d '\r')
+      #         echo "EventHouseId=$EventHouseId" >> $GITHUB_ENV
+      #         echo "Files to be updated from $oldLogicalId to $EventHouseId"
+      #         grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+      #         grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$EventHouseId/g"
+      #       fi          
 
         # Create KQL Database kdb_fabricEvents
         - name: Create KQL Database kdb_fabricEvents
