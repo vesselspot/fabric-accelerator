@@ -22,6 +22,7 @@ jobs:
      NEW_SILVER_LH_ID: null
      NEW_GOLD_DW_ID: null
      NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID: null
+     NEW_MASTER_INGEST_ASQL_PIPELINE_LOGICAL_ID: null
      NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID: null
      NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID: null
      NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID: null
@@ -39,6 +40,7 @@ jobs:
      OLD_WIDE_WORLD_IMPORTERS_CONNECTION_ID: a0a57e51-5032-4e46-b0f0-493c9d2f51c9
      OLD_TENANT_ID: 4e921ed2-9b1c-457c-a917-16ef468eb90a
      OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID: 7ea78b86-8d5e-4e2e-adc8-1138c278f6ab
+     OLD_MASTER_INGEST_ASQL_PIPELINE_LOGICAL_ID: 938c7b42-4d41-48f2-a568-46c6e47efb47
      OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID: b25d5ad7-288a-4426-83f3-170aff284708
      OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID: 592635be-9979-40a3-8a91-0305b696cea2
      OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID: 5a473c1e-fd95-4b0a-a4a0-33537c65a0d7
@@ -236,7 +238,7 @@ jobs:
             fab exists "$WORKSPACE_NAME.Workspace/Unit Test CommonTransforms.Notebook" | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/common-pyspark.Folder/Unit Test CommonTransforms.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/Unit Test CommonTransforms.Notebook" --format .ipynb -f &
             fab exists $WORKSPACE_NAME.Workspace/UnitTest_DeltaLakeFunctions.Notebook | grep -q true || fab import "$WORKSPACE_NAME.Workspace/notebook.Folder/reusable.Folder/delta-lake.Folder/UnitTest_DeltaLakeFunctions.Notebook" -i "${GITHUB_WORKSPACE}/ipynb/UnitTest_DeltaLakeFunctions.Notebook" --format .ipynb -f &
             wait
-      # Create/Update Pipeline wwi-elt-framework
+      # Deploy Pipeline wwi-elt-framework
         - name: Deploy Pipeline wwi-elt-framework
           run: |
             PipelineExists=$(fab exists $WORKSPACE_NAME.Workspace/wwi-elt-framework.DataPipeline| tr -d '[:space:]')
@@ -261,7 +263,8 @@ jobs:
                 response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
               fi 
               echo "$response"
-      # Create/Update Pipeline Level2 Transform
+
+      # Deploy Pipeline Level2 Transform
         - name: Deploy Pipeline Level2 Transform
           run: |
             PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline"| tr -d '[:space:]')
@@ -285,11 +288,12 @@ jobs:
                         '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
                 response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
             fi   
+            
+            echo "$response"
             #Replace OLD LEVEL2 TRANSFORM PIPELINE LOGICAL ID with NEW LEVEL2 TRANSFORM PIPELINE LOGICAL ID in workspace files
-
             status_code=$(echo "$response" | jq -r '.status_code')
             if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
-              NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$pipelineId
+              NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline" -q id | tr -d '\r')
               echo "NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
               echo "Files to be updated from $OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID"
               grep --null -rl "$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
@@ -297,139 +301,178 @@ jobs:
             fi
 
 
-      # Create Pipeline Master Level2 Transform
-        - name: Create Pipeline Master Level2 Transform
+      # Deploy Pipeline Master Level2 Transform
+        - name: Deploy Pipeline Master Level2 Transform
           run: |
             PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline"| tr -d '[:space:]')
-            echo "$WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline: $PipelineExists"
-              if [ "$PipelineExists" != "*true" ]; then
-                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder -q id | tr -d '\r')
-                pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Master Level2 Transform.DataPipeline/pipeline-content.json"| base64)
-                platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Master Level2 Transform.DataPipeline/.platform"| base64)
-                jsonPayload=$(jq -n \
+            pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Master Level2 Transform.DataPipeline/pipeline-content.json"| base64)
+            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level2-transform/Master Level2 Transform.DataPipeline/.platform"| base64)
+
+            if [ "$PipelineExists" != "*true" ]; then
+               folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level2-transform.Folder -q id | tr -d '\r')
+               jsonPayload=$(jq -n \
                         --arg displayName "Master Level2 Transform" \
                         --arg pipeline_content "$pipeline_content" \
                         --arg platform "$platform" \
                         --arg folderId "$folderId" \
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
                 response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+            else
+                pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline -q id | tr -d '\r')
+                jsonPayload=$(jq -n \
+                          --arg pipeline_content "$pipeline_content" \
+                          --arg platform "$platform" \
+                          '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+                  response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+            fi  
+            
+            echo "$response"
+            #Replace OLD MASTER LEVEL2 TRANSFORM PIPELINE LOGICAL ID with NEW MASTER LEVEL2 TRANSFORM PIPELINE LOGICAL ID in workspace files
 
-                #Replace OLD MASTER LEVEL2 TRANSFORM PIPELINE LOGICAL ID with NEW MASTER LEVEL2 TRANSFORM PIPELINE LOGICAL ID in workspace files
+            status_code=$(echo "$response" | jq -r '.status_code')
+            if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
+              NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline" -q id | tr -d '\r')
+              echo "NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
+              echo "Files to be updated from $OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID"
+              grep --null -rl "$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/g"
+            fi
+     
 
-                status_code=$(echo "$response" | jq -r '.status_code')
-                if [ "$status_code" = "201" ]; then
-                  NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline" -q id | tr -d '\r')
-                  echo "NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
-                  echo "Files to be updated from $OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID"
-                  grep --null -rl "$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-                  grep --null -rl "$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/g"
-                fi
-              fi       
-
-      # Create Pipeline Level1 Transform
-        - name: Create Pipeline Level1 Transform
+      # Deploy Pipeline Level1 Transform
+        - name: Deploy Pipeline Level1 Transform
           run: |
             PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Level1 Transform.DataPipeline"| tr -d '[:space:]')
-            echo "$WORKSPACE_NAME.Workspace/Level1 Transform.DataPipeline: $PipelineExists"
-              if [ "$PipelineExists" != "*true" ]; then
-                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level1-transform.Folder -q id | tr -d '\r')
-                pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Level1 Transform.DataPipeline/pipeline-content.json"| base64)
-                platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Level1 Transform.DataPipeline/.platform"| base64)
-                jsonPayload=$(jq -n \
-                        --arg displayName "Level1 Transform" \
-                        --arg pipeline_content "$pipeline_content" \
-                        --arg platform "$platform" \
-                        --arg folderId "$folderId" \
-                        '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+            pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Level1 Transform.DataPipeline/pipeline-content.json"| base64)
+            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Level1 Transform.DataPipeline/.platform"| base64)
 
-                #Replace OLD LEVEL1 TRANSFORM PIPELINE LOGICAL ID with NEW LEVEL1 TRANSFORM PIPELINE LOGICAL ID in workspace files
+            if [ "$PipelineExists" != "*true" ]; then
+              folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level1-transform.Folder -q id | tr -d '\r')
+              jsonPayload=$(jq -n \
+                      --arg displayName "Level1 Transform" \
+                      --arg pipeline_content "$pipeline_content" \
+                      --arg platform "$platform" \
+                      --arg folderId "$folderId" \
+                      '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+            else
+              pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Level1 Transform.DataPipeline -q id | tr -d '\r')
+              jsonPayload=$(jq -n \
+                      --arg pipeline_content "$pipeline_content" \
+                      --arg platform "$platform" \
+                      '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+            fi
 
-                status_code=$(echo "$response" | jq -r '.status_code')
-                if [ "$status_code" = "201" ]; then
-                  NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Level1 Transform.DataPipeline" -q id | tr -d '\r')
-                  echo "NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
-                  echo "Files to be updated from $OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID"
-                  grep --null -rl "$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-                  grep --null -rl "$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/g"
-                fi
-              fi
+            echo "$response"
+            #Replace OLD LEVEL1 TRANSFORM PIPELINE LOGICAL ID with NEW LEVEL1 TRANSFORM PIPELINE LOGICAL ID in workspace files
+            status_code=$(echo "$response" | jq -r '.status_code')
+            if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
+              NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Level1 Transform.DataPipeline" -q id | tr -d '\r')
+              echo "NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
+              echo "Files to be updated from $OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID"
+              grep --null -rl "$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/g"
+            fi
 
-      # Create Pipeline Master Level1 Transform
-        - name: Create Pipeline Master Level1 Transform
+
+      # Deploy Pipeline Master Level1 Transform
+        - name: Deploy Pipeline Master Level1 Transform
           run: |
             PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Master Level1 Transform.DataPipeline"| tr -d '[:space:]')
-            echo "$WORKSPACE_NAME.Workspace/Master Level1 Transform.DataPipeline: $PipelineExists"
-              if [ "$PipelineExists" != "*true" ]; then
-                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level1-transform.Folder -q id | tr -d '\r')
-                pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Master Level1 Transform.DataPipeline/pipeline-content.json"| base64)
-                platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Master Level1 Transform.DataPipeline/.platform"| base64)
-                jsonPayload=$(jq -n \
-                        --arg displayName "Master Level1 Transform" \
-                        --arg pipeline_content "$pipeline_content" \
-                        --arg platform "$platform" \
-                        --arg folderId "$folderId" \
-                        '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+            pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Master Level1 Transform.DataPipeline/pipeline-content.json"| base64)
+            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Master Level1 Transform.DataPipeline/.platform"| base64)
 
-                #Replace OLD MASTER LEVEL1 TRANSFORM PIPELINE LOGICAL ID with NEW MASTER LEVEL1 TRANSFORM PIPELINE LOGICAL ID in workspace files
+            if [ "$PipelineExists" != "*true" ]; then
+              folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level1-transform.Folder -q id | tr -d '\r')
+              jsonPayload=$(jq -n \
+                      --arg displayName "Master Level1 Transform" \
+                      --arg pipeline_content "$pipeline_content" \
+                      --arg platform "$platform" \
+                      --arg folderId "$folderId" \
+                      '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+            else
+              pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Master Level1 Transform.DataPipeline -q id | tr -d '\r')
+              jsonPayload=$(jq -n \
+                      --arg pipeline_content "$pipeline_content" \
+                      --arg platform "$platform" \
+                      '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')    
+              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+              fi   
 
-                status_code=$(echo "$response" | jq -r '.status_code')
-                if [ "$status_code" = "201" ]; then
-                  NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Master Level1 Transform.DataPipeline" -q id | tr -d '\r')
-                  echo "NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
-                  echo "Files to be updated from $OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID"
-                  grep --null -rl "$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-                  grep --null -rl "$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/g"
-                fi
-              fi          
+            echo "$response"
+            #Replace OLD MASTER LEVEL1 TRANSFORM PIPELINE LOGICAL ID with NEW MASTER LEVEL1 TRANSFORM PIPELINE LOGICAL ID in workspace files
+            status_code=$(echo "$response" | jq -r '.status_code')
+            if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
+              NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Master Level1 Transform.DataPipeline" -q id | tr -d '\r')
+              echo "NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
+              echo "Files to be updated from $OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID"
+              grep --null -rl "$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/g"
+            fi
               
-      # Create Pipeline Ingest ASQL Table
-        - name: Create Pipeline Ingest ASQL Table
+      # Deploy Pipeline Ingest ASQL Table
+        - name: Deploy Pipeline Ingest ASQL Table
           run: |
             PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline"| tr -d '[:space:]')
-            echo "$WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline: $PipelineExists"
-              if [ "$PipelineExists" != "*true" ]; then
-                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder -q id | tr -d '\r')
-                pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Ingest ASQL Table.DataPipeline/pipeline-content.json"| base64)
-                platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Ingest ASQL Table.DataPipeline/.platform"| base64)
-                jsonPayload=$(jq -n \
-                        --arg displayName "Ingest ASQL Table" \
-                        --arg pipeline_content "$pipeline_content" \
-                        --arg platform "$platform" \
-                        --arg folderId "$folderId" \
-                        '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+            pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Ingest ASQL Table.DataPipeline/pipeline-content.json"| base64)
+            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Ingest ASQL Table.DataPipeline/.platform"| base64)
 
-                #Replace OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID with NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID in workspace files
+            if [ "$PipelineExists" != "*true" ]; then
+              folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder -q id | tr -d '\r')
+              jsonPayload=$(jq -n \
+                      --arg displayName "Ingest ASQL Table" \
+                      --arg pipeline_content "$pipeline_content" \
+                      --arg platform "$platform" \
+                      --arg folderId "$folderId" \
+                      '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+            else
+              pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline -q id | tr -d '\r')
+              jsonPayload=$(jq -n \ 
+                      --arg pipeline_content "$pipeline_content" \
+                      --arg platform "$platform" \
+                      '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')  
+              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+            fi
 
-                status_code=$(echo "$response" | jq -r '.status_code')
-                if [ "$status_code" = "201" ]; then
-                  NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline" -q id | tr -d '\r')
-                  echo "NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID=$NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
-                  echo "Files to be updated from $OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID to $NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID"
-                  grep --null -rl "$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
-                  grep --null -rl "$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID/$NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID/g"
-                fi
-              fi
+            echo "$response"
+            #Replace OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID with NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID in workspace files
+            status_code=$(echo "$response" | jq -r '.status_code')
+            if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "201" ]; then
+              NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline" -q id | tr -d '\r')
+              echo "NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID=$NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID" >> $GITHUB_ENV
+              echo "Files to be updated from $OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID to $NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID"
+              grep --null -rl "$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
+              grep --null -rl "$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID/$NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID/g"
+            fi
 
-      # Create Pipeline Master ELT ASQL
-        - name: Create Pipeline Master ELT ASQL
+      # Deploy Pipeline Master ELT ASQL
+        - name: Deploy Pipeline Master ELT ASQL
           run: |
             PipelineExists=$(fab exists "$WORKSPACE_NAME.Workspace/Master ELT ASQL.DataPipeline"| tr -d '[:space:]')
-            echo "$WORKSPACE_NAME.Workspace/Master ELT ASQL.DataPipeline: $PipelineExists"
-              if [ "$PipelineExists" != "*true" ]; then
-                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder -q id | tr -d '\r')
-                pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Master ELT ASQL.DataPipeline/pipeline-content.json"| base64)
-                platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Master ELT ASQL.DataPipeline/.platform"| base64)
-                jsonPayload=$(jq -n \
-                        --arg displayName "Master ELT ASQL" \
-                        --arg pipeline_content "$pipeline_content" \
-                        --arg platform "$platform" \
-                        --arg folderId "$folderId" \
-                        '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload"
-              fi            
+            pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Master ELT ASQL.DataPipeline/pipeline-content.json"| base64)
+            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/azure-sql/Master ELT ASQL.DataPipeline/.platform"| base64)
+
+            if [ "$PipelineExists" != "*true" ]; then
+              folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/azure-sql.Folder -q id | tr -d '\r')
+              jsonPayload=$(jq -n \
+                      --arg displayName "Master ELT ASQL" \
+                      --arg pipeline_content "$pipeline_content" \
+                      --arg platform "$platform" \
+                      --arg folderId "$folderId" \
+                      '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+            else
+              pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Master ELT ASQL.DataPipeline -q id | tr -d '\r')
+              jsonPayload=$(jq -n \
+                      --arg pipeline_content "$pipeline_content" \
+                      --arg platform "$platform" \
+                      '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+            fi
+            echo "$response"
 
       # Create Eventhouse eh_fabricAccelerator
         - name: Create Eventhouse eh_fabricAccelerator
