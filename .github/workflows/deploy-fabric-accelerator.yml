@@ -594,7 +594,7 @@ jobs:
               grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$KqlDatabaseId/g"
 
-              KQLServiceUrl=$(fab get "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KqlDatabase" -q properties.queryServiceUri | tr -d '\r')
+              KQLServiceUrl=$(fab get "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KQLDatabase" -q properties.queryServiceUri | tr -d '\r')
               echo "KQLServiceUrl=$KQLServiceUrl" >> $GITHUB_ENV
             fi
 
