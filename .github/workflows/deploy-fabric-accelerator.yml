@@ -383,21 +383,21 @@ jobs:
             platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/reusable/level1-transform/Level1 Transform.DataPipeline/.platform"| base64)
 
             if [ "$PipelineExists" != "*true" ]; then
-              folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level1-transform.Folder -q id | tr -d '\r')
-              jsonPayload=$(jq -n \
-                      --arg displayName "Level1 Transform" \
-                      --arg pipeline_content "$pipeline_content" \
-                      --arg platform "$platform" \
-                      --arg folderId "$folderId" \
-                      '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+                folderId=$(fab get $WORKSPACE_NAME.Workspace/pipeline.Folder/reusable.Folder/level1-transform.Folder -q id | tr -d '\r')
+                jsonPayload=$(jq -n \
+                    --arg displayName "Level1 Transform" \
+                    --arg pipeline_content "$pipeline_content" \
+                    --arg platform "$platform" \
+                    --arg folderId "$folderId" \
+                    '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
             else
-              pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Level1 Transform.DataPipeline -q id | tr -d '\r')
-              jsonPayload=$(jq -n \
-                      --arg pipeline_content "$pipeline_content" \
-                      --arg platform "$platform" \
-                      '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+                pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Level1 Transform.DataPipeline -q id | tr -d '\r')
+                jsonPayload=$(jq -n \
+                    --arg pipeline_content "$pipeline_content" \
+                    --arg platform "$platform" \
+                    '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
             fi
 
             echo "$response"
