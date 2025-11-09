@@ -593,7 +593,34 @@ jobs:
                 fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDashboards/$DashboardId/updateDefinition?updateMetadata=True" -i "$jsonPayload"
               fi
 
+        # Deploy EvenStream es_fabricEvents
+        - name: Deploy EvenStream es_fabricEvents
+          run: |
+            EventStreamExists=$(fab exists "$WORKSPACE_NAME.Workspace/es_fabricEvents.EventStream"| tr -d '[:space:]')
+            folderId=$(fab get $WORKSPACE_NAME.Workspace/rti.Folder/eventstream.Folder -q id | tr -d '\r')
+            eventstream=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventstream/es_fabricEvents.Eventstream/eventstream.json"| base64)
+            eventstream_properties=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventstream/es_fabricEvents.EventStream/EventStreamProperties.json"| base64)
+            platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/rti/eventstream/es_fabricEvents.EventStream/.platform"| base64)
 
+            if [ "$EventStreamExists" != "*true" ]; then
+                jsonPayload=$(jq -n \
+                        --arg displayName "es_fabricEvents" \
+                        --arg eventstream "$eventstream" \
+                        --arg eventstream_properties "$eventstream_properties" \
+                        --arg platform "$platform" \
+                        --arg folderId "$folderId" \
+                        '{"displayName": $displayName,"definition": {"parts":[{"path": "eventstream.json","payload": $eventstream,"payloadType": "InlineBase64"},{"path": "eventstreamProperties.json","payload": $eventstream_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventStreams" -i "$jsonPayload")
+              else
+                EventStreamId=$(fab get "$WORKSPACE_NAME.Workspace/es_fabricEvents.EventStream" -q id | tr -d '\r')
+                jsonPayload=$(jq -n \
+                        --arg eventstream "$eventstream" \
+                        --arg eventstream_properties "$eventstream_properties" \
+                        --arg platform "$platform" \
+                        '{"definition": {"parts":[{"path": "eventstream.json","payload": $eventstream,"payloadType": "InlineBase64"},{"path": "eventstreamProperties.json","payload": $eventstream_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventStreams/$EventStreamId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+              fi
+            echo "$response"
       # Logout
         - name: Logout of Fabric
           run: fab auth logout
