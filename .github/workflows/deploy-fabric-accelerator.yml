@@ -4,7 +4,9 @@ env:
   WORKSPACE_NAME: testws
   FABRIC_CAPACITY_NAME: bafabric014e4fwwm2ufole
   WORKSPACE_ADMIN_ID: aca94643-2e36-4cd6-ba96-bfc513b37851
+  WORKSPACE_ADMIN_TYPE: user # possible values: user, group
   WORKSPACE_COLLABORATOR_ID: 01e16ca5-e5da-49f3-ac27-a46f1cc68ede
+  WORKSPACE_COLLABORATOR_TYPE: user # possible values: user, group
   FABRIC_SQL_DB_NAME: controldb-test
   BRONZE_LH: bronze_lh_test
   SILVER_LH: silver_lh_test
@@ -115,6 +117,7 @@ jobs:
         - name: Create FSQL DB if it does not exist
           run: |
               fab exists $WORKSPACE_NAME.Workspace/elt-framework.Folder/$FABRIC_SQL_DB_NAME.SQLDatabase | grep -q true || fab create $WORKSPACE_NAME.Workspace/elt-framework.Folder/$FABRIC_SQL_DB_NAME.SQLDatabase
+
        # Create Fabric SQL database connection if it does not exist
         - name: Create FSQL DB Connection if it does not exist
           run: |
@@ -126,12 +129,12 @@ jobs:
                 echo "Creating connection for server: $server and database: $database"
                 fab create .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -P connectionDetails.creationMethod=SQL,connectionDetails.type=SQL,connectionDetails.parameters.server=$server,connectionDetails.parameters.database=$database,credentialDetails.type=ServicePrincipal,credentialDetails.servicePrincipalClientId=${{ secrets.ACTION_SPN_CLIENTID }},credentialDetails.servicePrincipalSecret=${{ secrets.ACTION_SPN_SECRET }},credentialDetails.tenantid=${{ secrets.TENANT_ID }} 
                 connectionID=$(fab get .connections/"${WORKSPACE_NAME}-${FABRIC_SQL_DB_NAME}".Connection -q id| tr -d '\r')
-
-                rolejson=$(jq -n --arg id "$WORKSPACE_ADMIN_ID" '{"principal": {"id": $id, "type": "Group"}, "role": "Owner"}')
+                
+                rolejson=$(jq -n --arg id "$WORKSPACE_ADMIN_ID" --arg type "${WORKSPACE_ADMIN_TYPE^}" '{"principal": {"id": $id, "type": $type}, "role": "Owner"}')         
                 echo "Assigning role to connection: $rolejson"
                 fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
-                
-                rolejson=$(jq -n --arg id "$WORKSPACE_COLLABORATOR_ID" '{"principal": {"id": $id, "type": "Group"}, "role": "Owner"}')
+                            
+                rolejson=$(jq -n --arg id "$WORKSPACE_COLLABORATOR_ID" --arg type "${WORKSPACE_COLLABORATOR_TYPE^}" '{"principal": {"id": $id, "type": $type}, "role": "Owner"}')
                 echo "Assigning role to connection: $rolejson"
                 fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
               fi
