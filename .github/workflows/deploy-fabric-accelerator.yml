@@ -83,6 +83,11 @@ jobs:
               fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_COLLABORATOR_ID -R contributor -f
             fi 
 
+        # Delete Evenstream if it exists (TEMP WORKAROUND for issue with existing Eventstream during redeployments)
+        - name: Delete Eventstream if it exists
+          run: |
+            fab exists "$WORKSPACE_NAME.Workspace/es_fabricEvents.EventStream" | grep -q true && fab rm $WORKSPACE_NAME.Workspace/es_fabricEvents.EventStream -f
+           
        # Create Folders if they do not exist
         - name: Create folders if they do not exist
           run: |  
