@@ -1,16 +1,16 @@
 name: Deploy Fabric Accelerator
 on: workflow_dispatch 
 env:
-  WORKSPACE_NAME: testws
+  WORKSPACE_NAME: FabricAccelerator
   FABRIC_CAPACITY_NAME: bafabric014e4fwwm2ufole
-  WORKSPACE_ADMIN_ID: aca94643-2e36-4cd6-ba96-bfc513b37851
+  WORKSPACE_ADMIN_ID: 688ad7c8-d7bb-4f32-884a-05601c9762a2
   WORKSPACE_ADMIN_TYPE: user # possible values: user, group
-  WORKSPACE_COLLABORATOR_ID: 01e16ca5-e5da-49f3-ac27-a46f1cc68ede
+  WORKSPACE_COLLABORATOR_ID: 688ad7c8-d7bb-4f32-884a-05601c9762a2
   WORKSPACE_COLLABORATOR_TYPE: user # possible values: user, group
-  FABRIC_SQL_DB_NAME: controldb-test
-  BRONZE_LH: bronze_lh_test
-  SILVER_LH: silver_lh_test
-  GOLD_DW: gold_dw_test
+  FABRIC_SQL_DB_NAME: controldb-fabric-accelerator
+  BRONZE_LH: bronze_fabric_accelerator
+  SILVER_LH: silver_fabric_accelerator
+  GOLD_DW: gold_fabric_accelerator
   WIDE_WORLD_IMPORTERS_CONNECTION_ID: a0a57e51-5032-4e46-b0f0-493c9d2f51c9
 
 jobs:
