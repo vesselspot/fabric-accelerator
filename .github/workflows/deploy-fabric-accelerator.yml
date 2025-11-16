@@ -5,8 +5,8 @@ env:
   FABRIC_CAPACITY_NAME: bafabric014e4fwwm2ufole
   WORKSPACE_ADMIN_ID: 688ad7c8-d7bb-4f32-884a-05601c9762a2
   WORKSPACE_ADMIN_TYPE: user # possible values: user, group
-  WORKSPACE_COLLABORATOR_ID: 688ad7c8-d7bb-4f32-884a-05601c9762a2
-  WORKSPACE_COLLABORATOR_TYPE: user # possible values: user, group
+  # WORKSPACE_COLLABORATOR_ID: 688ad7c8-d7bb-4f32-884a-05601c9762a2
+  # WORKSPACE_COLLABORATOR_TYPE: user # possible values: user, group
   FABRIC_SQL_DB_NAME: controldb-fabric-accelerator
   BRONZE_LH: bronze_fabric_accelerator
   SILVER_LH: silver_fabric_accelerator
@@ -80,15 +80,14 @@ jobs:
             if [ "$WorkspaceExists" != "*true" ]; then
               fab create $WORKSPACE_NAME.Workspace -P capacityName=$FABRIC_CAPACITY_NAME
               fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_ADMIN_ID -R admin -f
-              fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_COLLABORATOR_ID -R contributor -f
+              # fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_COLLABORATOR_ID -R contributor -f
             fi 
 
         # Delete Evenstream if it exists (TEMP WORKAROUND for issue with existing Eventstream during redeployments)
         - name: Delete Eventstream if it exists
           run: |
-            set -x
             fab exists "$WORKSPACE_NAME.Workspace/es_fabricEvents.EventStream" | grep -q true && fab rm "$WORKSPACE_NAME.Workspace/es_fabricEvents.EventStream" -f
-            set +x
+
        # Create Folders if they do not exist
         - name: Create folders if they do not exist
           run: |  
@@ -140,9 +139,9 @@ jobs:
                 echo "Assigning role to connection: $rolejson"
                 fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
                             
-                rolejson=$(jq -n --arg id "$WORKSPACE_COLLABORATOR_ID" --arg type "${WORKSPACE_COLLABORATOR_TYPE^}" '{"principal": {"id": $id, "type": $type}, "role": "Owner"}')
-                echo "Assigning role to connection: $rolejson"
-                fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
+                # rolejson=$(jq -n --arg id "$WORKSPACE_COLLABORATOR_ID" --arg type "${WORKSPACE_COLLABORATOR_TYPE^}" '{"principal": {"id": $id, "type": $type}, "role": "Owner"}')
+                # echo "Assigning role to connection: $rolejson"
+                # fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
               fi
           # Create Medallion Layers if they do not exist
         - name: Create Medallion Layers if they do not exist
