@@ -135,7 +135,7 @@ jobs:
                 
                 rolejson=$(jq -n --arg id "$WORKSPACE_ADMIN_ID" --arg type "${WORKSPACE_ADMIN_TYPE^}" '{"principal": {"id": $id, "type": $type}, "role": "Owner"}')         
                 echo "Assigning role to connection: $rolejson"
-                fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson"
+                fab api -X post "connections/$connectionID/roleAssignments" -i "$rolejson" --show_headers
 
               fi
           # Create Medallion Layers if they do not exist
@@ -292,14 +292,14 @@ jobs:
                         --arg platform "$platform" \
                         --arg folderId "$folderId" \
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload" --show_headers)
               else
                 pipelineId=$(fab get $WORKSPACE_NAME.Workspace/wwi-elt-framework.DataPipeline -q id | tr -d '\r')
                 jsonPayload=$(jq -n \
                         --arg pipeline_content "$pipeline_content" \
                         --arg platform "$platform" \
                         '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload" --show_headers)
               fi 
               echo "$response"
 
@@ -318,14 +318,14 @@ jobs:
                         --arg platform "$platform" \
                         --arg folderId "$folderId" \
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload" --show_headers)
             else
                 pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Level2 Transform.DataPipeline -q id | tr -d '\r')
                 jsonPayload=$(jq -n \
                         --arg pipeline_content "$pipeline_content" \
                         --arg platform "$platform" \
                         '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload" --show_headers)
             fi   
             
             echo "$response"
@@ -355,14 +355,14 @@ jobs:
                 --arg platform "$platform" \
                 --arg folderId "$folderId" \
                 '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload" --show_headers)
             else
               pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Master Level2 Transform.DataPipeline -q id | tr -d '\r')
               jsonPayload=$(jq -n \
                 --arg pipeline_content "$pipeline_content" \
                 --arg platform "$platform" \
                 '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload" --show_headers)
             fi  
             
             echo "$response"
@@ -393,14 +393,14 @@ jobs:
                     --arg platform "$platform" \
                     --arg folderId "$folderId" \
                     '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload" --show_headers)
             else
                 pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Level1 Transform.DataPipeline -q id | tr -d '\r')
                 jsonPayload=$(jq -n \
                     --arg pipeline_content "$pipeline_content" \
                     --arg platform "$platform" \
                     '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload" --show_headers)
             fi
 
             echo "$response"
@@ -430,14 +430,14 @@ jobs:
                     --arg platform "$platform" \
                     --arg folderId "$folderId" \
                     '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload" --show_headers)
             else
                 pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Master Level1 Transform.DataPipeline -q id | tr -d '\r')
                 jsonPayload=$(jq -n \
                     --arg pipeline_content "$pipeline_content" \
                     --arg platform "$platform" \
                     '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')    
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload" --show_headers) 
             fi
 
             echo "$response"
@@ -466,14 +466,14 @@ jobs:
                     --arg platform "$platform" \
                     --arg folderId "$folderId" \
                     '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload" --show_headers)
             else
                 pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Ingest ASQL Table.DataPipeline -q id | tr -d '\r')
                 jsonPayload=$(jq -n \
                     --arg pipeline_content "$pipeline_content" \
                     --arg platform "$platform" \
                     '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')  
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload" --show_headers)
             fi
 
             echo "$response"
@@ -502,14 +502,14 @@ jobs:
                     --arg platform "$platform" \
                     --arg folderId "$folderId" \
                     '{"displayName": $displayName,"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines" -i "$jsonPayload" --show_headers)
             else
                 pipelineId=$(fab get $WORKSPACE_NAME.Workspace/Master ELT ASQL.DataPipeline -q id | tr -d '\r')
                 jsonPayload=$(jq -n \
                     --arg pipeline_content "$pipeline_content" \
                     --arg platform "$platform" \
                     '{"definition": {"parts":[{"path": "pipeline-content.json","payload": $pipeline_content,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload" --show_headers)
             fi
             
             echo "$response"
@@ -539,14 +539,14 @@ jobs:
                         --arg platform "$platform" \
                         --arg folderId "$folderId" \
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "EventhouseProperties.json","payload": $eventhouse_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses" -i "$jsonPayload" --show_headers)
               else
                 EventHouseId=$(fab get "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse" -q id | tr -d '\r')
                 jsonPayload=$(jq -n \
                         --arg eventhouse_properties "$eventhouse_properties" \
                         --arg platform "$platform" \
                         '{"definition": {"parts":[{"path": "EventhouseProperties.json","payload": $eventhouse_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses/$EventHouseId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventhouses/$EventHouseId/updateDefinition?updateMetadata=True" -i "$jsonPayload" --show_headers)
               fi
 
             echo "$response"
@@ -578,7 +578,7 @@ jobs:
                         --arg platform "$platform" \
                         --arg folderId "$folderId" \
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "DatabaseProperties.json","payload": $databaseProperties,"payloadType": "InlineBase64"},{"path": "DatabaseSchema.kql","payload": $databaseSchema,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDatabases" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDatabases" -i "$jsonPayload" --show_headers)
               else
                 KqlDatabaseId=$(fab get "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KqlDatabase" -q id | tr -d '\r')
                 jsonPayload=$(jq -n \
@@ -586,7 +586,7 @@ jobs:
                         --arg databaseSchema "$databaseSchema" \
                         --arg platform "$platform" \
                         '{"definition": {"parts":[{"path": "DatabaseProperties.json","payload": $databaseProperties,"payloadType": "InlineBase64"},{"path": "DatabaseSchema.kql","payload": $databaseSchema,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDatabases/$KqlDatabaseId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+                response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDatabases/$KqlDatabaseId/updateDefinition?updateMetadata=True" -i "$jsonPayload" --show_headers)
               fi
             echo "$response"
             status_code=$(echo "$response" | jq -r '.status_code')
@@ -626,14 +626,14 @@ jobs:
                         --arg platform "$platform" \
                         --arg folderId "$folderId" \
                         '{"displayName": $displayName,"definition": {"parts":[{"path": "RealTimeDashboard.json","payload": $realtimeDashboard,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDashboards" -i "$jsonPayload"
+                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDashboards" -i "$jsonPayload" --show_headers
               else
                 DashboardId=$(fab get "$WORKSPACE_NAME.Workspace/fabricEventsDashboard.KQLDashboard" -q id | tr -d '\r')
                 jsonPayload=$(jq -n \
                         --arg realtimeDashboard "$realtimeDashboard" \
                         --arg platform "$platform" \
                         '{"definition": {"parts":[{"path": "RealTimeDashboard.json","payload": $realtimeDashboard,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDashboards/$DashboardId/updateDefinition?updateMetadata=True" -i "$jsonPayload"
+                fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDashboards/$DashboardId/updateDefinition?updateMetadata=True" -i "$jsonPayload" --show_headers
               fi
 
         # Deploy EvenStream es_fabricEvents
@@ -653,7 +653,7 @@ jobs:
                           --arg platform "$platform" \
                           --arg folderId "$folderId" \
                           '{"displayName": $displayName,"definition": {"parts":[{"path": "eventstream.json","payload": $eventstream,"payloadType": "InlineBase64"},{"path": "eventstreamProperties.json","payload": $eventstream_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]},"folderId": $folderId}')
-              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventStreams" -i "$jsonPayload")
+              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventStreams" -i "$jsonPayload" --show_headers)
             else
               EventStreamId=$(fab get "$WORKSPACE_NAME.Workspace/es_fabricEvents.EventStream" -q id | tr -d '\r')
               jsonPayload=$(jq -n \
@@ -661,7 +661,7 @@ jobs:
                           --arg eventstream_properties "$eventstream_properties" \
                           --arg platform "$platform" \
                           '{"definition": {"parts":[{"path": "eventstream.json","payload": $eventstream,"payloadType": "InlineBase64"},{"path": "eventstreamProperties.json","payload": $eventstream_properties,"payloadType": "InlineBase64"},{"path": ".platform","payload": $platform,"payloadType": "InlineBase64"}]}}')
-              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventStreams/$EventStreamId/updateDefinition?updateMetadata=True" -i "$jsonPayload")
+              response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/eventStreams/$EventStreamId/updateDefinition?updateMetadata=True" -i "$jsonPayload" --show_headers)
             fi
             echo "$response"
       # Logout
