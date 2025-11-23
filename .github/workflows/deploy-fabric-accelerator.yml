@@ -311,7 +311,7 @@ jobs:
                   while :; do
                       response=$(fab api -X get "/operations/$operation_id" --show_headers)
                       echo "$response"
-                      status=$(echo "$response" | jq -r '.status')
+                      status=$(echo "$response" | jq -r '.text.status')
                       [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
                       sleep "$retry_after"
                   done
@@ -358,7 +358,7 @@ jobs:
                   while :; do
                       response=$(fab api -X get "/operations/$operation_id" --show_headers)
                       echo "$response"
-                      status=$(echo "$response" | jq -r '.status')
+                      status=$(echo "$response" | jq -r '.text.status')
                       [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
                       sleep "$retry_after"
                   done
@@ -414,7 +414,7 @@ jobs:
                   while :; do
                       response=$(fab api -X get "/operations/$operation_id" --show_headers)
                       echo "$response"
-                      status=$(echo "$response" | jq -r '.status')
+                      status=$(echo "$response" | jq -r '.text.status')
                       [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
                       sleep "$retry_after"
                   done
@@ -469,7 +469,7 @@ jobs:
                   while :; do
                       response=$(fab api -X get "/operations/$operation_id" --show_headers)
                       echo "$response"
-                      status=$(echo "$response" | jq -r '.status')
+                      status=$(echo "$response" | jq -r '.text.status')
                       [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
                       sleep "$retry_after"
                   done
@@ -521,7 +521,7 @@ jobs:
                   while :; do
                       response=$(fab api -X get "/operations/$operation_id" --show_headers)
                       echo "$response"
-                      status=$(echo "$response" | jq -r '.status')
+                      status=$(echo "$response" | jq -r '.text.status')
                       [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
                       sleep "$retry_after"
                   done
@@ -574,7 +574,7 @@ jobs:
                   while :; do
                       response=$(fab api -X get "/operations/$operation_id" --show_headers)
                       echo "$response"
-                      status=$(echo "$response" | jq -r '.status')
+                      status=$(echo "$response" | jq -r '.text.status')
                       [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
                       sleep "$retry_after"
                   done
@@ -627,7 +627,7 @@ jobs:
                   while :; do
                       response=$(fab api -X get "/operations/$operation_id" --show_headers)
                       echo "$response"
-                      status=$(echo "$response" | jq -r '.status')
+                      status=$(echo "$response" | jq -r '.text.status')
                       [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
                       sleep "$retry_after"
                   done
@@ -680,7 +680,7 @@ jobs:
                   while :; do
                       response=$(fab api -X get "/operations/$operation_id" --show_headers)
                       echo "$response"
-                      status=$(echo "$response" | jq -r '.status')
+                      status=$(echo "$response" | jq -r '.text.status')
                       [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
                       sleep "$retry_after"
                   done
@@ -736,7 +736,7 @@ jobs:
                   while :; do
                       response=$(fab api -X get "/operations/$operation_id" --show_headers)
                       echo "$response"
-                      status=$(echo "$response" | jq -r '.status')
+                      status=$(echo "$response" | jq -r '.text.status')
                       [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
                       sleep "$retry_after"
                   done
