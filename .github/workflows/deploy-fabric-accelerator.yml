@@ -2,14 +2,14 @@ name: Deploy Fabric Accelerator
 on: workflow_dispatch 
 env:
   WORKSPACE_NAME: FabricAccelerator
-  FABRIC_CAPACITY_NAME: bafabric014e4fwwm2ufole
-  WORKSPACE_ADMIN_ID: 688ad7c8-d7bb-4f32-884a-05601c9762a2
+  FABRIC_CAPACITY_NAME: nstfabric01e6pkeqpdre2oe
+  WORKSPACE_ADMIN_ID: be5088ca-babe-412d-b873-e533e3afebaa
   WORKSPACE_ADMIN_TYPE: user # valid values: user, group
   FABRIC_SQL_DB_NAME: controldb-fabric-accelerator
   BRONZE_LH: bronze_fabric_accelerator
   SILVER_LH: silver_fabric_accelerator
   GOLD_DW: gold_fabric_accelerator
-  WIDE_WORLD_IMPORTERS_CONNECTION_ID: a0a57e51-5032-4e46-b0f0-493c9d2f51c9
+  WIDE_WORLD_IMPORTERS_CONNECTION_ID: deeade7f-b561-43d2-b9af-9ba472e5b2be
 
 jobs:
   deploy-fabric-accelerator:
