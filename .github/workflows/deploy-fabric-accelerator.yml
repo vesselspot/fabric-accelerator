@@ -280,7 +280,6 @@ jobs:
       # Deploy Pipeline wwi-elt-framework
         - name: Deploy Pipeline wwi-elt-framework
           run: |
-            set -x
             PipelineExists=$(fab exists $WORKSPACE_NAME.Workspace/wwi-elt-framework.DataPipeline| tr -d '[:space:]')
             pipeline_content=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/pipeline-content.json"| base64)
             platform=$(jq '.' "${GITHUB_WORKSPACE}/workspace/pipeline/elt-framework/wwi-elt-framework.DataPipeline/.platform"| base64)
@@ -321,7 +320,7 @@ jobs:
                   echo "Deployment step failed with status code: $status_code">&2
                   exit 1
               fi
-            set +x
+
       # Deploy Pipeline Level2 Transform
         - name: Deploy Pipeline Level2 Transform
           run: |
