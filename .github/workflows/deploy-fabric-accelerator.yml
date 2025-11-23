@@ -541,6 +541,10 @@ jobs:
                       [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
                       sleep "$retry_after"
                   done
+                  if [ "$status" = "Failed" ]; then
+                      echo "Async operation failed during deployment." >&2
+                      exit 1
+                  fi
               fi
 
               NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID=$(fab get "$WORKSPACE_NAME.Workspace/Master Level1 Transform.DataPipeline" -q id | tr -d '\r')
