@@ -80,7 +80,7 @@ jobs:
               fab acl set $WORKSPACE_NAME.Workspace -I $WORKSPACE_ADMIN_ID -R admin -f
             fi 
 
-        # Delete Evenstream if it exists (TEMP WORKAROUND for issue with existing Eventstream during redeployments)
+        # Delete Eventstream if it exists (TEMP WORKAROUND for issue with existing Eventstream during redeployments)
         - name: Delete Eventstream if it exists
           run: |
             set -x
