@@ -302,6 +302,24 @@ jobs:
                 response=$(fab api -X post "workspaces/$NEW_FABRIC_WORKSPACE_ID/dataPipelines/$pipelineId/updateDefinition?updateMetadata=True" -i "$jsonPayload" --show_headers)
               fi 
               echo "$response"
+              status_code=$(echo "$response" | jq -r '.status_code')
+              if [ "$status_code" = "201" ] || [ "$status_code" = "200" ] || [ "$status_code" = "202" ]; then
+                if [ "$status_code" = "202" ]; then
+                  operation_id=$(echo "$response" | jq -r '.headers["x-ms-operation-id"]')
+                  retry_after=$(echo "$response" | jq -r '.headers["Retry-After"]')
+                  sleep "$retry_after"
+                  while :; do
+                      response=$(fab api -X get "/operations/$operation_id" --show_headers)
+                      echo "$response"
+                      status=$(echo "$response" | jq -r '.status')
+                      [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
+                      sleep "$retry_after"
+                  done
+                fi
+              else
+                  echo "Deployment step failed with status code: $status_code">&2
+                  exit 1
+              fi
 
       # Deploy Pipeline Level2 Transform
         - name: Deploy Pipeline Level2 Transform
