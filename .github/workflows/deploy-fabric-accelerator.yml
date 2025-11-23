@@ -764,6 +764,10 @@ jobs:
                       [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
                       sleep "$retry_after"
                   done
+                  if [ "$status" = "Failed" ]; then
+                      echo "Async operation failed during KQL Database creation." >&2
+                      exit 1
+                  fi
               fi
 
               KqlDatabaseId=$(fab get "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KqlDatabase" -q id | tr -d '\r')
