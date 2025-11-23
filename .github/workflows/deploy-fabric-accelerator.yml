@@ -315,6 +315,10 @@ jobs:
                       [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
                       sleep "$retry_after"
                   done
+                  if [ "$status" = "Failed" ]; then
+                    echo "Async operation failed during deployment." >&2
+                    exit 1
+                  fi
                 fi
               else
                   echo "Deployment step failed with status code: $status_code">&2
