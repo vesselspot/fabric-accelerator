@@ -285,7 +285,6 @@ jobs:
             grep --null -rl "$OLD_L1_TRANSFORM_GENERIC_NOTEBOOK_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
             grep --null -rl $OLD_L1_TRANSFORM_GENERIC_NOTEBOOK_ID ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_L1_TRANSFORM_GENERIC_NOTEBOOK_ID/$NEW_L1_TRANSFORM_GENERIC_NOTEBOOK_ID/g"
 
-
       # Deploy Pipeline wwi-elt-framework
         - name: Deploy Pipeline wwi-elt-framework
           run: |
