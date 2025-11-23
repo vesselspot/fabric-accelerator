@@ -655,6 +655,10 @@ jobs:
                       [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
                       sleep "$retry_after"
                   done
+                  if [ "$status" == "Failed" ]; then
+                      echo "Async operation failed during deployment." >&2
+                      exit 1
+                  fi
               fi
 
               NEW_MASTER_INGEST_ASQL_PIPELINE_ID=$(fab get "$WORKSPACE_NAME.Workspace/Master ELT ASQL.DataPipeline" -q id | tr -d '\r')
