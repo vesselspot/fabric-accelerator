@@ -351,6 +351,10 @@ jobs:
               echo "Files to be updated from $OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID"
               grep --null -rl "$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl "$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/g"
+            
+            else
+                echo "Deployment step failed with status code: $status_code">&2
+                exit 1
             fi
 
 
@@ -403,6 +407,10 @@ jobs:
               echo "Files to be updated from $OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID"
               grep --null -rl "$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl "$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_MASTER_LEVEL2_TRANSFORM_PIPELINE_LOGICAL_ID/g"
+            
+            else
+                echo "Deployment step failed with status code: $status_code">&2
+                exit 1
             fi
      
 
@@ -453,8 +461,10 @@ jobs:
               echo "Files to be updated from $OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID"
               grep --null -rl "$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl "$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/g"
+            else
+                echo "Deployment step failed with status code: $status_code">&2
+                exit 1
             fi
-
 
       # Deploy Pipeline Master Level1 Transform
         - name: Deploy Pipeline Master Level1 Transform
@@ -504,6 +514,9 @@ jobs:
               echo "Files to be updated from $OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID to $NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID"
               grep --null -rl "$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl "$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/$NEW_MASTER_LEVEL1_TRANSFORM_PIPELINE_LOGICAL_ID/g"
+            else
+                echo "Deployment step failed with status code: $status_code">&2
+                exit 1
             fi
               
       # Deploy Pipeline Ingest ASQL Table
@@ -554,6 +567,9 @@ jobs:
               echo "Files to be updated from $OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID to $NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID"
               grep --null -rl "$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl "$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_INGEST_ASQL_PIPELINE_LOGICAL_ID/$NEW_INGEST_ASQL_PIPELINE_LOGICAL_ID/g"
+             else
+                echo "Deployment step failed with status code: $status_code">&2
+                exit 1
             fi
 
       # Deploy Pipeline Master ELT ASQL
@@ -604,6 +620,9 @@ jobs:
               echo "Files to be updated from $OLD_MASTER_INGEST_ASQL_PIPELINE_ID to $NEW_MASTER_INGEST_ASQL_PIPELINE_ID"
               grep --null -rl "$OLD_MASTER_INGEST_ASQL_PIPELINE_ID" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl "$OLD_MASTER_INGEST_ASQL_PIPELINE_ID" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$OLD_MASTER_INGEST_ASQL_PIPELINE_ID/$NEW_MASTER_INGEST_ASQL_PIPELINE_ID/g"
+            else
+                echo "Deployment step failed with status code: $status_code">&2
+                exit 1
             fi
 
       # Create Eventhouse eh_fabricAccelerator
@@ -654,6 +673,9 @@ jobs:
               echo "Files to be updated from $oldLogicalId to $EventHouseId"
               grep --null -rl "$oldLogicalId" "${GITHUB_WORKSPACE}/workspace" | tr '\0' '\n'
               grep --null -rl "$oldLogicalId" ${GITHUB_WORKSPACE}/workspace | xargs -0 sed -i "s/$oldLogicalId/$EventHouseId/g"
+            else
+                echo "Deployment step failed with status code: $status_code">&2
+                exit 1  
             fi          
 
         # Create KQL Database kdb_fabricEvents
@@ -701,7 +723,7 @@ jobs:
                       sleep "$retry_after"
                   done
               fi
-                          
+
               KqlDatabaseId=$(fab get "$WORKSPACE_NAME.Workspace/kdb_fabricEvents.KqlDatabase" -q id | tr -d '\r')
               echo "KqlDatabaseId=$KqlDatabaseId" >> $GITHUB_ENV
               echo "Files to be updated from $oldLogicalId to $KqlDatabaseId"
@@ -711,6 +733,9 @@ jobs:
               # Get KQL Service URL
               KQLServiceUrl=$(fab api -X get "/workspaces/$NEW_FABRIC_WORKSPACE_ID/kqlDatabases/$KqlDatabaseId" | jq -r '.text.properties.queryServiceUri')
               echo "KQLServiceUrl=$KQLServiceUrl" >> $GITHUB_ENV
+            else
+                echo "Deployment step failed with status code: $status_code">&2
+                exit 1
             fi
 
        # Create RTI Dashboard fabricEventsDashboard
