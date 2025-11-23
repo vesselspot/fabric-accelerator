@@ -712,6 +712,10 @@ jobs:
                       [[ "$status" == "Succeeded" || "$status" == "Failed" ]] && break
                       sleep "$retry_after"
                   done
+                  if [ "$status" = "Failed" ]; then
+                      echo "Async operation failed during Eventhouse deployment." >&2
+                      exit 1
+                  fi
               fi
 
               EventHouseId=$(fab get "$WORKSPACE_NAME.Workspace/eh_fabricAccelerator.Eventhouse" -q id | tr -d '\r')
