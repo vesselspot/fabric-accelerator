@@ -4,7 +4,7 @@ env:
   WORKSPACE_NAME: FabricAccelerator
   FABRIC_CAPACITY_NAME: bafabric014e4fwwm2ufole
   WORKSPACE_ADMIN_ID: 688ad7c8-d7bb-4f32-884a-05601c9762a2
-  WORKSPACE_ADMIN_TYPE: user # possible values: user, group
+  WORKSPACE_ADMIN_TYPE: user # valid values: user, group
   FABRIC_SQL_DB_NAME: controldb-fabric-accelerator
   BRONZE_LH: bronze_fabric_accelerator
   SILVER_LH: silver_fabric_accelerator
